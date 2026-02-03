@@ -1,0 +1,17 @@
+{
+  "create": "Crear",
+  "edit": "Editar",
+  "save": "Guardar",
+  "cancel": "Cancelar",
+  "delete": "Eliminar",
+  "close": "Cerrar",
+  "forgot_password": "¿Has olvidado tu contraseña?",
+  "create_account": "Crear cuenta",
+  "login": "Iniciar sesión",
+  "logout": "Cerrar sesión",
+  "email": "Correo electrónico",
+  "password": "Contraseña",
+  "create_project": "Crear proyecto",
+  "new_area": "Nueva Área",
+  "edit_area": "Editar Área"
+}

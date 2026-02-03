@@ -1,0 +1,17 @@
+{
+  "create": "Create",
+  "edit": "Edit",
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "close": "Close",
+  "forgot_password": "Forgot your password?",
+  "create_account": "Create account",
+  "login": "Log in",
+  "logout": "Log out",
+  "email": "Email",
+  "password": "Password",
+  "create_project": "Create project",
+  "new_area": "New Area",
+  "edit_area": "Edit Area"
+}
