@@ -79,6 +79,16 @@ const routes: RouteRecordRaw[] = [
         path: 'calculator',
         name: 'calculator',
         component: () => import('@/modules/calculator/presentation/bodies/CalculatorView.vue')
+      },
+      {
+        path: 'tasas',
+        name: 'tasas',
+        component: () => import('@/modules/tasas/presentation/bodies/TasasView.vue')
+      },
+      {
+        path: 'comisiones',
+        name: 'comisiones',
+        component: () => import('@/modules/comisiones/presentation/bodies/ComisionesView.vue')
       }
     ]
   }

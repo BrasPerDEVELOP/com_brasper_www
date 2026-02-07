@@ -58,6 +58,8 @@ const sidebarItems = [
   { to: { name: 'accounts' }, label: 'Mis cuentas' },
   { to: { name: 'step', params: { stepId: '1' } }, label: 'Transferencia' },
   { to: { name: 'transactions' }, label: 'Historial de transferencia' },
+  { to: { name: 'tasas' }, label: 'Tasas' },
+  { to: { name: 'comisiones' }, label: 'Comisiones' },
   { to: { name: 'profile' }, label: 'Perfil' }
 ]
 
