@@ -30,12 +30,15 @@ function main() {
     'export const TR = {'
   ]
 
-  for (const [key, text] of Object.entries(es)) {
+  const entries = Object.entries(es)
+  for (let i = 0; i < entries.length; i++) {
+    const [key, text] = entries[i]
     const camel = toCamelCase(key)
     const comment = `  /** ${String(text).replace(/\*/g, '*')} | ${key} */`
     lines.push(comment)
     const escaped = String(key).replace(/\\/g, '\\\\').replace(/"/g, '\\"')
-    lines.push(`  get ${camel}(): string { return "${escaped}" }`)
+    const isLast = i === entries.length - 1
+    lines.push(`  get ${camel}(): string { return "${escaped}" }${isLast ? '' : ','}`)
     lines.push('')
   }
 

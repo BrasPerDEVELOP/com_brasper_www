@@ -5,9 +5,86 @@
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dash Brasper V2</title>
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+    <script type="module">
+      import { createChat } from "https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js";
+
+      // Obtener idioma guardado o usar portugués por defecto
+      const getLocale = () => {
+        const saved = localStorage.getItem('locale') || 'pt';
+        // Mapear a los idiomas soportados por n8n chat
+        const localeMap = { 'pt': 'pt', 'es': 'es', 'en': 'en' };
+        return localeMap[saved] || 'pt';
+      };
+
+      const currentLocale = getLocale();
+      
+      // Traducciones del chat según el idioma
+      const chatTranslations = {
+        pt: {
+          title: "Brasper",
+          subtitle: "Estou aqui para ajudá-lo 24/7.",
+          footer: "",
+          getStarted: "Nova conversa",
+          inputPlaceholder: "Digite sua pergunta..",
+        },
+        es: {
+          title: "Brasper",
+          subtitle: "Estoy aquí para ayudarte 24/7.",
+          footer: "",
+          getStarted: "Nueva conversación",
+          inputPlaceholder: "Escribe tu pregunta..",
+        },
+        en: {
+          title: "Brasper",
+          subtitle: "I'm here to help you 24/7.",
+          footer: "",
+          getStarted: "New conversation",
+          inputPlaceholder: "Type your question..",
+        }
+      };
+
+      const initialMessages = {
+        pt: [
+          "Olá! 👋",
+          "Sou o bot da Brasper. Como posso ajudá-lo hoje?",
+        ],
+        es: [
+          "Hola! 👋",
+          "Soy el bot de Brasper. ¿Cómo puedo ayudarte hoy?",
+        ],
+        en: [
+          "Hello! 👋",
+          "I'm the Brasper bot. How can I help you today?",
+        ]
+      };
+
+      createChat({
+        webhookUrl: "https://n8n.finzeler.com/webhook/f6ee57ad-a7fb-45a3-adeb-e16551fbc2fe/chat",
+        webhookConfig: {
+          method: "POST",
+          headers: {},
+        },
+        target: "#n8n-chat",
+        mode: "window",
+        chatInputKey: "chatInput",
+        chatSessionKey: "sessionId",
+        metadata: {},
+        showWelcomeScreen: false,
+        defaultLanguage: currentLocale,
+        initialMessages: initialMessages[currentLocale] || initialMessages.pt,
+        i18n: {
+          pt: chatTranslations.pt,
+          es: chatTranslations.es,
+          en: chatTranslations.en,
+        },
+      });
+    </script> 
   </head>
   <body>
     <div id="app"></div>
+    <!-- Chat container para n8n chat -->
+    <div id="n8n-chat"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

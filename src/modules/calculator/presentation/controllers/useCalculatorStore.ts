@@ -52,25 +52,80 @@ export const useCalculatorStore = defineStore('calculator', {
       return found?.rate ?? 0
     },
 
-    /** Comisión del par actual (desde API commission). */
+    /** Comisiones del par actual (desde API commission), ordenadas por min_amount ascendente. */
+    currentCommissionRanges(state): CommissionRange[] {
+      return state.commissions
+        .filter((c) => c.coin_a === state.currencyFrom && c.coin_b === state.currencyTo)
+        .sort((a, b) => a.min_amount - b.min_amount)
+    },
+
+    /** Comisión del par actual según el monto (busca el rango correcto). */
     currentCommission(state): CommissionRange | null {
-      return (
-        state.commissions.find(
-          (c) => c.coin_a === state.currencyFrom && c.coin_b === state.currencyTo
-        ) ?? null
-      )
+      const ranges = state.commissions
+        .filter((c) => c.coin_a === state.currencyFrom && c.coin_b === state.currencyTo)
+        .sort((a, b) => a.min_amount - b.min_amount)
+      
+      if (ranges.length === 0) return null
+
+      // Determinar el monto a usar para buscar el rango
+      let amount = state.amountSend
+      
+      // Si el usuario ingresó amountReceive pero no amountSend, necesitamos calcular amountSend
+      if (amount <= 0 && state.amountReceive > 0) {
+        const rate = state.taxRates.find(
+          (r) => r.from === state.currencyFrom && r.to === state.currencyTo
+        )?.rate
+        
+        if (rate && rate > 0) {
+          const pair = getCurrencyPairKey(state.currencyFrom, state.currencyTo)
+          
+          // Calcular amountSend iterativamente
+          let estimateSend = state.amountReceive / rate
+          for (let i = 0; i < 5; i++) {
+            // Buscar el rango para este estimateSend
+            let commissionRate = 0.03 // fallback
+            for (const range of ranges) {
+              if (estimateSend >= range.min_amount && estimateSend <= range.max_amount) {
+                commissionRate = range.percentage / 100
+                break
+              }
+            }
+            // Si excede todos los rangos, usar el último
+            if (estimateSend > ranges[ranges.length - 1].max_amount) {
+              commissionRate = ranges[ranges.length - 1].percentage / 100
+            }
+            
+            const effectiveMultiplier = 1 - commissionRate
+            const nextEstimate = state.amountReceive / (rate * effectiveMultiplier)
+            if (Math.abs(nextEstimate - estimateSend) < 0.01) {
+              break
+            }
+            estimateSend = nextEstimate
+          }
+          amount = estimateSend
+        } else {
+          amount = state.amountReceive
+        }
+      }
+      
+      if (amount <= 0) return null
+
+      // Buscar el rango que contiene el monto
+      for (const range of ranges) {
+        if (amount >= range.min_amount && amount <= range.max_amount) {
+          return range
+        }
+      }
+
+      // Si excede todos los rangos, devolver el último (mayor rango)
+      return ranges[ranges.length - 1]
     },
 
     /** Porcentaje de comisión aplicable al monto (respeta min_amount/max_amount). */
     currentCommissionPercentage(state): number {
-      const c = state.commissions.find(
-        (c) => c.coin_a === state.currencyFrom && c.coin_b === state.currencyTo
-      )
-      if (!c) return 0
-      const amount = state.amountSend || state.amountReceive
-      if (amount <= 0) return 0
-      if (amount < c.min_amount || amount > c.max_amount) return 0
-      return c.percentage
+      const commission = this.currentCommission
+      if (!commission) return 0.03 // fallback 3%
+      return commission.percentage
     },
 
     /** Resultado calculado: destination = (origin - commission) * tax. */
@@ -79,22 +134,65 @@ export const useCalculatorStore = defineStore('calculator', {
         (r) => r.from === state.currencyFrom && r.to === state.currencyTo
       )?.rate
       if (!rate || rate <= 0) return null
-      const commissionDef = state.commissions.find(
-        (c) => c.coin_a === state.currencyFrom && c.coin_b === state.currencyTo
-      )
-      const amount =
-        state.amountSend > 0 ? state.amountSend : state.amountReceive > 0 ? state.amountReceive / rate : 0
-      if (amount <= 0) return null
-      const commissionRate =
-        commissionDef && amount >= commissionDef.min_amount && amount <= commissionDef.max_amount
-          ? commissionDef.percentage / 100
-          : 0
-      const commission = amount * commissionRate
-      const totalToSend = amount - commission
-      const amountReceive = totalToSend * rate
+
+      const pair = getCurrencyPairKey(state.currencyFrom, state.currencyTo)
+      
+      // Función helper para calcular la tasa de comisión según el monto
+      const calculateCommissionRate = (amount: number): number => {
+        const ranges = state.commissions
+          .filter((c) => {
+            const cPair = getCurrencyPairKey(c.coin_a, c.coin_b)
+            return cPair === pair
+          })
+          .sort((a, b) => a.min_amount - b.min_amount)
+
+        if (ranges.length === 0) return 0.03 // fallback 3%
+
+        // Buscar el rango que contiene el monto
+        for (const range of ranges) {
+          if (amount >= range.min_amount && amount <= range.max_amount) {
+            return range.percentage / 100 // convertir a decimal
+          }
+        }
+
+        // Si excede todos los rangos, usar el último (mayor rango)
+        return ranges[ranges.length - 1].percentage / 100
+      }
+      
+      // Calcular amountSend basado en lo que el usuario ingresó
+      let amountSend = state.amountSend
+      if (amountSend <= 0 && state.amountReceive > 0) {
+        // Si el usuario ingresó amountReceive, calcular iterativamente amountSend
+        let estimateSend = state.amountReceive / rate
+        for (let i = 0; i < 5; i++) {
+          const currentRate = calculateCommissionRate(estimateSend)
+          const effectiveMultiplier = 1 - currentRate
+          const nextEstimate = state.amountReceive / (rate * effectiveMultiplier)
+          if (Math.abs(nextEstimate - estimateSend) < 0.01) {
+            break
+          }
+          estimateSend = nextEstimate
+        }
+        amountSend = estimateSend
+      }
+
+      if (amountSend <= 0) return null
+
+      // Calcular comisión usando el rango correcto
+      const commissionRate = calculateCommissionRate(amountSend)
+      const baseCommission = amountSend * commissionRate
+      
+      // Por ahora no hay descuentos, pero se puede agregar después
       const couponDiscount = 0
+      const variableDiscount = 0
+      const discountToApply = Math.max(couponDiscount, variableDiscount)
+      
+      const commission = baseCommission * (1 - discountToApply)
+      const totalToSend = amountSend - commission
+      const amountReceive = totalToSend * rate
+
       return {
-        amountSend: amount,
+        amountSend,
         amountReceive,
         rate,
         commission,
@@ -105,17 +203,17 @@ export const useCalculatorStore = defineStore('calculator', {
     },
 
     minAmount(state): number {
-      const c = state.commissions.find(
-        (c) => c.coin_a === state.currencyFrom && c.coin_b === state.currencyTo
-      )
-      return c?.min_amount ?? 100
+      const ranges = state.commissions
+        .filter((c) => c.coin_a === state.currencyFrom && c.coin_b === state.currencyTo)
+        .sort((a, b) => a.min_amount - b.min_amount)
+      return ranges.length > 0 ? ranges[0].min_amount : 100
     },
 
     maxAmount(state): number {
-      const c = state.commissions.find(
-        (c) => c.coin_a === state.currencyFrom && c.coin_b === state.currencyTo
-      )
-      return c?.max_amount ?? 50000
+      const ranges = state.commissions
+        .filter((c) => c.coin_a === state.currencyFrom && c.coin_b === state.currencyTo)
+        .sort((a, b) => a.max_amount - b.max_amount)
+      return ranges.length > 0 ? ranges[ranges.length - 1].max_amount : 50000
     }
   },
 
@@ -139,15 +237,24 @@ export const useCalculatorStore = defineStore('calculator', {
       }
     },
 
-    /** Actualiza selectedTaxRateId y selectedCommissionId según el par actual. */
+    /** Actualiza selectedTaxRateId y selectedCommissionId según el par actual y monto. */
     updateSelectedIds() {
       const pair = getCurrencyPairKey(this.currencyFrom, this.currencyTo)
       const rate = this.taxRates.find((r) => r.pair === pair)
-      const commission = this.commissions.find(
-        (c) => c.coin_a === this.currencyFrom && c.coin_b === this.currencyTo
-      )
       this.selectedTaxRateId = rate?.id ?? null
-      this.selectedCommissionId = commission?.id ?? null
+
+      // Buscar la comisión correcta según el monto actual
+      const amount = this.amountSend || this.amountReceive
+      if (amount > 0) {
+        const commission = this.currentCommission
+        this.selectedCommissionId = commission?.id ?? null
+      } else {
+        // Si no hay monto, usar la primera comisión del par
+        const firstCommission = this.commissions.find(
+          (c) => c.coin_a === this.currencyFrom && c.coin_b === this.currencyTo
+        )
+        this.selectedCommissionId = firstCommission?.id ?? null
+      }
     },
 
     setCurrencyFrom(code: CurrencyCode) {
@@ -167,6 +274,7 @@ export const useCalculatorStore = defineStore('calculator', {
       this.amountReceive = 0
       const res = this.result
       if (res) this.amountReceive = res.amountReceive
+      this.updateSelectedIds()
     },
 
     setAmountReceive(value: number) {
@@ -174,16 +282,23 @@ export const useCalculatorStore = defineStore('calculator', {
       this.amountSend = 0
       const res = this.result
       if (res) this.amountSend = res.amountSend
+      this.updateSelectedIds()
     },
 
     recalcFromSend() {
       const res = this.result
-      if (res && this.amountSend > 0) this.amountReceive = res.amountReceive
+      if (res && this.amountSend > 0) {
+        this.amountReceive = res.amountReceive
+        this.updateSelectedIds()
+      }
     },
 
     recalcFromReceive() {
       const res = this.result
-      if (res && this.amountReceive > 0) this.amountSend = res.amountSend
+      if (res && this.amountReceive > 0) {
+        this.amountSend = res.amountSend
+        this.updateSelectedIds()
+      }
     },
 
     resetAmounts() {
