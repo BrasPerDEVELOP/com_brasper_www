@@ -45,18 +45,20 @@
 
         <!-- Transfer Arrow -->
         <div class="flex justify-center">
-          <button type="button"
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary-hover">
+          <button
+            type="button"
+            class="group flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary-hover"
+            :title="t('exchange_rate')"
+            @click="swapCurrencies"
+          >
             <svg class="h-6 w-6" viewBox="0 0 48 48" fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg">
+              xmlns="http://www.w3.org/2000/svg"
+              :class="'transition-transform duration-200 group-hover:rotate-180'">
               <!-- Flecha arriba -->
               <path d="M14 4  L4 14       Q2 16 4 18       Q6 20 8 18       L12 14       V36       Q12 40 16 40       Q20 40 20 36       V14       L24 18       Q26 20 28 18       Q30 16 28 14       L18 4       Q16 2 14 4Z" />
                             <!-- Flecha abajo -->
               <path d="M34 44       L44 34       Q46 32 44 30       Q42 28 40 30       L36 34       V12       Q36 8 32 8       Q28 8 28 12       V34       L24 30       Q22 28 20 30       Q18 32 20 34       L30 44       Q32 46 34 44Z" />
             </svg>
-            
-
-
           </button>
         </div>
 
@@ -66,10 +68,9 @@
             {{ t('recipient_receives') }}
           </label>
           <div class="flex gap-2">
-            <input :value="calculatorStore.result ? calculatorStore.result.amountReceive.toFixed(2) : '0.00'"
-              type="text" readonly
-              :class="variant === 'banner' ? 'flex-1 rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 text-lg font-semibold text-gray-900' : 'flex-1 rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 text-base text-gray-900'"
-              placeholder="0.00" />
+            <input v-model.number="amountReceiveLocal" type="number" min="0" step="0.01"
+              :class="variant === 'banner' ? 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
+              placeholder="0.00" @input="onAmountReceiveInput" />
             <select :value="calculatorStore.currencyTo"
               :class="variant === 'banner' ? 'rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
               @change="onToChange($event)">
@@ -122,7 +123,7 @@
 import { ref, watch, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useCalculatorStore } from '../controllers/useCalculatorStore'
-import { CURRENCY_CODES } from '../../domain/models'
+import { CURRENCY_CODES, CURRENCY_OPTIONS } from '../../domain/models'
 import type { CurrencyCode } from '../../domain/models'
 
 const { t } = useI18n()
@@ -168,21 +169,34 @@ const calculatorStore = useCalculatorStore()
 const amountSendLocal = ref(props.initialAmount || 0)
 const amountReceiveLocal = ref(0)
 
+function toTwoDecimals(n: number): number {
+  return Number((n || 0).toFixed(2))
+}
+
 watch(
   () => calculatorStore.amountSend,
-  (v) => { amountSendLocal.value = v || props.initialAmount || 0 },
+  (v) => { amountSendLocal.value = toTwoDecimals(v || props.initialAmount || 0) },
   { immediate: true }
 )
 watch(
   () => calculatorStore.amountReceive,
-  (v) => { amountReceiveLocal.value = v },
+  (v) => { amountReceiveLocal.value = toTwoDecimals(v) },
   { immediate: true }
 )
 
 function onAmountSendInput() {
-  calculatorStore.setAmountSend(amountSendLocal.value || 0)
+  const value = toTwoDecimals(amountSendLocal.value || 0)
+  amountSendLocal.value = value
+  calculatorStore.setAmountSend(value)
   calculatorStore.recalcFromSend()
-  amountReceiveLocal.value = calculatorStore.amountReceive
+  amountReceiveLocal.value = toTwoDecimals(calculatorStore.amountReceive)
+}
+
+function onAmountReceiveInput() {
+  const value = toTwoDecimals(amountReceiveLocal.value ?? 0)
+  amountReceiveLocal.value = value
+  calculatorStore.setAmountReceive(value)
+  amountSendLocal.value = toTwoDecimals(calculatorStore.amountSend)
 }
 
 function onFromChange(e: Event) {
@@ -196,6 +210,28 @@ function onToChange(e: Event) {
   const value = (e.target as HTMLSelectElement).value as CurrencyCode
   calculatorStore.setCurrencyTo(value)
   emit('currencyChange', calculatorStore.currencyFrom, value)
+  handleCalculate()
+}
+
+function swapCurrencies() {
+  const from = calculatorStore.currencyFrom
+  const to = calculatorStore.currencyTo
+  const reverseOptions = CURRENCY_OPTIONS[to] ?? []
+  if (reverseOptions.length === 0) return
+
+  const nextTo = reverseOptions.includes(from) ? from : reverseOptions[0]
+  const previousResult = calculatorStore.result
+
+  calculatorStore.setCurrencyFrom(to)
+  calculatorStore.setCurrencyTo(nextTo)
+
+  if (previousResult && previousResult.amountReceive > 0) {
+    amountSendLocal.value = Number(previousResult.amountReceive.toFixed(2))
+    calculatorStore.setAmountSend(amountSendLocal.value)
+  }
+
+  calculatorStore.recalcFromSend()
+  emit('currencyChange', calculatorStore.currencyFrom, calculatorStore.currencyTo)
   handleCalculate()
 }
 
