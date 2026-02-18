@@ -77,8 +77,6 @@ export const useCalculatorStore = defineStore('calculator', {
         )?.rate
         
         if (rate && rate > 0) {
-          const pair = getCurrencyPairKey(state.currencyFrom, state.currencyTo)
-          
           // Calcular amountSend iterativamente
           let estimateSend = state.amountReceive / rate
           for (let i = 0; i < 5; i++) {
@@ -122,7 +120,7 @@ export const useCalculatorStore = defineStore('calculator', {
     },
 
     /** Porcentaje de comisión aplicable al monto (respeta min_amount/max_amount). */
-    currentCommissionPercentage(state): number {
+    currentCommissionPercentage(): number {
       const commission = this.currentCommission
       if (!commission) return 0.03 // fallback 3%
       return commission.percentage
