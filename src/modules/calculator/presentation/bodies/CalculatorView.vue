@@ -1,21 +1,17 @@
 <template>
   <section :class="getContainerClasses">
     <!-- Header -->
-    <template v-if="showTitle">
-      <div class="mb-6 flex items-center gap-2">
-        <svg v-if="variant === 'banner'" class="h-5 w-5 text-primary" fill="none" stroke="currentColor"
-          viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-        </svg>
+    <template v-if="showTitle" >
+      <div class="mb-6 flex items-center justify-center gap-2">
+       <img src="/assets/images/logo/logo.png" alt="Logo" class="w-10 h-10" />
         <h1
           :class="variant === 'banner' ? 'text-xl font-semibold text-gray-900' : 'text-2xl font-semibold text-on-surface'">
-          {{ title || (variant === 'banner' ? t('your_shipment_in_minutes') : t('calculator')) }}
+          {{ t('calculatorTitle')}}
         </h1>
       </div>
-      <p v-if="subtitle || (variant === 'default' && !subtitle)" class="mb-4 text-sm text-on-surface/80">
-        {{ subtitle || t('calculator_description') }}
-      </p>
+      <!-- <p v-if="subtitle || (variant === 'default' && !subtitle)" class="mb-4 text-sm text-on-surface/80">
+        {{ t('calculatorTitle') }}
+      </p> -->
     </template>
 
     <div v-if="calculatorStore.isLoading" class="mt-4 py-8 text-center text-on-surface/70">
@@ -31,10 +27,10 @@
           </label>
           <div class="flex gap-2">
             <input v-model.number="amountSendLocal" type="number" min="0" step="0.01"
-              :class="variant === 'banner' ? 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
+              :class="variant === 'banner' ? 'flex-1 rounded-lg border text-black border-gray-300 px-4 py-3 text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
               placeholder="1000" @input="onAmountSendInput" />
             <select :value="calculatorStore.currencyFrom"
-              :class="variant === 'banner' ? 'rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
+              :class="variant === 'banner' ? 'rounded-lg border text-black border-gray-300 bg-white px-4 py-3 text-sm font-medium focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
               @change="onFromChange($event)">
               <option v-for="code in CURRENCY_CODES" :key="code" :value="code">
                 {{ code.toUpperCase() }}
@@ -69,10 +65,10 @@
           </label>
           <div class="flex gap-2">
             <input v-model.number="amountReceiveLocal" type="number" min="0" step="0.01"
-              :class="variant === 'banner' ? 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
+              :class="variant === 'banner' ? 'flex-1 rounded-lg border text-black border-gray-300 px-4 py-3 text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
               placeholder="0.00" @input="onAmountReceiveInput" />
             <select :value="calculatorStore.currencyTo"
-              :class="variant === 'banner' ? 'rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
+              :class="variant === 'banner' ? 'rounded-lg border text-black border-gray-300 bg-white px-4 py-3 text-sm font-medium focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
               @change="onToChange($event)">
               <option v-for="code in calculatorStore.destinationOptions" :key="code" :value="code">
                 {{ code.toUpperCase() }}
@@ -87,6 +83,12 @@
             <span class="text-gray-600">{{ t('commission_fee') }}</span>
             <span class="font-semibold text-green-600">
               {{ calculatorStore.result.commission.toFixed(2) }} {{ calculatorStore.currencyFrom.toUpperCase() }}
+            </span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-600">{{ t('total_to_send') }}</span>
+            <span class="font-semibold text-green-600">
+              {{ calculatorStore.result.totalToSend.toFixed(2) }} {{ calculatorStore.currencyFrom.toUpperCase() }}
             </span>
           </div>
           <div class="flex justify-between text-sm">
@@ -202,15 +204,13 @@ function onAmountReceiveInput() {
 function onFromChange(e: Event) {
   const value = (e.target as HTMLSelectElement).value as CurrencyCode
   calculatorStore.setCurrencyFrom(value)
-  emit('currencyChange', value, calculatorStore.currencyTo)
-  handleCalculate()
+  recalculateAfterCurrencyChange()
 }
 
 function onToChange(e: Event) {
   const value = (e.target as HTMLSelectElement).value as CurrencyCode
   calculatorStore.setCurrencyTo(value)
-  emit('currencyChange', calculatorStore.currencyFrom, value)
-  handleCalculate()
+  recalculateAfterCurrencyChange()
 }
 
 function swapCurrencies() {
@@ -230,7 +230,17 @@ function swapCurrencies() {
     calculatorStore.setAmountSend(amountSendLocal.value)
   }
 
-  calculatorStore.recalcFromSend()
+  recalculateAfterCurrencyChange()
+}
+
+function recalculateAfterCurrencyChange() {
+  const effectiveAmount = amountSendLocal.value > 0 ? amountSendLocal.value : calculatorStore.amountSend
+  if (effectiveAmount > 0) {
+    calculatorStore.setAmountSend(effectiveAmount)
+    calculatorStore.recalcFromSend()
+    amountReceiveLocal.value = calculatorStore.amountReceive
+  }
+
   emit('currencyChange', calculatorStore.currencyFrom, calculatorStore.currencyTo)
   handleCalculate()
 }
