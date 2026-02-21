@@ -52,6 +52,16 @@ export const env = {
     return getEnv('VITE_PASSWORD', '')
   },
 
+  /** URL externa para redirigir a admins luego del login */
+  get adminRedirectUrl(): string {
+    return getEnv('VITE_ADMIN_REDIRECT_URL', '')
+  },
+
+  /** Secreto para cifrar payload de redirección de admin */
+  get adminRedirectSecret(): string {
+    return getEnv('VITE_ADMIN_REDIRECT_SECRET', '')
+  },
+
   /** Nivel de log: debug | info | warn | error (en prod por defecto: warn) */
   get logLevel(): string {
     return getEnv('VITE_LOG_LEVEL', import.meta.env.PROD ? 'warn' : 'debug')
