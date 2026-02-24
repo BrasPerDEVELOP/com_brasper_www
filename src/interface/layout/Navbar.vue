@@ -17,14 +17,19 @@
           {{ t('about_us') }}
         </a>
         <a href="#how-it-works" class="text-sm font-medium text-slate-700 transition-colors hover:text-primary">
-          {{ t('nav_how_it_works') }}
+        <!--   {{ t('nav_how_it_works') }} -->
+            {{ t('nav_banks') }}
         </a>
-        <a href="#coverage" class="text-sm font-medium text-slate-700 transition-colors hover:text-primary">
-          {{ t('nav_coverage') }}
-        </a>
+        <router-link :to="{ name: 'blog-list' }" class="text-sm font-medium text-slate-700 transition-colors hover:text-primary">
+          {{ t('nav_blog') }}
+        </router-link>
         <a href="#faq" class="text-sm font-medium text-slate-700 transition-colors hover:text-primary">
           {{ t('faq') }}
+
+        </a>      <a href="#faq" class="text-sm font-medium text-slate-700 transition-colors hover:text-primary">
+          {{ t('nav_agent') }}
         </a>
+
       </div>
 
       <div class="hidden items-center gap-3 md:flex">
@@ -81,7 +86,9 @@
       <div class="space-y-3">
         <a href="#about" class="block text-sm font-medium text-slate-700"> {{ t('about_us') }} </a>
         <a href="#how-it-works" class="block text-sm font-medium text-slate-700"> {{ t('nav_how_it_works') }} </a>
-        <a href="#coverage" class="block text-sm font-medium text-slate-700"> {{ t('nav_coverage') }} </a>
+        <router-link :to="{ name: 'blog-list' }" class="block text-sm font-medium text-slate-700">
+          {{ t('nav_blog') }}
+        </router-link>
         <a href="#faq" class="block text-sm font-medium text-slate-700"> {{ t('faq') }} </a>
       </div>
 

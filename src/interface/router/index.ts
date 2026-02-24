@@ -10,6 +10,18 @@ const routes: RouteRecordRaw[] = [
     meta: { public: true }
   },
   {
+    path: '/blog',
+    name: 'blog-list',
+    component: () => import('@/modules/blog/presentation/bodies/BlogListView.vue'),
+    meta: { public: true }
+  },
+  {
+    path: '/blog/:slug',
+    name: 'blog-detail',
+    component: () => import('@/modules/blog/presentation/bodies/BlogDetailView.vue'),
+    meta: { public: true }
+  },
+  {
     path: '/auth',
     name: 'auth',
     component: () => import('@/modules/auth/presentation/bodies/LoginView.vue'),

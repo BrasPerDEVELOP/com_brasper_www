@@ -10,6 +10,8 @@
     "i18n:generate": "npx tsx scripts/generate-translations.ts"
   },
   "dependencies": {
+    "@iconify/tools": "^4.2.0",
+    "@iconify/vue": "^5.0.0",
     "@tailwindcss/vite": "^4.1.18",
     "axios": "^1.6.7",
     "pinia": "^2.1.7",

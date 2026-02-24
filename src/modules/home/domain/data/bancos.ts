@@ -26,6 +26,11 @@ export const databancos: Banco[] = [
     enlace: 'https://www.c6bank.com.br/'
   },
   {
+    nombre: 'C6 Bank',
+    img1: "/assets/images/bancos/yapeplin.png",
+    enlace: "https://www.yape.com.pe/",
+  },
+  {
     nombre: 'BBVA Banco Continental',
     img1: '/assets/images/bancos/bbva.png',
     enlace: 'https://www.bbva.pe/'

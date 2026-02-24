@@ -42,9 +42,9 @@
               </a>
             </li>
             <li>
-              <a href="#blog" class="text-sm text-white/80 hover:text-white transition-colors">
+              <router-link :to="{ name: 'blog-list' }" class="text-sm text-white/80 hover:text-white transition-colors">
                 {{ t('footer_services_blog') }}
-              </a>
+              </router-link>
             </li>
           </ul>
         </div>
