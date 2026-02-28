@@ -13,53 +13,52 @@
       </router-link>
 
       <div class="hidden items-center gap-8 lg:flex">
-        <a href="#about" class="text-sm font-medium text-slate-700 transition-colors hover:text-primary">
+        <router-link
+          :to="{ name: 'homepage', hash: '#about' }"
+          class="text-sm font-medium text-slate-700 transition-colors hover:text-primary"
+        >
           {{ t('about_us') }}
-        </a>
-        <a href="#how-it-works" class="text-sm font-medium text-slate-700 transition-colors hover:text-primary">
-        <!--   {{ t('nav_how_it_works') }} -->
-            {{ t('nav_banks') }}
-        </a>
-        <router-link :to="{ name: 'blog-list' }" class="text-sm font-medium text-slate-700 transition-colors hover:text-primary">
+        </router-link>
+        <router-link
+          :to="{ name: 'homepage', hash: '#bancos-section' }"
+          class="text-sm font-medium text-slate-700 transition-colors hover:text-primary"
+        >
+          {{ t('nav_banks') }}
+        </router-link>
+        <router-link
+          :to="{ name: 'blog-list' }"
+          class="text-sm font-medium text-slate-700 transition-colors hover:text-primary"
+        >
           {{ t('nav_blog') }}
         </router-link>
-        <a href="#faq" class="text-sm font-medium text-slate-700 transition-colors hover:text-primary">
+        <router-link
+          :to="{ name: 'homepage', hash: '#faq' }"
+          class="text-sm font-medium text-slate-700 transition-colors hover:text-primary"
+        >
           {{ t('faq') }}
-
-        </a>      <a href="#faq" class="text-sm font-medium text-slate-700 transition-colors hover:text-primary">
+        </router-link>
+        <router-link
+          :to="{ name: 'homepage', hash: '#agenda' }"
+          class="text-sm font-medium text-slate-700 transition-colors hover:text-primary"
+        >
           {{ t('nav_agent') }}
-        </a>
-
+        </router-link>
       </div>
 
       <div class="hidden items-center gap-3 md:flex">
-        <div class="relative">
+        <div class="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-2 py-1 shadow-sm">
           <button
+            v-for="lang in languages"
+            :key="lang.code"
             type="button"
-            class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-50"
-            @click="showLanguageMenu = !showLanguageMenu"
+            class="rounded-full p-1.5 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/40"
+            :class="locale === lang.code ? 'ring-2 ring-primary ring-offset-2 ring-offset-white' : 'opacity-80 hover:opacity-100'"
+            :title="lang.label"
+            :aria-label="lang.label"
+            @click="changeLanguage(lang.code)"
           >
-            <span>{{ localeLabel }}</span>
-            <svg class="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
-            </svg>
+            <img :src="lang.flag" :alt="lang.label" class="h-6 w-6 rounded-full object-cover" />
           </button>
-
-          <div
-            v-if="showLanguageMenu"
-            class="absolute right-0 top-full z-20 mt-2 w-40 rounded-xl border border-slate-200 bg-white p-1 shadow-lg"
-          >
-            <button
-              v-for="lang in languages"
-              :key="lang.code"
-              type="button"
-              class="w-full rounded-lg px-3 py-2 text-left text-sm text-slate-700 transition-colors hover:bg-slate-50"
-              :class="{ 'bg-primary/10 text-primary': locale === lang.code }"
-              @click="changeLanguage(lang.code)"
-            >
-              {{ lang.label }}
-            </button>
-          </div>
         </div>
 
         <router-link
@@ -84,12 +83,27 @@
 
     <div v-if="showMobileMenu" class="border-t border-slate-200 bg-white px-4 py-4 md:hidden">
       <div class="space-y-3">
-        <a href="#about" class="block text-sm font-medium text-slate-700"> {{ t('about_us') }} </a>
-        <a href="#how-it-works" class="block text-sm font-medium text-slate-700"> {{ t('nav_how_it_works') }} </a>
+        <router-link :to="{ name: 'homepage', hash: '#about' }" class="block text-sm font-medium text-slate-700">
+          {{ t('about_us') }}
+        </router-link>
+        <router-link
+          :to="{ name: 'homepage', hash: '#bancos-section' }"
+          class="block text-sm font-medium text-slate-700"
+        >
+          {{ t('nav_banks') }}
+        </router-link>
         <router-link :to="{ name: 'blog-list' }" class="block text-sm font-medium text-slate-700">
           {{ t('nav_blog') }}
         </router-link>
-        <a href="#faq" class="block text-sm font-medium text-slate-700"> {{ t('faq') }} </a>
+        <router-link :to="{ name: 'homepage', hash: '#faq' }" class="block text-sm font-medium text-slate-700">
+          {{ t('faq') }}
+        </router-link>
+        <router-link
+          :to="{ name: 'homepage', hash: '#agenda' }"
+          class="block text-sm font-medium text-slate-700"
+        >
+          {{ t('nav_agent') }}
+        </router-link>
       </div>
 
       <div class="mt-4 flex items-center gap-2">
@@ -97,11 +111,13 @@
           v-for="lang in languages"
           :key="`mobile-${lang.code}`"
           type="button"
-          class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700"
-          :class="{ 'border-primary bg-primary/10 text-primary': locale === lang.code }"
+          class="rounded-full p-1.5 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/40"
+          :class="locale === lang.code ? 'ring-2 ring-primary ring-offset-2 ring-offset-white' : 'opacity-80 hover:opacity-100'"
+          :title="lang.label"
+          :aria-label="lang.label"
           @click="changeLanguage(lang.code)"
         >
-          {{ lang.code.toUpperCase() }}
+          <img :src="lang.flag" :alt="lang.label" class="h-6 w-6 rounded-full object-cover" />
         </button>
       </div>
 
@@ -122,26 +138,24 @@ import { useLanguage } from '@/interface/presentation/composables/useLanguage'
 import type { Locale } from '@/interface/presentation/composables/useLanguage'
 
 const authStore = useAuthStore()
-const { locale, localeLabel, setLocale, t } = useLanguage()
+const { locale, setLocale, t } = useLanguage()
 const navbarRef = ref<HTMLElement | null>(null)
-const showLanguageMenu = ref(false)
 const showMobileMenu = ref(false)
 
-const languages: Array<{ code: Locale; label: string }> = [
-  { code: 'pt', label: 'Português (PT)' },
-  { code: 'es', label: 'Español (ES)' },
-  { code: 'en', label: 'English (EN)' }
+const languages: Array<{ code: Locale; label: string; flag: string }> = [
+  { code: 'pt', label: 'Português', flag: '/assets/flags/banderabrasil.png' },
+  { code: 'es', label: 'Español', flag: '/assets/flags/banderaespaña.png' },
+  { code: 'en', label: 'English', flag: '/assets/flags/estados-unidos.png' }
 ]
 
 function changeLanguage(lang: Locale) {
   setLocale(lang)
-  showLanguageMenu.value = false
+  showMobileMenu.value = false
 }
 
 const handleClickOutside = (event: MouseEvent) => {
   const target = event.target as Node
   if (!navbarRef.value?.contains(target)) {
-    showLanguageMenu.value = false
     showMobileMenu.value = false
   }
 }

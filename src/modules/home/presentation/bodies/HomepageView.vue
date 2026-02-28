@@ -253,37 +253,7 @@
       </div>
     </section>
 
-    <!-- Get Informed -->
- <section class="border-y border-slate-200 bg-white px-4 py-16 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-7xl">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary text-center">
-          {{ t('landing_get_informed_title') }}
-        </p>
-        <h2 class="mt-3 text-center text-3xl font-semibold text-slate-900 sm:text-4xl mb-10">
-          {{ t('landing_get_informed_subtitle') }}
-        </h2>
-        <div class="grid gap-8 md:grid-cols-2">
-          <article class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
-            <div class="aspect-video bg-slate-200 rounded-lg mb-4 flex items-center justify-center">
-              <span class="text-slate-400">▶ Video</span>
-            </div>
-            <h3 class="text-lg font-semibold text-slate-900 mb-2">{{ t('landing_get_informed_subtitle') }}</h3>
-          </article>
-          <article class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
-            <h3 class="text-lg font-semibold text-slate-900 mb-4">{{ t('landing_security_title') }}</h3>
-            <p class="text-sm text-slate-600 mb-4">{{ t('landing_security_description') }}</p>
-            <ul class="space-y-2">
-              <li class="flex items-center text-sm text-slate-600">
-                <span class="mr-2">✔</span>{{ t('landing_security_feature_1') }}
-              </li>
-              <li class="flex items-center text-sm text-slate-600">
-                <span class="mr-2">✔</span>{{ t('landing_security_feature_2') }}
-              </li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section> 
+    <GetInformedSlider />
 
     <!-- Partners -->
     <section class="bg-gradient-to-b from-gray-50 to-white px-4 py-16 sm:px-6 lg:px-8">
@@ -669,6 +639,7 @@ import Navbar from '@/interface/layout/Navbar.vue'
 import Footer from '@/interface/layout/Footer.vue'
 import CalculatorView from '@/modules/calculator/presentation/bodies/CalculatorView.vue'
 import BancosSlider from '../widgets/BancosSlider.vue'
+import GetInformedSlider from '../widgets/GetInformedSlider.vue'
 import ScheduleTransferForm from '../widgets/ScheduleTransferForm.vue'
 import { Icon } from '@iconify/vue'
 
