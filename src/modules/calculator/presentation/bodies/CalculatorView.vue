@@ -14,121 +14,124 @@
       </p> -->
     </template>
 
-    <div v-if="calculatorStore.isLoading" class="mt-4 py-8 text-center text-on-surface/70">
-      {{ t('loading_rates_commissions') }}
-    </div>
-    <template v-else>
-      <!-- Diseño unificado para todos los contextos -->
-      <div class="mt-4 space-y-4">
-        <!-- YOU SEND Section -->
-        <div>
-          <label class="mb-2 block text-xs font-semibold uppercase tracking-wide text-gray-500">
-            {{ t('you_send') }}
-          </label>
-          <div class="flex gap-2">
-            <input v-model.number="amountSendLocal" type="number" min="0" step="0.01"
-              :class="variant === 'banner' ? 'flex-1 rounded-lg border text-black border-gray-300 px-4 py-3 text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
-              placeholder="1000" @input="onAmountSendInput" />
-            <select :value="calculatorStore.currencyFrom"
-              :class="variant === 'banner' ? 'rounded-lg border text-black border-gray-300 bg-white px-4 py-3 text-sm font-medium focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
-              @change="onFromChange($event)">
-              <option v-for="code in CURRENCY_CODES" :key="code" :value="code">
-                {{ code.toUpperCase() }}
-              </option>
-            </select>
-          </div>
+    <!-- Diseño unificado para todos los contextos -->
+    <div class="mt-4 space-y-4">
+      <!-- YOU SEND Section -->
+      <div>
+        <label class="mb-2 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+          {{ t('you_send') }}
+        </label>
+        <div class="flex gap-2">
+          <input v-model.number="amountSendLocal" type="number" min="0" step="0.01"
+            :class="variant === 'banner' ? 'flex-1 rounded-lg border text-black border-gray-300 px-4 py-3 text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
+            placeholder="1000" @input="onAmountSendInput" />
+          <select :value="calculatorStore.currencyFrom"
+            :class="variant === 'banner' ? 'rounded-lg border text-black border-gray-300 bg-white px-4 py-3 text-sm font-medium focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
+            @change="onFromChange($event)">
+            <option v-for="code in CURRENCY_CODES" :key="code" :value="code">
+              {{ code.toUpperCase() }}
+            </option>
+          </select>
         </div>
-
-        <!-- Transfer Arrow -->
-        <div class="flex justify-center">
-          <button
-            type="button"
-            class="group flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary-hover"
-            :title="t('exchange_rate')"
-            @click="swapCurrencies"
-          >
-            <svg class="h-6 w-6" viewBox="0 0 48 48" fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-              :class="'transition-transform duration-200 group-hover:rotate-180'">
-              <!-- Flecha arriba -->
-              <path d="M14 4  L4 14       Q2 16 4 18       Q6 20 8 18       L12 14       V36       Q12 40 16 40       Q20 40 20 36       V14       L24 18       Q26 20 28 18       Q30 16 28 14       L18 4       Q16 2 14 4Z" />
-                            <!-- Flecha abajo -->
-              <path d="M34 44       L44 34       Q46 32 44 30       Q42 28 40 30       L36 34       V12       Q36 8 32 8       Q28 8 28 12       V34       L24 30       Q22 28 20 30       Q18 32 20 34       L30 44       Q32 46 34 44Z" />
-            </svg>
-          </button>
-        </div>
-
-        <!-- RECIPIENT RECEIVES Section -->
-        <div>
-          <label class="mb-2 block text-xs font-semibold uppercase tracking-wide text-gray-500">
-            {{ t('recipient_receives') }}
-          </label>
-          <div class="flex gap-2">
-            <input v-model.number="amountReceiveLocal" type="number" min="0" step="0.01"
-              :class="variant === 'banner' ? 'flex-1 rounded-lg border text-black border-gray-300 px-4 py-3 text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
-              placeholder="0.00" @input="onAmountReceiveInput" />
-            <select :value="calculatorStore.currencyTo"
-              :class="variant === 'banner' ? 'rounded-lg border text-black border-gray-300 bg-white px-4 py-3 text-sm font-medium focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
-              @change="onToChange($event)">
-              <option v-for="code in calculatorStore.destinationOptions" :key="code" :value="code">
-                {{ code.toUpperCase() }}
-              </option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Reductions (Commission Fee and Exchange Rate) -->
-        <div v-if="showReductions && calculatorStore.result" class="space-y-2 border-t border-gray-200 pt-4">
-          <div class="flex justify-between text-sm">
-            <span class="text-gray-600">{{ t('commission_fee') }}</span>
-            <span class="font-semibold text-green-600">
-              {{ calculatorStore.result.commission.toFixed(2) }} {{ calculatorStore.currencyFrom.toUpperCase() }}
-            </span>
-          </div>
-          <div class="flex justify-between text-sm">
-            <span class="text-gray-600">{{ t('total_to_send') }}</span>
-            <span class="font-semibold text-green-600">
-              {{ calculatorStore.result.totalToSend.toFixed(2) }} {{ calculatorStore.currencyFrom.toUpperCase() }}
-            </span>
-          </div>
-          <div class="flex justify-between text-sm">
-            <span class="text-gray-600">{{ t('exchange_rate') }}</span>
-            <span class="font-semibold text-gray-900">
-              1 {{ calculatorStore.currencyFrom.toUpperCase() }} = {{ calculatorStore.result.rate.toFixed(4) }} {{
-                calculatorStore.currencyTo.toUpperCase() }}
-            </span>
-          </div>
-        </div>
-
-        <!-- Send Money Button -->
-        <button v-if="showButton" type="button"
-          class="w-full rounded-lg bg-cyan-500 px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-cyan-600"
-          @click="handleButtonClick">
-          {{ buttonText || t('send_money_now') }}
-        </button>
-
-        <!-- Terms and Conditions -->
-        <p v-if="showTerms" class="text-center text-xs text-gray-500">
-          {{ t('terms_and_conditions') }}
-          <a href="#" class="text-primary hover:underline">{{ t('terms_and_conditions_link') }}</a>
-        </p>
       </div>
 
-      <p v-if="calculatorStore.error" class="mt-4 text-sm text-red-600">
-        {{ calculatorStore.error }}
+      <!-- Transfer Arrow -->
+      <div class="flex justify-center">
+        <button
+          type="button"
+          class="group flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary-hover"
+          :title="t('exchange_rate')"
+          @click="swapCurrencies"
+        >
+          <svg class="h-6 w-6" viewBox="0 0 48 48" fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+            :class="'transition-transform duration-200 group-hover:rotate-180'">
+            <path d="M14 4  L4 14       Q2 16 4 18       Q6 20 8 18       L12 14       V36       Q12 40 16 40       Q20 40 20 36       V14       L24 18       Q26 20 28 18       Q30 16 28 14       L18 4       Q16 2 14 4Z" />
+            <path d="M34 44       L44 34       Q46 32 44 30       Q42 28 40 30       L36 34       V12       Q36 8 32 8       Q28 8 28 12       V34       L24 30       Q22 28 20 30       Q18 32 20 34       L30 44       Q32 46 34 44Z" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- RECIPIENT RECEIVES Section -->
+      <div>
+        <label class="mb-2 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+          {{ t('recipient_receives') }}
+        </label>
+        <div class="flex gap-2">
+          <input v-model.number="amountReceiveLocal" type="number" min="0" step="0.01"
+            :class="variant === 'banner' ? 'flex-1 rounded-lg border text-black border-gray-300 px-4 py-3 text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
+            placeholder="0.00" @input="onAmountReceiveInput" />
+          <select :value="calculatorStore.currencyTo"
+            :class="variant === 'banner' ? 'rounded-lg border text-black border-gray-300 bg-white px-4 py-3 text-sm font-medium focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
+            @change="onToChange($event)">
+            <option v-for="code in calculatorStore.destinationOptions" :key="code" :value="code">
+              {{ code.toUpperCase() }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Reductions (Commission Fee and Exchange Rate) -->
+      <div v-if="showReductions" class="space-y-2 border-t border-gray-200 pt-4">
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-600">{{ t('commission_fee') }}</span>
+          <span class="font-semibold text-green-600">
+            {{ summaryCommission }} {{ calculatorStore.currencyFrom.toUpperCase() }}
+          </span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-600">{{ t('total_to_send') }}</span>
+          <span class="font-semibold text-green-600">
+            {{ summaryTotalToSend }} {{ calculatorStore.currencyFrom.toUpperCase() }}
+          </span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-600">{{ t('exchange_rate') }}</span>
+          <span class="font-semibold text-gray-900">
+            1 {{ calculatorStore.currencyFrom.toUpperCase() }} = {{ summaryRate }} {{ calculatorStore.currencyTo.toUpperCase() }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Send Money Button -->
+      <button v-if="showButton" type="button"
+        class="w-full rounded-lg bg-cyan-500 px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-cyan-600"
+        @click="handleButtonClick">
+        {{ buttonText || t('send_money_now') }}
+      </button>
+
+      <!-- Terms and Conditions -->
+      <p v-if="showTerms" class="text-center text-xs text-gray-500">
+        {{ t('terms_and_conditions') }}
+        <a href="#" class="text-primary hover:underline">{{ t('terms_and_conditions_link') }}</a>
       </p>
-    </template>
+    </div>
+
+    <p v-if="calculatorStore.error" class="mt-4 text-sm text-red-600">
+      {{ calculatorStore.error }}
+    </p>
   </section>
 </template>
 
 <script setup lang="ts">
 import { ref, watch, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import { useCalculatorStore } from '../controllers/useCalculatorStore'
 import { CURRENCY_CODES, CURRENCY_OPTIONS } from '../../domain/models'
 import type { CurrencyCode } from '../../domain/models'
 
-const { t } = useI18n()
+type SupportedLocale = 'es' | 'en' | 'pt'
+
+interface WhatsAppCopy {
+  emptyCalculation: string
+  template: string
+}
+
+const WHATSAPP_PHONE_NUMBER = '51966991933'
+
+const { t, locale } = useI18n()
+const route = useRoute()
 
 interface Props {
   variant?: 'default' | 'banner' | 'compact' | 'inline'
@@ -144,6 +147,7 @@ interface Props {
   subtitle?: string
   customClasses?: string
   autoLoad?: boolean
+  whatsappPhone?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -159,7 +163,8 @@ const props = withDefaults(defineProps<Props>(), {
   title: undefined,
   subtitle: undefined,
   customClasses: '',
-  autoLoad: true
+  autoLoad: true,
+  whatsappPhone: WHATSAPP_PHONE_NUMBER
 })
 
 const emit = defineEmits<{
@@ -171,8 +176,70 @@ const calculatorStore = useCalculatorStore()
 const amountSendLocal = ref(props.initialAmount || 0)
 const amountReceiveLocal = ref(0)
 
+const whatsappCopy: Record<SupportedLocale, WhatsAppCopy> = {
+  es: {
+    emptyCalculation: 'Completa el cálculo antes de enviar el mensaje por WhatsApp.',
+    template:
+      'Hola, quiero cotizar una transferencia con Brasper:\n\n*Envío:* {amountSend} {currencyFrom}\n*Recibe:* {amountReceive} {currencyTo}\n*Comisión:* {commission} {currencyFrom}\n*Total a enviar:* {totalToSend} {currencyFrom}\n*Tipo de cambio:* 1 {currencyFrom} = {rate} {currencyTo}'
+  },
+  en: {
+    emptyCalculation: 'Complete the calculator before sending the WhatsApp message.',
+    template:
+      'Hello, I would like to quote a transfer with Brasper:\n\n*You send:* {amountSend} {currencyFrom}\n*Recipient gets:* {amountReceive} {currencyTo}\n*Commission:* {commission} {currencyFrom}\n*Total to send:* {totalToSend} {currencyFrom}\n*Exchange rate:* 1 {currencyFrom} = {rate} {currencyTo}'
+  },
+  pt: {
+    emptyCalculation: 'Preencha a calculadora antes de enviar a mensagem pelo WhatsApp.',
+    template:
+      'Olá, quero simular uma transferência com a Brasper:\n\n*Você envia:* {amountSend} {currencyFrom}\n*Destinatário recebe:* {amountReceive} {currencyTo}\n*Comissão:* {commission} {currencyFrom}\n*Total a enviar:* {totalToSend} {currencyFrom}\n*Taxa de câmbio:* 1 {currencyFrom} = {rate} {currencyTo}'
+  }
+}
+
+const currentLocale = computed<SupportedLocale>(() => {
+  const localeValue = locale.value
+  return localeValue === 'es' || localeValue === 'en' || localeValue === 'pt' ? localeValue : 'es'
+})
+
+const shouldSendWhatsappOnClick = computed(() => route.name === 'homepage')
+const summaryCommission = computed(() => formatNumber(calculatorStore.result?.commission ?? 0))
+const summaryTotalToSend = computed(() => formatNumber(calculatorStore.result?.totalToSend ?? 0))
+const summaryRate = computed(() => (calculatorStore.result?.rate ?? 0).toFixed(4))
+
 function toTwoDecimals(n: number): number {
   return Number((n || 0).toFixed(2))
+}
+
+function formatNumber(n: number): string {
+  return Number(n || 0).toFixed(2)
+}
+
+function buildWhatsappMessage() {
+  const result = calculatorStore.result
+  if (!result) return null
+
+  const messageTemplate = whatsappCopy[currentLocale.value].template
+  return messageTemplate
+    .replace('{amountSend}', formatNumber(result.amountSend))
+    .replace('{currencyFrom}', calculatorStore.currencyFrom.toUpperCase())
+    .replace('{amountReceive}', formatNumber(result.amountReceive))
+    .replace('{currencyTo}', calculatorStore.currencyTo.toUpperCase())
+    .replace('{commission}', formatNumber(result.commission))
+    .replace('{totalToSend}', formatNumber(result.totalToSend))
+    .replace('{rate}', result.rate.toFixed(4))
+}
+
+function openWhatsappQuote() {
+  const message = buildWhatsappMessage()
+  if (!message) {
+    window.alert(whatsappCopy[currentLocale.value].emptyCalculation)
+    return
+  }
+
+  const phoneNumber = props.whatsappPhone || WHATSAPP_PHONE_NUMBER
+  window.open(
+    `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`,
+    '_blank',
+    'noopener,noreferrer'
+  )
 }
 
 watch(
@@ -238,11 +305,26 @@ function recalculateAfterCurrencyChange() {
   if (effectiveAmount > 0) {
     calculatorStore.setAmountSend(effectiveAmount)
     calculatorStore.recalcFromSend()
-    amountReceiveLocal.value = calculatorStore.amountReceive
+    amountReceiveLocal.value = toTwoDecimals(calculatorStore.amountReceive)
   }
 
   emit('currencyChange', calculatorStore.currencyFrom, calculatorStore.currencyTo)
   handleCalculate()
+}
+
+function syncCalculatedFields() {
+  if (calculatorStore.amountSend > 0) {
+    calculatorStore.recalcFromSend()
+    amountSendLocal.value = toTwoDecimals(calculatorStore.amountSend)
+    amountReceiveLocal.value = toTwoDecimals(calculatorStore.amountReceive)
+    return
+  }
+
+  if (calculatorStore.amountReceive > 0) {
+    calculatorStore.recalcFromReceive()
+    amountSendLocal.value = toTwoDecimals(calculatorStore.amountSend)
+    amountReceiveLocal.value = toTwoDecimals(calculatorStore.amountReceive)
+  }
 }
 
 function handleCalculate() {
@@ -259,6 +341,9 @@ function handleCalculate() {
 
 function handleButtonClick() {
   handleCalculate()
+  if (shouldSendWhatsappOnClick.value) {
+    openWhatsappQuote()
+  }
 }
 
 const getContainerClasses = computed(() => {
@@ -274,16 +359,13 @@ const getContainerClasses = computed(() => {
 watch(
   () => calculatorStore.result,
   () => {
+    syncCalculatedFields()
     handleCalculate()
   },
   { deep: true }
 )
 
-onMounted(() => {
-  if (props.autoLoad) {
-    calculatorStore.loadData()
-  }
-
+onMounted(async () => {
   // Set initial currencies if provided
   if (props.initialCurrencyFrom) {
     calculatorStore.setCurrencyFrom(props.initialCurrencyFrom)
@@ -295,7 +377,13 @@ onMounted(() => {
   // Set initial amount
   if (props.initialAmount > 0) {
     calculatorStore.setAmountSend(props.initialAmount)
-    calculatorStore.recalcFromSend()
+    amountSendLocal.value = toTwoDecimals(props.initialAmount)
   }
+
+  if (props.autoLoad) {
+    await calculatorStore.loadData()
+  }
+
+  syncCalculatedFields()
 })
 </script>
