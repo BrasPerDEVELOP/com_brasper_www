@@ -429,33 +429,7 @@
       </div>
     </section> -->
 
-<!--     <section id="faq" class="px-4 py-20 sm:px-6 lg:px-8 bg-white">
-      <div class="mx-auto max-w-5xl">
-        <div class="text-center mb-12">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-2">{{ t('faq') }}</p>
-          <h2 class="text-3xl font-bold text-slate-900 sm:text-4xl">{{ t('landing_section_faq_title')
-          }}</h2>
-        </div>
 
-        <div class="mt-12 space-y-4">
-          <article v-for="item in faqs" :key="item.question"
-            class="group rounded-xl border-2 border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-primary/30">
-            <div class="flex items-start gap-4">
-              <div class="mt-1 flex-shrink-0">
-                <svg class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div class="flex-1">
-                <h3 class="text-base font-bold text-slate-900 mb-2">{{ item.question }}</h3>
-                <p class="text-sm leading-relaxed text-slate-600">{{ item.answer }}</p>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section> -->
 
    <!--  <section class="px-4 py-20 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50 to-white">
       <div
@@ -628,6 +602,7 @@
       </div>
     </section>
 
+    <SocialHelpWidget />
     <Footer />
   </div>
 </template>
@@ -641,6 +616,7 @@ import CalculatorView from '@/modules/calculator/presentation/bodies/CalculatorV
 import BancosSlider from '../widgets/BancosSlider.vue'
 import GetInformedSlider from '../widgets/GetInformedSlider.vue'
 import ScheduleTransferForm from '../widgets/ScheduleTransferForm.vue'
+import SocialHelpWidget from '../widgets/SocialHelpWidget.vue'
 import { Icon } from '@iconify/vue'
 
 interface PartnerItem {
@@ -819,14 +795,7 @@ const testimonials = computed(() => [
   }
 ])
 
-const faqs = computed(() => [
-  { question: t('landing_faq_1_question'), answer: t('landing_faq_1_answer') },
-  { question: t('landing_faq_2_question'), answer: t('landing_faq_2_answer') },
-  { question: t('landing_faq_3_question'), answer: t('landing_faq_3_answer') },
-  { question: t('landing_faq_4_question'), answer: t('landing_faq_4_answer') }
-])
 void testimonials
-void faqs
 
 const services = computed(() => [
   {

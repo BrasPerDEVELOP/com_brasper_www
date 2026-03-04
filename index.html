@@ -9,6 +9,8 @@
     <script type="module">
       import { createChat } from "https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js";
 
+      const ENABLE_N8N_CHAT = false;
+
       // Obtener idioma guardado o usar portugués por defecto
       const getLocale = () => {
         const saved = localStorage.getItem('locale') || 'pt';
@@ -59,26 +61,28 @@
         ]
       };
 
-      createChat({
-        webhookUrl: "https://n8n.finzeler.com/webhook/f6ee57ad-a7fb-45a3-adeb-e16551fbc2fe/chat",
-        webhookConfig: {
-          method: "POST",
-          headers: {},
-        },
-        target: "#n8n-chat",
-        mode: "window",
-        chatInputKey: "chatInput",
-        chatSessionKey: "sessionId",
-        metadata: {},
-        showWelcomeScreen: false,
-        defaultLanguage: currentLocale,
-        initialMessages: initialMessages[currentLocale] || initialMessages.pt,
-        i18n: {
-          pt: chatTranslations.pt,
-          es: chatTranslations.es,
-          en: chatTranslations.en,
-        },
-      });
+      if (ENABLE_N8N_CHAT) {
+        createChat({
+          webhookUrl: "https://n8n.finzeler.com/webhook/f6ee57ad-a7fb-45a3-adeb-e16551fbc2fe/chat",
+          webhookConfig: {
+            method: "POST",
+            headers: {},
+          },
+          target: "#n8n-chat",
+          mode: "window",
+          chatInputKey: "chatInput",
+          chatSessionKey: "sessionId",
+          metadata: {},
+          showWelcomeScreen: false,
+          defaultLanguage: currentLocale,
+          initialMessages: initialMessages[currentLocale] || initialMessages.pt,
+          i18n: {
+            pt: chatTranslations.pt,
+            es: chatTranslations.es,
+            en: chatTranslations.en,
+          },
+        });
+      }
     </script> 
   </head>
   <body>

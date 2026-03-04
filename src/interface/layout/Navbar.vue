@@ -32,7 +32,7 @@
           {{ t('nav_blog') }}
         </router-link>
         <router-link
-          :to="{ name: 'homepage', hash: '#faq' }"
+          :to="{ name: 'faq' }"
           class="text-sm font-medium text-slate-700 transition-colors hover:text-primary"
         >
           {{ t('faq') }}
@@ -95,7 +95,7 @@
         <router-link :to="{ name: 'blog-list' }" class="block text-sm font-medium text-slate-700">
           {{ t('nav_blog') }}
         </router-link>
-        <router-link :to="{ name: 'homepage', hash: '#faq' }" class="block text-sm font-medium text-slate-700">
+        <router-link :to="{ name: 'faq' }" class="block text-sm font-medium text-slate-700">
           {{ t('faq') }}
         </router-link>
         <router-link

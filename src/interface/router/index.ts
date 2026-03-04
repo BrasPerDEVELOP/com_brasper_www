@@ -22,6 +22,12 @@ const routes: RouteRecordRaw[] = [
     meta: { public: true }
   },
   {
+    path: '/faq',
+    name: 'faq',
+    component: () => import('@/modules/home/presentation/bodies/FaqView.vue'),
+    meta: { public: true }
+  },
+  {
     path: '/auth',
     name: 'auth',
     component: () => import('@/modules/auth/presentation/bodies/LoginView.vue'),
@@ -108,7 +114,20 @@ const routes: RouteRecordRaw[] = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior(to, _from, savedPosition) {
+    if (savedPosition) return savedPosition
+
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth',
+        top: 88
+      }
+    }
+
+    return { top: 0 }
+  }
 })
 
 const TOKEN_KEY = 'token'
