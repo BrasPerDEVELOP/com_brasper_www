@@ -67,11 +67,17 @@ function parseCoupons(data: unknown): Coupon[] {
     .map((item) => ({
       id: String(item.id ?? ''),
       code: String(item.code ?? ''),
-      discount: Number(item.discount ?? 0),
+      discount: Number(item.discount_percentage ?? item.discount ?? 0),
       type: (item.type === 'fixed' ? 'fixed' : 'percent') as Coupon['type'],
-      isAutomatic: Boolean(item.isAutomatic ?? item.is_automatic)
+      isAutomatic: Boolean(item.isAutomatic ?? item.is_automatic ?? true),
+      maxUses: Number(item.max_uses ?? 0),
+      originCurrency: String(item.origin_currency ?? '').toLowerCase(),
+      destinationCurrency: String(item.destination_currency ?? '').toLowerCase(),
+      startDate: String(item.start_date ?? ''),
+      endDate: String(item.end_date ?? ''),
+      isActive: Boolean(item.is_active ?? true)
     }))
-    .filter((c) => c.id)
+    .filter((c) => c.id && c.code)
 }
 
 export class CalculatorApiAdapter implements CalculatorRepository {

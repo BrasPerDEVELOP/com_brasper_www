@@ -126,6 +126,28 @@ export const useCalculatorStore = defineStore('calculator', {
       return commission.percentage
     },
 
+    currentAutomaticCoupon(state): Coupon | null {
+      const now = new Date()
+
+      return (
+        state.coupons.find((coupon) => {
+          if (!coupon.isAutomatic || !coupon.isActive) return false
+          if (coupon.originCurrency && coupon.originCurrency !== state.currencyFrom) return false
+          if (coupon.destinationCurrency && coupon.destinationCurrency !== state.currencyTo) return false
+
+          const startsAt = coupon.startDate ? new Date(coupon.startDate) : null
+          const endsAt = coupon.endDate ? new Date(coupon.endDate) : null
+
+          if (startsAt && Number.isNaN(startsAt.getTime())) return false
+          if (endsAt && Number.isNaN(endsAt.getTime())) return false
+          if (startsAt && startsAt > now) return false
+          if (endsAt && endsAt < now) return false
+
+          return coupon.discount > 0
+        }) ?? null
+      )
+    },
+
     /** Resultado calculado: destination = (origin - commission) * tax. */
     result(state): CalculatorResult | null {
       const rate = state.taxRates.find(
@@ -179,13 +201,16 @@ export const useCalculatorStore = defineStore('calculator', {
       // Calcular comisión usando el rango correcto
       const commissionRate = calculateCommissionRate(amountSend)
       const baseCommission = amountSend * commissionRate
-      
-      // Por ahora no hay descuentos, pero se puede agregar después
-      const couponDiscount = 0
+
+      const coupon = this.currentAutomaticCoupon
+      const couponDiscount =
+        coupon?.type === 'fixed'
+          ? Math.min(coupon.discount, baseCommission)
+          : Math.min(baseCommission * (coupon?.discount ?? 0) / 100, baseCommission)
       const variableDiscount = 0
       const discountToApply = Math.max(couponDiscount, variableDiscount)
-      
-      const commission = baseCommission * (1 - discountToApply)
+
+      const commission = Math.max(baseCommission - discountToApply, 0)
       const totalToSend = amountSend - commission
       const amountReceive = totalToSend * rate
 
@@ -196,7 +221,7 @@ export const useCalculatorStore = defineStore('calculator', {
         commission,
         commissionRate: commissionRate * 100,
         totalToSend,
-        couponDiscount
+        couponDiscount: baseCommission > 0 ? (couponDiscount / baseCommission) * 100 : 0
       }
     },
 

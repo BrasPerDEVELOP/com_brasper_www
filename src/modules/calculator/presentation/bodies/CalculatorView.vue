@@ -93,6 +93,36 @@
         </div>
       </div>
 
+      <div
+        v-if="automaticCouponDetail"
+        class="rounded-2xl border border-teal-200 bg-stone-100 px-4 py-3"
+      >
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex min-w-0 gap-3">
+            <div class="mt-1 flex h-5 w-5 items-center justify-center rounded-full border border-teal-500 text-teal-500">
+              <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.26a1 1 0 0 1-1.42.003l-3.3-3.3a1 1 0 1 1 1.414-1.414l2.59 2.59 6.49-6.547a1 1 0 0 1 1.42-.006Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <div class="min-w-0">
+              <p class="text-sm font-medium text-slate-700">
+                Cupón automático aplicado
+              </p>
+              <p class="truncate text-2xl font-bold leading-none text-teal-500">
+                {{ automaticCouponDetail.code }}
+              </p>
+              <p class="text-sm text-teal-600">
+                Ahorras {{ automaticCouponDetail.savings }} {{ calculatorStore.currencyFrom.toUpperCase() }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Send Money Button -->
       <button v-if="showButton" type="button"
         class="w-full rounded-lg bg-cyan-500 px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-cyan-600"
@@ -180,17 +210,17 @@ const whatsappCopy: Record<SupportedLocale, WhatsAppCopy> = {
   es: {
     emptyCalculation: 'Completa el cálculo antes de enviar el mensaje por WhatsApp.',
     template:
-      'Hola, quiero cotizar una transferencia con Brasper:\n\n*Envío:* {amountSend} {currencyFrom}\n*Recibe:* {amountReceive} {currencyTo}\n*Comisión:* {commission} {currencyFrom}\n*Total a enviar:* {totalToSend} {currencyFrom}\n*Tipo de cambio:* 1 {currencyFrom} = {rate} {currencyTo}'
+      'Hola, quiero cotizar una transferencia con Brasper:\n\n*Monto a enviar:* {amountSend} {currencyFrom}\n*Monto a recibir:* {amountReceive} {currencyTo}\n*Comisión:* {commission} {currencyFrom}\n*Total a enviar:* {totalToSend} {currencyFrom}\n*Tipo de cambio:* 1 {currencyFrom} = {rate} {currencyTo}'
   },
   en: {
     emptyCalculation: 'Complete the calculator before sending the WhatsApp message.',
     template:
-      'Hello, I would like to quote a transfer with Brasper:\n\n*You send:* {amountSend} {currencyFrom}\n*Recipient gets:* {amountReceive} {currencyTo}\n*Commission:* {commission} {currencyFrom}\n*Total to send:* {totalToSend} {currencyFrom}\n*Exchange rate:* 1 {currencyFrom} = {rate} {currencyTo}'
+      'Hello, I would like to quote a transfer with Brasper:\n\n*Amount to send:* {amountSend} {currencyFrom}\n*Amount to receive:* {amountReceive} {currencyTo}\n*Commission:* {commission} {currencyFrom}\n*Total to send:* {totalToSend} {currencyFrom}\n*Exchange rate:* 1 {currencyFrom} = {rate} {currencyTo}'
   },
   pt: {
     emptyCalculation: 'Preencha a calculadora antes de enviar a mensagem pelo WhatsApp.',
     template:
-      'Olá, quero simular uma transferência com a Brasper:\n\n*Você envia:* {amountSend} {currencyFrom}\n*Destinatário recebe:* {amountReceive} {currencyTo}\n*Comissão:* {commission} {currencyFrom}\n*Total a enviar:* {totalToSend} {currencyFrom}\n*Taxa de câmbio:* 1 {currencyFrom} = {rate} {currencyTo}'
+      'Olá, quero simular uma transferência com a Brasper:\n\n*Valor a enviar:* {amountSend} {currencyFrom}\n*Valor a receber:* {amountReceive} {currencyTo}\n*Comissão:* {commission} {currencyFrom}\n*Total a enviar:* {totalToSend} {currencyFrom}\n*Taxa de câmbio:* 1 {currencyFrom} = {rate} {currencyTo}'
   }
 }
 
@@ -203,6 +233,26 @@ const shouldSendWhatsappOnClick = computed(() => route.name === 'homepage')
 const summaryCommission = computed(() => formatNumber(calculatorStore.result?.commission ?? 0))
 const summaryTotalToSend = computed(() => formatNumber(calculatorStore.result?.totalToSend ?? 0))
 const summaryRate = computed(() => (calculatorStore.result?.rate ?? 0).toFixed(4))
+const automaticCouponDetail = computed(() => {
+  const coupon = calculatorStore.currentAutomaticCoupon
+  const result = calculatorStore.result
+
+  if (!coupon || !result || result.amountSend <= 0 || result.commission <= 0) return null
+
+  const commissionRate = calculatorStore.currentCommissionPercentage / 100
+  const baseCommission = result.amountSend * commissionRate
+  const savings =
+    coupon.type === 'fixed'
+      ? Math.min(coupon.discount, baseCommission)
+      : Math.min(baseCommission * coupon.discount / 100, baseCommission)
+
+  if (savings <= 0) return null
+
+  return {
+    code: coupon.code,
+    savings: formatNumber(savings)
+  }
+})
 
 function toTwoDecimals(n: number): number {
   return Number((n || 0).toFixed(2))
@@ -216,12 +266,14 @@ function buildWhatsappMessage() {
   const result = calculatorStore.result
   if (!result) return null
 
+  const from = calculatorStore.currencyFrom.toUpperCase()
+  const to = calculatorStore.currencyTo.toUpperCase()
   const messageTemplate = whatsappCopy[currentLocale.value].template
   return messageTemplate
     .replace('{amountSend}', formatNumber(result.amountSend))
-    .replace('{currencyFrom}', calculatorStore.currencyFrom.toUpperCase())
+    .replace('{currencyFrom}', from)
     .replace('{amountReceive}', formatNumber(result.amountReceive))
-    .replace('{currencyTo}', calculatorStore.currencyTo.toUpperCase())
+    .replace('{currencyTo}', to)
     .replace('{commission}', formatNumber(result.commission))
     .replace('{totalToSend}', formatNumber(result.totalToSend))
     .replace('{rate}', result.rate.toFixed(4))
