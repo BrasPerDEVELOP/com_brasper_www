@@ -22,9 +22,17 @@
           {{ t('you_send') }}
         </label>
         <div class="flex gap-2">
-          <input v-model.number="amountSendLocal" type="number" min="0" step="0.01"
+          <input
+            :value="amountSendLocal"
+            type="text"
+            inputmode="decimal"
+            autocomplete="off"
             :class="variant === 'banner' ? 'flex-1 rounded-lg border text-black border-gray-300 px-4 py-3 text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
-            placeholder="1000" @input="onAmountSendInput" />
+            placeholder="1000"
+            @focus="activeInput = 'send'"
+            @input="onAmountSendInput"
+            @blur="onAmountSendBlur"
+          />
           <select :value="calculatorStore.currencyFrom"
             :class="variant === 'banner' ? 'rounded-lg border text-black border-gray-300 bg-white px-4 py-3 text-sm font-medium focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
             @change="onFromChange($event)">
@@ -58,9 +66,17 @@
           {{ t('recipient_receives') }}
         </label>
         <div class="flex gap-2">
-          <input v-model.number="amountReceiveLocal" type="number" min="0" step="0.01"
+          <input
+            :value="amountReceiveLocal"
+            type="text"
+            inputmode="decimal"
+            autocomplete="off"
             :class="variant === 'banner' ? 'flex-1 rounded-lg border text-black border-gray-300 px-4 py-3 text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
-            placeholder="0.00" @input="onAmountReceiveInput" />
+            placeholder="0.00"
+            @focus="activeInput = 'receive'"
+            @input="onAmountReceiveInput"
+            @blur="onAmountReceiveBlur"
+          />
           <select :value="calculatorStore.currencyTo"
             :class="variant === 'banner' ? 'rounded-lg border text-black border-gray-300 bg-white px-4 py-3 text-sm font-medium focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
             @change="onToChange($event)">
@@ -203,8 +219,9 @@ const emit = defineEmits<{
 }>()
 
 const calculatorStore = useCalculatorStore()
-const amountSendLocal = ref(props.initialAmount || 0)
-const amountReceiveLocal = ref(0)
+const amountSendLocal = ref(props.initialAmount > 0 ? props.initialAmount.toFixed(2) : '')
+const amountReceiveLocal = ref('')
+const activeInput = ref<'send' | 'receive' | null>(null)
 
 const whatsappCopy: Record<SupportedLocale, WhatsAppCopy> = {
   es: {
@@ -258,6 +275,30 @@ function toTwoDecimals(n: number): number {
   return Number((n || 0).toFixed(2))
 }
 
+function formatInputValue(n: number): string {
+  return n > 0 ? toTwoDecimals(n).toFixed(2) : ''
+}
+
+function normalizeAmountInput(raw: string): string {
+  const compact = raw.replace(/\s+/g, '')
+
+  if (compact.includes(',') && compact.includes('.')) {
+    return compact.replace(/,/g, '')
+  }
+
+  return compact.replace(',', '.')
+}
+
+function parseAmountInput(raw: string): number | null {
+  const normalized = normalizeAmountInput(raw)
+
+  if (!normalized || normalized === '.') return null
+  if (!/^\d*\.?\d*$/.test(normalized)) return null
+
+  const value = Number(normalized)
+  return Number.isFinite(value) && value >= 0 ? value : null
+}
+
 function formatNumber(n: number): string {
   return Number(n || 0).toFixed(2)
 }
@@ -296,28 +337,74 @@ function openWhatsappQuote() {
 
 watch(
   () => calculatorStore.amountSend,
-  (v) => { amountSendLocal.value = toTwoDecimals(v || props.initialAmount || 0) },
+  (v) => {
+    if (activeInput.value !== 'send') {
+      amountSendLocal.value = formatInputValue(v || props.initialAmount || 0)
+    }
+  },
   { immediate: true }
 )
 watch(
   () => calculatorStore.amountReceive,
-  (v) => { amountReceiveLocal.value = toTwoDecimals(v) },
+  (v) => {
+    if (activeInput.value !== 'receive') {
+      amountReceiveLocal.value = formatInputValue(v)
+    }
+  },
   { immediate: true }
 )
 
-function onAmountSendInput() {
-  const value = toTwoDecimals(amountSendLocal.value || 0)
-  amountSendLocal.value = value
+function onAmountSendInput(event: Event) {
+  const rawValue = (event.target as HTMLInputElement).value
+  amountSendLocal.value = rawValue
+  activeInput.value = 'send'
+  const parsedValue = parseAmountInput(rawValue)
+
+  if (parsedValue === null) {
+    if (!normalizeAmountInput(rawValue)) {
+      calculatorStore.resetAmounts()
+      amountReceiveLocal.value = ''
+    }
+    return
+  }
+
+  const value = toTwoDecimals(parsedValue)
   calculatorStore.setAmountSend(value)
   calculatorStore.recalcFromSend()
-  amountReceiveLocal.value = toTwoDecimals(calculatorStore.amountReceive)
+  amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
 }
 
-function onAmountReceiveInput() {
-  const value = toTwoDecimals(amountReceiveLocal.value ?? 0)
-  amountReceiveLocal.value = value
+function onAmountReceiveInput(event: Event) {
+  const rawValue = (event.target as HTMLInputElement).value
+  amountReceiveLocal.value = rawValue
+  activeInput.value = 'receive'
+  const parsedValue = parseAmountInput(rawValue)
+
+  if (parsedValue === null) {
+    if (!normalizeAmountInput(rawValue)) {
+      calculatorStore.resetAmounts()
+      amountSendLocal.value = ''
+    }
+    return
+  }
+
+  const value = toTwoDecimals(parsedValue)
   calculatorStore.setAmountReceive(value)
-  amountSendLocal.value = toTwoDecimals(calculatorStore.amountSend)
+  amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
+}
+
+function onAmountSendBlur() {
+  activeInput.value = null
+  const parsedValue = parseAmountInput(amountSendLocal.value)
+  amountSendLocal.value = parsedValue === null ? '' : formatInputValue(parsedValue)
+  amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
+}
+
+function onAmountReceiveBlur() {
+  activeInput.value = null
+  const parsedValue = parseAmountInput(amountReceiveLocal.value)
+  amountReceiveLocal.value = parsedValue === null ? '' : formatInputValue(parsedValue)
+  amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
 }
 
 function onFromChange(e: Event) {
@@ -345,19 +432,28 @@ function swapCurrencies() {
   calculatorStore.setCurrencyTo(nextTo)
 
   if (previousResult && previousResult.amountReceive > 0) {
-    amountSendLocal.value = Number(previousResult.amountReceive.toFixed(2))
-    calculatorStore.setAmountSend(amountSendLocal.value)
+    const nextAmount = toTwoDecimals(previousResult.amountReceive)
+    amountSendLocal.value = formatInputValue(nextAmount)
+    calculatorStore.setAmountSend(nextAmount)
   }
 
   recalculateAfterCurrencyChange()
 }
 
 function recalculateAfterCurrencyChange() {
-  const effectiveAmount = amountSendLocal.value > 0 ? amountSendLocal.value : calculatorStore.amountSend
+  const parsedAmount = parseAmountInput(amountSendLocal.value)
+  const effectiveAmount = parsedAmount !== null && parsedAmount > 0
+    ? parsedAmount
+    : calculatorStore.amountSend
   if (effectiveAmount > 0) {
     calculatorStore.setAmountSend(effectiveAmount)
     calculatorStore.recalcFromSend()
-    amountReceiveLocal.value = toTwoDecimals(calculatorStore.amountReceive)
+    if (activeInput.value !== 'send') {
+      amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
+    }
+    if (activeInput.value !== 'receive') {
+      amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
+    }
   }
 
   emit('currencyChange', calculatorStore.currencyFrom, calculatorStore.currencyTo)
@@ -367,15 +463,31 @@ function recalculateAfterCurrencyChange() {
 function syncCalculatedFields() {
   if (calculatorStore.amountSend > 0) {
     calculatorStore.recalcFromSend()
-    amountSendLocal.value = toTwoDecimals(calculatorStore.amountSend)
-    amountReceiveLocal.value = toTwoDecimals(calculatorStore.amountReceive)
+    if (activeInput.value !== 'send') {
+      amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
+    }
+    if (activeInput.value !== 'receive') {
+      amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
+    }
     return
   }
 
   if (calculatorStore.amountReceive > 0) {
     calculatorStore.recalcFromReceive()
-    amountSendLocal.value = toTwoDecimals(calculatorStore.amountSend)
-    amountReceiveLocal.value = toTwoDecimals(calculatorStore.amountReceive)
+    if (activeInput.value !== 'send') {
+      amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
+    }
+    if (activeInput.value !== 'receive') {
+      amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
+    }
+    return
+  }
+
+  if (activeInput.value !== 'send') {
+    amountSendLocal.value = ''
+  }
+  if (activeInput.value !== 'receive') {
+    amountReceiveLocal.value = ''
   }
 }
 
@@ -429,7 +541,7 @@ onMounted(async () => {
   // Set initial amount
   if (props.initialAmount > 0) {
     calculatorStore.setAmountSend(props.initialAmount)
-    amountSendLocal.value = toTwoDecimals(props.initialAmount)
+    amountSendLocal.value = formatInputValue(props.initialAmount)
   }
 
   if (props.autoLoad) {
