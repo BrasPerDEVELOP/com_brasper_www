@@ -24,6 +24,157 @@ interface CalculatorState {
 const DEFAULT_FROM: CurrencyCode = 'pen'
 const DEFAULT_TO: CurrencyCode = 'brl'
 
+interface CalculationBreakdown {
+  amountSend: number
+  amountReceive: number
+  commission: number
+  commissionRate: number
+  totalToSend: number
+  couponDiscountPercentage: number
+}
+
+function roundMoney(value: number): number {
+  return Math.round((value + Number.EPSILON) * 100) / 100
+}
+
+function getPairCommissionRanges(
+  commissions: CommissionRange[],
+  currencyFrom: CurrencyCode,
+  currencyTo: CurrencyCode
+): CommissionRange[] {
+  return commissions
+    .filter((commission) => commission.coin_a === currencyFrom && commission.coin_b === currencyTo)
+    .sort((a, b) => a.min_amount - b.min_amount)
+}
+
+function getCommissionRateForAmount(ranges: CommissionRange[], amount: number): number {
+  if (ranges.length === 0) return 0.03
+
+  for (const range of ranges) {
+    if (amount >= range.min_amount && amount <= range.max_amount) {
+      return range.percentage / 100
+    }
+  }
+
+  return ranges[ranges.length - 1].percentage / 100
+}
+
+function getAutomaticCouponForPair(
+  coupons: Coupon[],
+  currencyFrom: CurrencyCode,
+  currencyTo: CurrencyCode
+): Coupon | null {
+  const now = new Date()
+
+  return (
+    coupons.find((coupon) => {
+      if (!coupon.isAutomatic || !coupon.isActive) return false
+      if (coupon.originCurrency && coupon.originCurrency !== currencyFrom) return false
+      if (coupon.destinationCurrency && coupon.destinationCurrency !== currencyTo) return false
+
+      const startsAt = coupon.startDate ? new Date(coupon.startDate) : null
+      const endsAt = coupon.endDate ? new Date(coupon.endDate) : null
+
+      if (startsAt && Number.isNaN(startsAt.getTime())) return false
+      if (endsAt && Number.isNaN(endsAt.getTime())) return false
+      if (startsAt && startsAt > now) return false
+      if (endsAt && endsAt < now) return false
+
+      return coupon.discount > 0
+    }) ?? null
+  )
+}
+
+function getCouponDiscountAmount(coupon: Coupon | null, baseCommission: number): number {
+  if (!coupon || baseCommission <= 0) return 0
+
+  if (coupon.type === 'fixed') {
+    return Math.min(roundMoney(coupon.discount), baseCommission)
+  }
+
+  return Math.min(roundMoney(baseCommission * coupon.discount / 100), baseCommission)
+}
+
+function calculateBreakdown(
+  amountSend: number,
+  rate: number,
+  ranges: CommissionRange[],
+  coupon: Coupon | null
+): CalculationBreakdown {
+  const normalizedAmountSend = roundMoney(amountSend)
+  const commissionRate = getCommissionRateForAmount(ranges, normalizedAmountSend)
+  const baseCommission = roundMoney(normalizedAmountSend * commissionRate)
+  const couponDiscountAmount = getCouponDiscountAmount(coupon, baseCommission)
+  const commission = roundMoney(Math.max(baseCommission - couponDiscountAmount, 0))
+  const totalToSend = roundMoney(normalizedAmountSend - commission)
+  const amountReceive = roundMoney(totalToSend * rate)
+
+  return {
+    amountSend: normalizedAmountSend,
+    amountReceive,
+    commission,
+    commissionRate: commissionRate * 100,
+    totalToSend,
+    couponDiscountPercentage:
+      baseCommission > 0 ? roundMoney((couponDiscountAmount / baseCommission) * 100) : 0
+  }
+}
+
+function estimateAmountSendFromReceive(
+  desiredReceive: number,
+  rate: number,
+  ranges: CommissionRange[],
+  coupon: Coupon | null
+): number {
+  const normalizedDesiredReceive = roundMoney(desiredReceive)
+  let low = 0
+  let high = Math.max(roundMoney(normalizedDesiredReceive / rate), 0.01)
+
+  while (calculateBreakdown(high, rate, ranges, coupon).amountReceive < normalizedDesiredReceive) {
+    high = roundMoney(high * 2)
+
+    if (high > 100000000) {
+      break
+    }
+  }
+
+  for (let i = 0; i < 40; i++) {
+    const mid = roundMoney((low + high) / 2)
+    const midReceive = calculateBreakdown(mid, rate, ranges, coupon).amountReceive
+
+    if (midReceive >= normalizedDesiredReceive) {
+      high = mid
+    } else {
+      low = roundMoney(mid + 0.01)
+    }
+
+    if (high - low <= 0.01) {
+      break
+    }
+  }
+
+  let bestAmount = high
+  let bestGap = Math.abs(
+    calculateBreakdown(bestAmount, rate, ranges, coupon).amountReceive - normalizedDesiredReceive
+  )
+
+  for (let offset = -3; offset <= 3; offset++) {
+    const candidate = roundMoney(high + offset * 0.01)
+    if (candidate <= 0) continue
+
+    const candidateGap = Math.abs(
+      calculateBreakdown(candidate, rate, ranges, coupon).amountReceive - normalizedDesiredReceive
+    )
+
+    if (candidateGap < bestGap || (candidateGap === bestGap && candidate < bestAmount)) {
+      bestAmount = candidate
+      bestGap = candidateGap
+    }
+  }
+
+  return bestAmount
+}
+
 export const useCalculatorStore = defineStore('calculator', {
   state: (): CalculatorState => ({
     currencies: [],
@@ -54,68 +205,41 @@ export const useCalculatorStore = defineStore('calculator', {
 
     /** Comisiones del par actual (desde API commission), ordenadas por min_amount ascendente. */
     currentCommissionRanges(state): CommissionRange[] {
-      return state.commissions
-        .filter((c) => c.coin_a === state.currencyFrom && c.coin_b === state.currencyTo)
-        .sort((a, b) => a.min_amount - b.min_amount)
+      return getPairCommissionRanges(state.commissions, state.currencyFrom, state.currencyTo)
     },
 
     /** Comisión del par actual según el monto (busca el rango correcto). */
     currentCommission(state): CommissionRange | null {
-      const ranges = state.commissions
-        .filter((c) => c.coin_a === state.currencyFrom && c.coin_b === state.currencyTo)
-        .sort((a, b) => a.min_amount - b.min_amount)
-      
+      const ranges = getPairCommissionRanges(state.commissions, state.currencyFrom, state.currencyTo)
       if (ranges.length === 0) return null
 
-      // Determinar el monto a usar para buscar el rango
       let amount = state.amountSend
-      
-      // Si el usuario ingresó amountReceive pero no amountSend, necesitamos calcular amountSend
+
       if (amount <= 0 && state.amountReceive > 0) {
         const rate = state.taxRates.find(
           (r) => r.from === state.currencyFrom && r.to === state.currencyTo
         )?.rate
-        
+
         if (rate && rate > 0) {
-          // Calcular amountSend iterativamente
-          let estimateSend = state.amountReceive / rate
-          for (let i = 0; i < 5; i++) {
-            // Buscar el rango para este estimateSend
-            let commissionRate = 0.03 // fallback
-            for (const range of ranges) {
-              if (estimateSend >= range.min_amount && estimateSend <= range.max_amount) {
-                commissionRate = range.percentage / 100
-                break
-              }
-            }
-            // Si excede todos los rangos, usar el último
-            if (estimateSend > ranges[ranges.length - 1].max_amount) {
-              commissionRate = ranges[ranges.length - 1].percentage / 100
-            }
-            
-            const effectiveMultiplier = 1 - commissionRate
-            const nextEstimate = state.amountReceive / (rate * effectiveMultiplier)
-            if (Math.abs(nextEstimate - estimateSend) < 0.01) {
-              break
-            }
-            estimateSend = nextEstimate
-          }
-          amount = estimateSend
+          const coupon = getAutomaticCouponForPair(
+            state.coupons,
+            state.currencyFrom,
+            state.currencyTo
+          )
+          amount = estimateAmountSendFromReceive(state.amountReceive, rate, ranges, coupon)
         } else {
           amount = state.amountReceive
         }
       }
-      
+
       if (amount <= 0) return null
 
-      // Buscar el rango que contiene el monto
       for (const range of ranges) {
         if (amount >= range.min_amount && amount <= range.max_amount) {
           return range
         }
       }
 
-      // Si excede todos los rangos, devolver el último (mayor rango)
       return ranges[ranges.length - 1]
     },
 
@@ -127,25 +251,7 @@ export const useCalculatorStore = defineStore('calculator', {
     },
 
     currentAutomaticCoupon(state): Coupon | null {
-      const now = new Date()
-
-      return (
-        state.coupons.find((coupon) => {
-          if (!coupon.isAutomatic || !coupon.isActive) return false
-          if (coupon.originCurrency && coupon.originCurrency !== state.currencyFrom) return false
-          if (coupon.destinationCurrency && coupon.destinationCurrency !== state.currencyTo) return false
-
-          const startsAt = coupon.startDate ? new Date(coupon.startDate) : null
-          const endsAt = coupon.endDate ? new Date(coupon.endDate) : null
-
-          if (startsAt && Number.isNaN(startsAt.getTime())) return false
-          if (endsAt && Number.isNaN(endsAt.getTime())) return false
-          if (startsAt && startsAt > now) return false
-          if (endsAt && endsAt < now) return false
-
-          return coupon.discount > 0
-        }) ?? null
-      )
+      return getAutomaticCouponForPair(state.coupons, state.currencyFrom, state.currencyTo)
     },
 
     /** Resultado calculado: destination = (origin - commission) * tax. */
@@ -155,87 +261,36 @@ export const useCalculatorStore = defineStore('calculator', {
       )?.rate
       if (!rate || rate <= 0) return null
 
-      const pair = getCurrencyPairKey(state.currencyFrom, state.currencyTo)
-      
-      // Función helper para calcular la tasa de comisión según el monto
-      const calculateCommissionRate = (amount: number): number => {
-        const ranges = state.commissions
-          .filter((c) => {
-            const cPair = getCurrencyPairKey(c.coin_a, c.coin_b)
-            return cPair === pair
-          })
-          .sort((a, b) => a.min_amount - b.min_amount)
-
-        if (ranges.length === 0) return 0.03 // fallback 3%
-
-        // Buscar el rango que contiene el monto
-        for (const range of ranges) {
-          if (amount >= range.min_amount && amount <= range.max_amount) {
-            return range.percentage / 100 // convertir a decimal
-          }
-        }
-
-        // Si excede todos los rangos, usar el último (mayor rango)
-        return ranges[ranges.length - 1].percentage / 100
-      }
-      
-      // Calcular amountSend basado en lo que el usuario ingresó
+      const ranges = getPairCommissionRanges(state.commissions, state.currencyFrom, state.currencyTo)
+      const coupon = getAutomaticCouponForPair(state.coupons, state.currencyFrom, state.currencyTo)
       let amountSend = state.amountSend
+
       if (amountSend <= 0 && state.amountReceive > 0) {
-        // Si el usuario ingresó amountReceive, calcular iterativamente amountSend
-        let estimateSend = state.amountReceive / rate
-        for (let i = 0; i < 5; i++) {
-          const currentRate = calculateCommissionRate(estimateSend)
-          const effectiveMultiplier = 1 - currentRate
-          const nextEstimate = state.amountReceive / (rate * effectiveMultiplier)
-          if (Math.abs(nextEstimate - estimateSend) < 0.01) {
-            break
-          }
-          estimateSend = nextEstimate
-        }
-        amountSend = estimateSend
+        amountSend = estimateAmountSendFromReceive(state.amountReceive, rate, ranges, coupon)
       }
 
       if (amountSend <= 0) return null
 
-      // Calcular comisión usando el rango correcto
-      const commissionRate = calculateCommissionRate(amountSend)
-      const baseCommission = amountSend * commissionRate
-
-      const coupon = this.currentAutomaticCoupon
-      const couponDiscount =
-        coupon?.type === 'fixed'
-          ? Math.min(coupon.discount, baseCommission)
-          : Math.min(baseCommission * (coupon?.discount ?? 0) / 100, baseCommission)
-      const variableDiscount = 0
-      const discountToApply = Math.max(couponDiscount, variableDiscount)
-
-      const commission = Math.max(baseCommission - discountToApply, 0)
-      const totalToSend = amountSend - commission
-      const amountReceive = totalToSend * rate
+      const calculation = calculateBreakdown(amountSend, rate, ranges, coupon)
 
       return {
-        amountSend,
-        amountReceive,
+        amountSend: calculation.amountSend,
+        amountReceive: calculation.amountReceive,
         rate,
-        commission,
-        commissionRate: commissionRate * 100,
-        totalToSend,
-        couponDiscount: baseCommission > 0 ? (couponDiscount / baseCommission) * 100 : 0
+        commission: calculation.commission,
+        commissionRate: calculation.commissionRate,
+        totalToSend: calculation.totalToSend,
+        couponDiscount: calculation.couponDiscountPercentage
       }
     },
 
     minAmount(state): number {
-      const ranges = state.commissions
-        .filter((c) => c.coin_a === state.currencyFrom && c.coin_b === state.currencyTo)
-        .sort((a, b) => a.min_amount - b.min_amount)
+      const ranges = getPairCommissionRanges(state.commissions, state.currencyFrom, state.currencyTo)
       return ranges.length > 0 ? ranges[0].min_amount : 100
     },
 
     maxAmount(state): number {
-      const ranges = state.commissions
-        .filter((c) => c.coin_a === state.currencyFrom && c.coin_b === state.currencyTo)
-        .sort((a, b) => a.max_amount - b.max_amount)
+      const ranges = getPairCommissionRanges(state.commissions, state.currencyFrom, state.currencyTo)
       return ranges.length > 0 ? ranges[ranges.length - 1].max_amount : 50000
     }
   },
