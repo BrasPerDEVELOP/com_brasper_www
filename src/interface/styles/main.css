@@ -8,3 +8,30 @@
     @apply w-full min-h-screen;
   }
 }
+
+/* n8n-chat widget: integración con el diseño de la página */
+#n8n-chat {
+  --chat-primary: var(--color-primary, #2563eb);
+  z-index: 9999;
+}
+
+#n8n-chat .chat-input textarea[data-test-id="chat-input"] {
+  min-height: 50px;
+  max-height: 120px;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(203 213 225);
+  font-size: 0.875rem;
+  resize: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#n8n-chat .chat-input textarea[data-test-id="chat-input"]::placeholder {
+  color: rgb(100 116 139);
+}
+
+#n8n-chat .chat-input textarea[data-test-id="chat-input"]:focus {
+  outline: none;
+  border-color: var(--chat-primary);
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 0.15);
+}

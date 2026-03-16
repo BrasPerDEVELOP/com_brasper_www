@@ -795,7 +795,7 @@ const testimonials = computed(() => [
   }
 ])
 
-void testimonials
+void testimonials.value
 
 const services = computed(() => [
   {
