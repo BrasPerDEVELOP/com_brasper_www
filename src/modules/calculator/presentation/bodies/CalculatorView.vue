@@ -110,12 +110,15 @@
       </div>
 
       <div
-        v-if="automaticCouponDetail"
+        v-if="calculatorStore.currentAutomaticCoupon"
         class="rounded-2xl border border-teal-200 bg-stone-100 px-4 py-3"
       >
-        <div class="flex items-start justify-between gap-3">
-          <div class="flex min-w-0 gap-3">
-            <div class="mt-1 flex h-5 w-5 items-center justify-center rounded-full border border-teal-500 text-teal-500">
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex min-w-0 flex-1 gap-3">
+            <div
+              v-if="!calculatorStore.skipAutomaticCoupon"
+              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-teal-500 text-teal-500"
+            >
               <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path
                   fill-rule="evenodd"
@@ -125,17 +128,38 @@
               </svg>
             </div>
             <div class="min-w-0">
-              <p class="text-sm font-medium text-slate-700">
-                Cupón automático aplicado
-              </p>
-              <p class="truncate text-2xl font-bold leading-none text-teal-500">
-                {{ automaticCouponDetail.code }}
-              </p>
-              <p class="text-sm text-teal-600">
-                Ahorras {{ automaticCouponDetail.savings }} {{ calculatorStore.currencyFrom.toUpperCase() }}
-              </p>
+              <template v-if="!calculatorStore.skipAutomaticCoupon">
+                <p class="text-sm font-medium text-slate-700">
+                  {{ t('coupon_auto_applied') }}
+                </p>
+                <p class="truncate text-2xl font-bold leading-none text-teal-500">
+                  {{ calculatorStore.currentAutomaticCoupon.code }}
+                </p>
+                <p v-if="automaticCouponDetail" class="text-sm text-teal-600">
+                  Ahorras {{ automaticCouponDetail.savings }} {{ calculatorStore.currencyFrom.toUpperCase() }}
+                </p>
+              </template>
+              <template v-else>
+                <p class="text-sm font-medium text-slate-700">
+                  {{ t('coupon_available') }}
+                </p>
+                <p class="truncate text-2xl font-bold leading-none text-teal-500">
+                  {{ calculatorStore.currentAutomaticCoupon.code }}
+                </p>
+              </template>
             </div>
           </div>
+          <button
+            type="button"
+            class="shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-1"
+            :class="calculatorStore.skipAutomaticCoupon
+              ? 'bg-teal-500 text-white hover:bg-teal-600'
+              : 'text-slate-500 hover:bg-slate-200 hover:text-slate-700'"
+            :aria-label="calculatorStore.skipAutomaticCoupon ? t('coupon_apply') : t('close')"
+            @click="calculatorStore.setSkipAutomaticCoupon(!calculatorStore.skipAutomaticCoupon)"
+          >
+            {{ calculatorStore.skipAutomaticCoupon ? t('coupon_apply') : '×' }}
+          </button>
         </div>
       </div>
 
@@ -172,6 +196,7 @@ type SupportedLocale = 'es' | 'en' | 'pt'
 interface WhatsAppCopy {
   emptyCalculation: string
   template: string
+  couponLine?: string
 }
 
 const WHATSAPP_PHONE_NUMBER = '51966991933'
@@ -227,17 +252,20 @@ const whatsappCopy: Record<SupportedLocale, WhatsAppCopy> = {
   es: {
     emptyCalculation: 'Completa el cálculo antes de enviar el mensaje por WhatsApp.',
     template:
-      'Hola, quiero cotizar una transferencia con Brasper:\n\n*Monto a enviar:* {amountSend} {currencyFrom}\n*Monto a recibir:* {amountReceive} {currencyTo}\n*Comisión:* {commission} {currencyFrom}\n*Total a enviar:* {totalToSend} {currencyFrom}\n*Tipo de cambio:* 1 {currencyFrom} = {rate} {currencyTo}'
+      'Perfecto, los detalles de tu envío de Brasper hoy son los siguientes:\n *Monto a Enviar:* {amountSend} {currencyFrom}\n Tipo de Cambio: {rate}\n *Comisión de envío:* {commission} {currencyFrom}\n Neto a convertir: {totalToSend} {currencyFrom}\n *Total a Recibir:* {amountReceive} {currencyTo}\n{couponLine}\n\nResumen: Para su envío de {amountSend} {currencyFrom}, recibirá directo en su cuenta de destino {amountReceive} {currencyTo}',
+    couponLine: '*CUPÓN APLICADO: {couponCode}*'
   },
   en: {
     emptyCalculation: 'Complete the calculator before sending the WhatsApp message.',
     template:
-      'Hello, I would like to quote a transfer with Brasper:\n\n*Amount to send:* {amountSend} {currencyFrom}\n*Amount to receive:* {amountReceive} {currencyTo}\n*Commission:* {commission} {currencyFrom}\n*Total to send:* {totalToSend} {currencyFrom}\n*Exchange rate:* 1 {currencyFrom} = {rate} {currencyTo}'
+      'Great! Here are the details of your Brasper transfer today\n *Amount to Send:* {amountSend} {currencyFrom}\n Exchange Rate: {rate}\n *Shipping Commission:* {commission} {currencyFrom}\n Net to Convert: {totalToSend} {currencyFrom}\n *Total to Receive:* {amountReceive} {currencyTo}\n{couponLine}\n\nSummary: For your transfer of {amountSend} {currencyFrom}, you will receive directly in your destination account {amountReceive} {currencyTo}',
+    couponLine: '*COUPON APPLIED: {couponCode}*'
   },
   pt: {
     emptyCalculation: 'Preencha a calculadora antes de enviar a mensagem pelo WhatsApp.',
     template:
-      'Olá, quero simular uma transferência com a Brasper:\n\n*Valor a enviar:* {amountSend} {currencyFrom}\n*Valor a receber:* {amountReceive} {currencyTo}\n*Comissão:* {commission} {currencyFrom}\n*Total a enviar:* {totalToSend} {currencyFrom}\n*Taxa de câmbio:* 1 {currencyFrom} = {rate} {currencyTo}'
+      'Perfeito, os detalhes para seu envio Brasper de hoje é o seguinte:\n *Valor a Enviar:* {amountSend} {currencyFrom}\n Taxa de Câmbio: {rate}\n *Custo de envio:* {commission} {currencyFrom}\n Neto por converter: {totalToSend} {currencyFrom}\n *Total a Receber:* {amountReceive} {currencyTo}\n{couponLine}\n\nResumo: Para seu envio de {amountSend} {currencyFrom}, chegará direto na sua conta de destino {amountReceive} {currencyTo}',
+    couponLine: '*CUPOM APLICADO: {couponCode}*'
   }
 }
 
@@ -249,7 +277,7 @@ const currentLocale = computed<SupportedLocale>(() => {
 const shouldSendWhatsappOnClick = computed(() => route.name === 'homepage')
 const summaryCommission = computed(() => formatNumber(calculatorStore.result?.commission ?? 0))
 const summaryTotalToSend = computed(() => formatNumber(calculatorStore.result?.totalToSend ?? 0))
-const summaryRate = computed(() => (calculatorStore.result?.rate ?? 0).toFixed(4))
+const summaryRate = computed(() => formatRate(calculatorStore.result?.rate ?? 0))
 const automaticCouponDetail = computed(() => {
   const coupon = calculatorStore.currentAutomaticCoupon
   const result = calculatorStore.result
@@ -303,21 +331,35 @@ function formatNumber(n: number): string {
   return Number(n || 0).toFixed(2)
 }
 
+function formatRate(n: number): string {
+  return Number(n || 0).toFixed(4).replace(/\.?0+$/, '')
+}
+
 function buildWhatsappMessage() {
   const result = calculatorStore.result
   if (!result) return null
 
   const from = calculatorStore.currencyFrom.toUpperCase()
   const to = calculatorStore.currencyTo.toUpperCase()
+  const couponCode = calculatorStore.currentAutomaticCoupon?.code
+  const couponLine = couponCode
+    ? (whatsappCopy[currentLocale.value].couponLine ?? '').replace('{couponCode}', couponCode)
+    : ''
   const messageTemplate = whatsappCopy[currentLocale.value].template
-  return messageTemplate
-    .replace('{amountSend}', formatNumber(result.amountSend))
-    .replace('{currencyFrom}', from)
-    .replace('{amountReceive}', formatNumber(result.amountReceive))
-    .replace('{currencyTo}', to)
-    .replace('{commission}', formatNumber(result.commission))
-    .replace('{totalToSend}', formatNumber(result.totalToSend))
-    .replace('{rate}', result.rate.toFixed(4))
+  const replacements: Record<string, string> = {
+    amountSend: formatNumber(result.amountSend),
+    currencyFrom: from,
+    amountReceive: formatNumber(result.amountReceive),
+    currencyTo: to,
+    commission: formatNumber(result.commission),
+    totalToSend: formatNumber(result.totalToSend),
+    rate: formatRate(result.rate),
+    couponLine
+  }
+
+  return Object.entries(replacements).reduce((message, [key, value]) => {
+    return message.split(`{${key}}`).join(value)
+  }, messageTemplate)
 }
 
 function openWhatsappQuote() {
@@ -441,18 +483,37 @@ function swapCurrencies() {
 }
 
 function recalculateAfterCurrencyChange() {
-  const parsedAmount = parseAmountInput(amountSendLocal.value)
-  const effectiveAmount = parsedAmount !== null && parsedAmount > 0
-    ? parsedAmount
-    : calculatorStore.amountSend
-  if (effectiveAmount > 0) {
-    calculatorStore.setAmountSend(effectiveAmount)
-    calculatorStore.recalcFromSend()
-    if (activeInput.value !== 'send') {
-      amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
+  if (calculatorStore.inputMode === 'receive') {
+    const parsedReceive = parseAmountInput(amountReceiveLocal.value)
+    const effectiveReceive = parsedReceive !== null && parsedReceive > 0
+      ? parsedReceive
+      : calculatorStore.amountReceive
+
+    if (effectiveReceive > 0) {
+      calculatorStore.setAmountReceive(effectiveReceive)
+      calculatorStore.recalcFromReceive()
+      if (activeInput.value !== 'send') {
+        amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
+      }
+      if (activeInput.value !== 'receive') {
+        amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
+      }
     }
-    if (activeInput.value !== 'receive') {
-      amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
+  } else {
+    const parsedAmount = parseAmountInput(amountSendLocal.value)
+    const effectiveAmount = parsedAmount !== null && parsedAmount > 0
+      ? parsedAmount
+      : calculatorStore.amountSend
+
+    if (effectiveAmount > 0) {
+      calculatorStore.setAmountSend(effectiveAmount)
+      calculatorStore.recalcFromSend()
+      if (activeInput.value !== 'send') {
+        amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
+      }
+      if (activeInput.value !== 'receive') {
+        amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
+      }
     }
   }
 
@@ -461,8 +522,8 @@ function recalculateAfterCurrencyChange() {
 }
 
 function syncCalculatedFields() {
-  if (calculatorStore.amountSend > 0) {
-    calculatorStore.recalcFromSend()
+  if (calculatorStore.inputMode === 'receive' && calculatorStore.amountReceive > 0) {
+    calculatorStore.recalcFromReceive()
     if (activeInput.value !== 'send') {
       amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
     }
@@ -472,8 +533,8 @@ function syncCalculatedFields() {
     return
   }
 
-  if (calculatorStore.amountReceive > 0) {
-    calculatorStore.recalcFromReceive()
+  if (calculatorStore.amountSend > 0) {
+    calculatorStore.recalcFromSend()
     if (activeInput.value !== 'send') {
       amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
     }

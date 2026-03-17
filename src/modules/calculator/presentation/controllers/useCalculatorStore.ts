@@ -11,9 +11,12 @@ interface CalculatorState {
   currencyTo: CurrencyCode
   amountSend: number
   amountReceive: number
+  inputMode: 'send' | 'receive'
   taxRates: ExchangeRate[]
   commissions: CommissionRange[]
   coupons: Coupon[]
+  /** Si true, no se aplica el cupón automático (usuario lo quitó). Se puede volver a aplicar con "Aplicar". */
+  skipAutomaticCoupon: boolean
   /** IDs para POST /transactions/ (tasa y comisión usadas en la calculadora). */
   selectedTaxRateId: string | null
   selectedCommissionId: string | null
@@ -26,6 +29,7 @@ const DEFAULT_TO: CurrencyCode = 'brl'
 
 interface CalculationBreakdown {
   amountSend: number
+  amountSendWithoutPromotion: number
   amountReceive: number
   commission: number
   commissionRate: number
@@ -57,6 +61,21 @@ function getCommissionRateForAmount(ranges: CommissionRange[], amount: number): 
   }
 
   return ranges[ranges.length - 1].percentage / 100
+}
+
+function getReverseFactorForAmount(ranges: CommissionRange[], amount: number): number {
+  if (ranges.length === 0) return 0.97
+
+  for (const range of ranges) {
+    if (amount >= range.min_amount && amount <= range.max_amount) {
+      const reverseFactor = Number(range.reverse)
+      return reverseFactor > 0 ? reverseFactor : 1 - range.percentage / 100
+    }
+  }
+
+  const lastRange = ranges[ranges.length - 1]
+  const reverseFactor = Number(lastRange.reverse)
+  return reverseFactor > 0 ? reverseFactor : 1 - lastRange.percentage / 100
 }
 
 function getAutomaticCouponForPair(
@@ -95,6 +114,16 @@ function getCouponDiscountAmount(coupon: Coupon | null, baseCommission: number):
   return Math.min(roundMoney(baseCommission * coupon.discount / 100), baseCommission)
 }
 
+function getCouponDiscountFraction(coupon: Coupon | null, baseCommission: number): number {
+  if (!coupon || baseCommission <= 0) return 0
+
+  if (coupon.type === 'fixed') {
+    return Math.min(roundMoney(coupon.discount) / baseCommission, 1)
+  }
+
+  return Math.min(Math.max(coupon.discount / 100, 0), 1)
+}
+
 function calculateBreakdown(
   amountSend: number,
   rate: number,
@@ -111,6 +140,7 @@ function calculateBreakdown(
 
   return {
     amountSend: normalizedAmountSend,
+    amountSendWithoutPromotion: normalizedAmountSend,
     amountReceive,
     commission,
     commissionRate: commissionRate * 100,
@@ -120,59 +150,54 @@ function calculateBreakdown(
   }
 }
 
-function estimateAmountSendFromReceive(
+function estimateBaseAmountSendFromReceive(
+  desiredReceive: number,
+  rate: number,
+  ranges: CommissionRange[]
+): number {
+  const normalizedDesiredReceive = roundMoney(desiredReceive)
+  let estimateSend = Math.max(roundMoney(normalizedDesiredReceive / rate), 0.01)
+
+  for (let i = 0; i < 8; i++) {
+    const reverseFactor = getReverseFactorForAmount(ranges, estimateSend)
+    if (!Number.isFinite(reverseFactor) || reverseFactor <= 0) {
+      break
+    }
+
+    const nextEstimate = roundMoney((normalizedDesiredReceive / reverseFactor) / rate)
+    if (Math.abs(nextEstimate - estimateSend) < 0.01) {
+      estimateSend = nextEstimate
+      break
+    }
+
+    estimateSend = nextEstimate
+  }
+
+  return estimateSend
+}
+
+function calculateInverseBreakdown(
   desiredReceive: number,
   rate: number,
   ranges: CommissionRange[],
   coupon: Coupon | null
-): number {
-  const normalizedDesiredReceive = roundMoney(desiredReceive)
-  let low = 0
-  let high = Math.max(roundMoney(normalizedDesiredReceive / rate), 0.01)
+): CalculationBreakdown {
+  const baseAmountSend = estimateBaseAmountSendFromReceive(desiredReceive, rate, ranges)
+  const commissionRate = getCommissionRateForAmount(ranges, baseAmountSend)
+  const baseCommission = roundMoney(baseAmountSend * commissionRate)
+  const totalToSend = roundMoney(baseAmountSend - baseCommission)
+  const discountFraction = getCouponDiscountFraction(coupon, baseCommission)
+  const promotionalAmountSend = roundMoney(baseAmountSend - (baseCommission * discountFraction))
 
-  while (calculateBreakdown(high, rate, ranges, coupon).amountReceive < normalizedDesiredReceive) {
-    high = roundMoney(high * 2)
-
-    if (high > 100000000) {
-      break
-    }
+  return {
+    amountSend: promotionalAmountSend,
+    amountSendWithoutPromotion: roundMoney(baseAmountSend),
+    amountReceive: roundMoney(desiredReceive),
+    commission: baseCommission,
+    commissionRate: roundMoney(commissionRate * 100),
+    totalToSend,
+    couponDiscountPercentage: roundMoney(discountFraction * 100)
   }
-
-  for (let i = 0; i < 40; i++) {
-    const mid = roundMoney((low + high) / 2)
-    const midReceive = calculateBreakdown(mid, rate, ranges, coupon).amountReceive
-
-    if (midReceive >= normalizedDesiredReceive) {
-      high = mid
-    } else {
-      low = roundMoney(mid + 0.01)
-    }
-
-    if (high - low <= 0.01) {
-      break
-    }
-  }
-
-  let bestAmount = high
-  let bestGap = Math.abs(
-    calculateBreakdown(bestAmount, rate, ranges, coupon).amountReceive - normalizedDesiredReceive
-  )
-
-  for (let offset = -3; offset <= 3; offset++) {
-    const candidate = roundMoney(high + offset * 0.01)
-    if (candidate <= 0) continue
-
-    const candidateGap = Math.abs(
-      calculateBreakdown(candidate, rate, ranges, coupon).amountReceive - normalizedDesiredReceive
-    )
-
-    if (candidateGap < bestGap || (candidateGap === bestGap && candidate < bestAmount)) {
-      bestAmount = candidate
-      bestGap = candidateGap
-    }
-  }
-
-  return bestAmount
 }
 
 export const useCalculatorStore = defineStore('calculator', {
@@ -182,9 +207,11 @@ export const useCalculatorStore = defineStore('calculator', {
     currencyTo: DEFAULT_TO,
     amountSend: 0,
     amountReceive: 0,
+    inputMode: 'send',
     taxRates: [],
     commissions: [],
     coupons: [],
+    skipAutomaticCoupon: false,
     selectedTaxRateId: null,
     selectedCommissionId: null,
     isLoading: false,
@@ -213,7 +240,7 @@ export const useCalculatorStore = defineStore('calculator', {
       const ranges = getPairCommissionRanges(state.commissions, state.currencyFrom, state.currencyTo)
       if (ranges.length === 0) return null
 
-      let amount = state.amountSend
+      let amount = state.inputMode === 'receive' ? 0 : state.amountSend
 
       if (amount <= 0 && state.amountReceive > 0) {
         const rate = state.taxRates.find(
@@ -221,12 +248,7 @@ export const useCalculatorStore = defineStore('calculator', {
         )?.rate
 
         if (rate && rate > 0) {
-          const coupon = getAutomaticCouponForPair(
-            state.coupons,
-            state.currencyFrom,
-            state.currencyTo
-          )
-          amount = estimateAmountSendFromReceive(state.amountReceive, rate, ranges, coupon)
+          amount = estimateBaseAmountSendFromReceive(state.amountReceive, rate, ranges)
         } else {
           amount = state.amountReceive
         }
@@ -262,11 +284,23 @@ export const useCalculatorStore = defineStore('calculator', {
       if (!rate || rate <= 0) return null
 
       const ranges = getPairCommissionRanges(state.commissions, state.currencyFrom, state.currencyTo)
-      const coupon = getAutomaticCouponForPair(state.coupons, state.currencyFrom, state.currencyTo)
-      let amountSend = state.amountSend
+      const coupon = state.skipAutomaticCoupon
+        ? null
+        : getAutomaticCouponForPair(state.coupons, state.currencyFrom, state.currencyTo)
+      let amountSend = state.inputMode === 'receive' ? 0 : state.amountSend
 
       if (amountSend <= 0 && state.amountReceive > 0) {
-        amountSend = estimateAmountSendFromReceive(state.amountReceive, rate, ranges, coupon)
+        const inverseCalculation = calculateInverseBreakdown(state.amountReceive, rate, ranges, coupon)
+        return {
+          amountSend: inverseCalculation.amountSend,
+          amountSendWithoutPromotion: inverseCalculation.amountSendWithoutPromotion,
+          amountReceive: inverseCalculation.amountReceive,
+          rate,
+          commission: inverseCalculation.commission,
+          commissionRate: inverseCalculation.commissionRate,
+          totalToSend: inverseCalculation.totalToSend,
+          couponDiscount: inverseCalculation.couponDiscountPercentage
+        }
       }
 
       if (amountSend <= 0) return null
@@ -275,6 +309,7 @@ export const useCalculatorStore = defineStore('calculator', {
 
       return {
         amountSend: calculation.amountSend,
+        amountSendWithoutPromotion: calculation.amountSendWithoutPromotion,
         amountReceive: calculation.amountReceive,
         rate,
         commission: calculation.commission,
@@ -339,15 +374,22 @@ export const useCalculatorStore = defineStore('calculator', {
       this.currencyFrom = code
       const options = CURRENCY_OPTIONS[code] ?? []
       if (!options.includes(this.currencyTo)) this.currencyTo = options[0] ?? this.currencyTo
+      this.skipAutomaticCoupon = false
       this.updateSelectedIds()
     },
 
     setCurrencyTo(code: CurrencyCode) {
       this.currencyTo = code
+      this.skipAutomaticCoupon = false
       this.updateSelectedIds()
     },
 
+    setSkipAutomaticCoupon(skip: boolean) {
+      this.skipAutomaticCoupon = skip
+    },
+
     setAmountSend(value: number) {
+      this.inputMode = 'send'
       this.amountSend = value
       this.amountReceive = 0
       const res = this.result
@@ -356,6 +398,7 @@ export const useCalculatorStore = defineStore('calculator', {
     },
 
     setAmountReceive(value: number) {
+      this.inputMode = 'receive'
       this.amountReceive = value
       this.amountSend = 0
       const res = this.result
@@ -364,6 +407,7 @@ export const useCalculatorStore = defineStore('calculator', {
     },
 
     recalcFromSend() {
+      this.inputMode = 'send'
       const res = this.result
       if (res && this.amountSend > 0) {
         this.amountReceive = res.amountReceive
@@ -372,6 +416,7 @@ export const useCalculatorStore = defineStore('calculator', {
     },
 
     recalcFromReceive() {
+      this.inputMode = 'receive'
       const res = this.result
       if (res && this.amountReceive > 0) {
         this.amountSend = res.amountSend
@@ -382,6 +427,7 @@ export const useCalculatorStore = defineStore('calculator', {
     resetAmounts() {
       this.amountSend = 0
       this.amountReceive = 0
+      this.inputMode = 'send'
     }
   }
 })

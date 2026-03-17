@@ -41,18 +41,15 @@ function parseCommissions(data: unknown): CommissionRange[] {
   return data
     .filter((item): item is Record<string, unknown> => item != null && typeof item === 'object')
     .map((item) => {
-      // El campo reverse puede venir como string ("0.97700000") o boolean
       const reverseValue = item.reverse
-      const reverse = typeof reverseValue === 'string' 
-        ? reverseValue !== '0' && reverseValue !== '0.0' && reverseValue !== ''
-        : Boolean(reverseValue ?? false)
+      const reverse = Number(reverseValue ?? 0)
       
       return {
         id: String(item.id ?? ''),
         coin_a: String(item.coin_a ?? '').toLowerCase() as CommissionRange['coin_a'],
         coin_b: String(item.coin_b ?? '').toLowerCase() as CommissionRange['coin_b'],
         percentage: Number(item.percentage ?? 0),
-        reverse,
+        reverse: Number.isFinite(reverse) ? reverse : 0,
         min_amount: Number(item.min_amount ?? 0),
         max_amount: Number(item.max_amount ?? 0)
       }

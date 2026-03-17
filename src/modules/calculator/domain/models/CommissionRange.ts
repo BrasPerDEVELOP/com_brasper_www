@@ -6,7 +6,7 @@ export interface CommissionRange {
   coin_a: CurrencyCode
   coin_b: CurrencyCode
   percentage: number
-  reverse: boolean
+  reverse: number
   min_amount: number
   max_amount: number
 }

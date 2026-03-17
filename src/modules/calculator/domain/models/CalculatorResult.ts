@@ -1,5 +1,6 @@
 export interface CalculatorResult {
   amountSend: number
+  amountSendWithoutPromotion: number
   amountReceive: number
   rate: number
   commission: number
