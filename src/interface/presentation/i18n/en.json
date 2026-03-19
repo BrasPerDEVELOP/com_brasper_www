@@ -34,6 +34,8 @@
   "coupon_auto_applied": "Automatic coupon applied",
   "coupon_available": "Coupon available",
   "coupon_apply": "Apply",
+  "coupon_savings": "You save {amount} {currency}",
+  "send_money": "Send money",
   "transfer_details_intro": "Great! Here are the details of your Brasper transfer today",
   "transfer_amount_to_send": "Amount to Send",
   "transfer_exchange_rate": "Exchange Rate",

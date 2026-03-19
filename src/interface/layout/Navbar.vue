@@ -61,12 +61,14 @@
           </button>
         </div>
 
+        <!-- Botón Login comentado
         <router-link
           :to="authStore.user ? { name: 'home' } : { name: 'auth' }"
           class="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
         >
           {{ authStore.user ? t('dashboard') : t('login') }}
         </router-link>
+        -->
       </div>
 
       <button
@@ -121,23 +123,25 @@
         </button>
       </div>
 
+      <!-- Botón Login comentado
       <router-link
         :to="authStore.user ? { name: 'home' } : { name: 'auth' }"
         class="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white"
       >
         {{ authStore.user ? t('dashboard') : t('login') }}
       </router-link>
+      -->
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useAuthStore } from '@/modules/auth/presentation/controllers/useAuthStore'
+// import { useAuthStore } from '@/modules/auth/presentation/controllers/useAuthStore'
 import { useLanguage } from '@/interface/presentation/composables/useLanguage'
 import type { Locale } from '@/interface/presentation/composables/useLanguage'
 
-const authStore = useAuthStore()
+// const authStore = useAuthStore() // descomentar al restaurar el botón de login
 const { locale, setLocale, t } = useLanguage()
 const navbarRef = ref<HTMLElement | null>(null)
 const showMobileMenu = ref(false)

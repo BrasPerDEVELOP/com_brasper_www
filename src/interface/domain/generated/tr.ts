@@ -109,6 +109,12 @@ export const TR = {
   /** Aplicar | coupon_apply */
   get couponApply(): string { return "coupon_apply" },
 
+  /** Ahorras {amount} {currency} | coupon_savings */
+  get couponSavings(): string { return "coupon_savings" },
+
+  /** Enviar dinero | send_money */
+  get sendMoney(): string { return "send_money" },
+
   /** Perfecto, los detalles de tu envío Brasper de hoy son los siguientes: | transfer_details_intro */
   get transferDetailsIntro(): string { return "transfer_details_intro" },
 

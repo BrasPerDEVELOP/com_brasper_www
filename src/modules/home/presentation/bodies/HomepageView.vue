@@ -18,9 +18,9 @@
         <div class="lg:w-1/2 w-full text-center lg:text-left">
           <div class="flex items-center gap-2">
 
-            <Icon icon="ic:round-whatsapp" width="40" height="40" />
+            <Icon icon="ic:round-whatsapp" width="32" height="32" class="shrink-0" />
             <span
-              class="inline-flex rounded-full border  bg-cyan-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-700">
+              class="inline-flex rounded-full border bg-cyan-50 px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-widest text-cyan-700">
 
               <p class="text-yellow-500">{{ t('landing_badge_title') }}</p>
               {{ t('landing_badge') }}
@@ -28,7 +28,7 @@
           </div>
 
 
-          <h1 class="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+          <h1 class="text-xl font-bold leading-tight sm:text-2xl lg:text-5xl">
             {{ t('landing_title') }}
           </h1>
 
@@ -36,14 +36,14 @@
             {{ t('landing_description') }}
           </p> -->
 
-          <div class="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+          <div class="mt-4 flex flex-wrap items-center justify-center lg:justify-center gap-4">
             <!--     <router-link :to="{ name: 'auth' }"
               class="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-hover">
               {{ t('landing_cta_start') }}
             </router-link>
  -->
 
-            <img src="/assets/images/home/es.webp" alt="banner" loading="eager" decoding="async"
+            <img :src="bannerImageSrc" :alt="t('landing_badge')" loading="eager" decoding="async"
               class="w-4/5 h-auto scale-110 transform transition-transform duration-700 ease-out hover:-translate-y-1" />
             <!--             <a href="#how-it-works"
               class="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100">
@@ -629,6 +629,11 @@ interface PartnerItem {
 }
 
 const { t, locale } = useI18n()
+
+const bannerImageSrc = computed(() => {
+  const file = locale.value === 'es' ? 'es' : locale.value === 'en' ? 'en' : 'pr'
+  return `/assets/images/banner/${file}.webp`
+})
 
 const scrollToVisionMission = () => {
   const section = document.getElementById('vymision')

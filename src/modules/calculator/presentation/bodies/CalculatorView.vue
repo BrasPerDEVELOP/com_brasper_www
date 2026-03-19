@@ -127,23 +127,23 @@
                 />
               </svg>
             </div>
-            <div class="min-w-0">
+            <div class="min-w-0 text-sm">
               <template v-if="!calculatorStore.skipAutomaticCoupon">
-                <p class="text-sm font-medium text-slate-700">
+                <p class="font-medium text-slate-700">
                   {{ t('coupon_auto_applied') }}
                 </p>
-                <p class="truncate text-2xl font-bold leading-none text-teal-500">
+                <p class="truncate font-bold leading-none text-teal-500">
                   {{ calculatorStore.currentAutomaticCoupon.code }}
                 </p>
-                <p v-if="automaticCouponDetail" class="text-sm text-teal-600">
-                  Ahorras {{ automaticCouponDetail.savings }} {{ calculatorStore.currencyFrom.toUpperCase() }}
+                <p v-if="automaticCouponDetail" class="text-teal-600">
+                  {{ t('coupon_savings', { amount: automaticCouponDetail.savings, currency: calculatorStore.currencyFrom.toUpperCase() }) }}
                 </p>
               </template>
               <template v-else>
-                <p class="text-sm font-medium text-slate-700">
+                <p class="font-medium text-slate-700">
                   {{ t('coupon_available') }}
                 </p>
-                <p class="truncate text-2xl font-bold leading-none text-teal-500">
+                <p class="truncate font-bold leading-none text-teal-500">
                   {{ calculatorStore.currentAutomaticCoupon.code }}
                 </p>
               </template>
@@ -151,23 +151,25 @@
           </div>
           <button
             type="button"
-            class="shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-1"
+            class="flex shrink-0 items-center justify-center text-white transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-1"
             :class="calculatorStore.skipAutomaticCoupon
-              ? 'bg-teal-500 text-white hover:bg-teal-600'
-              : 'text-slate-500 hover:bg-slate-200 hover:text-slate-700'"
+              ? 'min-h-9 rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium hover:bg-teal-600'
+              : 'h-8 w-8 rounded-full bg-black hover:bg-slate-800'"
             :aria-label="calculatorStore.skipAutomaticCoupon ? t('coupon_apply') : t('close')"
             @click="calculatorStore.setSkipAutomaticCoupon(!calculatorStore.skipAutomaticCoupon)"
           >
-            {{ calculatorStore.skipAutomaticCoupon ? t('coupon_apply') : '×' }}
+            <span v-if="calculatorStore.skipAutomaticCoupon">{{ t('coupon_apply') }}</span>
+            <span v-else class="text-lg leading-none">×</span>
           </button>
         </div>
       </div>
 
       <!-- Send Money Button -->
       <button v-if="showButton" type="button"
-        class="w-full rounded-lg bg-cyan-500 px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-cyan-600"
+        class="flex w-full items-center justify-center gap-2 rounded-lg bg-cyan-500 px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-cyan-600"
         @click="handleButtonClick">
-        {{ buttonText || t('send_money_now') }}
+        <Icon icon="ic:round-whatsapp" class="h-6 w-6 shrink-0" aria-hidden="true" />
+        {{ buttonText || t('send_money') }}
       </button>
 
       <!-- Terms and Conditions -->
@@ -187,6 +189,7 @@
 import { ref, watch, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import { Icon } from '@iconify/vue'
 import { useCalculatorStore } from '../controllers/useCalculatorStore'
 import { CURRENCY_CODES, CURRENCY_OPTIONS } from '../../domain/models'
 import type { CurrencyCode } from '../../domain/models'

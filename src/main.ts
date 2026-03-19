@@ -14,7 +14,6 @@ app.use(pinia)
 app.use(router)
 app.use(i18n)
 
-// Callbacks centrales: token para requests y cierre de sesión + redirect en 401
 setAuthCallbacks(
   () => useAuthStore().token ?? (typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null),
   () => {
@@ -26,5 +25,12 @@ setAuthCallbacks(
 
 app.mount('#app')
 
-// Restaurar sesión en backend al arrancar (valida token y rellena user; 401 → interceptor cierra sesión)
+/* if (typeof window !== 'undefined' && (window as any).EmbeddingGemmaChat) {
+  ;(window as any).EmbeddingGemmaChat.init({
+    apiUrl: import.meta.env.VITE_CHAT_API_URL,
+    title: 'Asistente Brasper',
+    position: 'bottom-right'
+  })
+} */
+
 useAuthStore().restoreSession()
