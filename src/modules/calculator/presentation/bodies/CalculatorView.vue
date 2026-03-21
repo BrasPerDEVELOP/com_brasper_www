@@ -17,34 +17,44 @@
     <!-- Diseño unificado para todos los contextos -->
     <div class="mt-4 space-y-4">
       <!-- YOU SEND Section -->
-      <div>
-        <label class="mb-2 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+      <div class="border overflow-visible border-gray-300 text-2xl rounded-xl px-3 py-2 shadow-lg">
+        <label class="block text-xs font-semibold uppercase tracking-wide text-gray-500">
           {{ t('you_send') }}
         </label>
-        <div class="flex gap-2">
+        <div class="flex gap-0">
           <input
             :value="amountSendLocal"
             type="text"
             inputmode="decimal"
             autocomplete="off"
-            :class="variant === 'banner' ? 'flex-1 rounded-lg border text-black border-gray-300 px-4 py-3 text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
+            :class="variant === 'banner' ? 'min-w-0 flex-1 text-black   font-semibold focus:outline-none' : 'min-w-0 flex-1 rounded-lg border px-3 sm:px-4 py-3 text-base  focus:outline-none focus:ring-2 '"
             placeholder="1000"
             @focus="activeInput = 'send'"
             @input="onAmountSendInput"
             @blur="onAmountSendBlur"
           />
-          <select :value="calculatorStore.currencyFrom"
-            :class="variant === 'banner' ? 'rounded-lg border text-black border-gray-300 bg-white px-4 py-3 text-sm font-medium focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
-            @change="onFromChange($event)">
-            <option v-for="code in CURRENCY_CODES" :key="code" :value="code">
-              {{ code.toUpperCase() }}
-            </option>
-          </select>
+          <div class="relative shrink-0 w-[96px] sm:w-auto">
+            <img
+              :src="currencyFromFlagSrc"
+              alt=""
+              aria-hidden="true"
+              class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full"
+            />
+            <select
+              :value="calculatorStore.currencyFrom"
+              :class="variant === 'banner' ? 'w-full text-black bg-white py-3 pr-3 pl-8 text-lg font-light  focus:outline-none' : 'w-full rounded-lg border bg-white py-3 pr-2 sm:pr-3 pl-8 text-sm focus:outline-none focus:ring-2'"
+              @change="onFromChange($event)"
+            >
+              <option v-for="code in CURRENCY_CODES" :key="code" :value="code">
+                {{ code.toUpperCase() }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
 
       <!-- Transfer Arrow -->
-      <div class="flex justify-center">
+<!--       <div class="flex justify-center">
         <button
           type="button"
           class="group flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary-hover"
@@ -58,34 +68,51 @@
             <path d="M34 44       L44 34       Q46 32 44 30       Q42 28 40 30       L36 34       V12       Q36 8 32 8       Q28 8 28 12       V34       L24 30       Q22 28 20 30       Q18 32 20 34       L30 44       Q32 46 34 44Z" />
           </svg>
         </button>
-      </div>
+      </div> -->
 
       <!-- RECIPIENT RECEIVES Section -->
-      <div>
-        <label class="mb-2 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+      <div class="border overflow-visible border-gray-300 text-2xl rounded-xl px-3 py-2 shadow-lg">
+        <label class="block text-xs font-semibold uppercase tracking-wide text-gray-500">
           {{ t('recipient_receives') }}
         </label>
-        <div class="flex gap-2">
+      <div class="flex gap-0">
           <input
             :value="amountReceiveLocal"
             type="text"
             inputmode="decimal"
             autocomplete="off"
-            :class="variant === 'banner' ? 'flex-1 rounded-lg border text-black border-gray-300 px-4 py-3 text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
+            :class="variant === 'banner' ? 'min-w-0 flex-1 text-black   font-semibold focus:outline-none' : 'min-w-0 flex-1 rounded-lg border px-3 sm:px-4 py-3 text-base  focus:outline-none focus:ring-2 '"
             placeholder="0.00"
             @focus="activeInput = 'receive'"
             @input="onAmountReceiveInput"
             @blur="onAmountReceiveBlur"
           />
-          <select :value="calculatorStore.currencyTo"
-            :class="variant === 'banner' ? 'rounded-lg border text-black border-gray-300 bg-white px-4 py-3 text-sm font-medium focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20' : 'rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'"
-            @change="onToChange($event)">
-            <option v-for="code in calculatorStore.destinationOptions" :key="code" :value="code">
-              {{ code.toUpperCase() }}
-            </option>
-          </select>
+          <div class="relative shrink-0 w-[96px] sm:w-auto">
+            <img
+              :src="currencyToFlagSrc"
+              alt=""
+              aria-hidden="true"
+              class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full"
+            />
+            <select
+              :value="calculatorStore.currencyTo"
+              :class="variant === 'banner' ? 'w-full text-black bg-white py-3 pr-3 pl-8 text-lg font-light focus:outline-none' : 'w-full rounded-lg border bg-white py-3 pr-2 sm:pr-3 pl-8 text-sm focus:outline-none focus:ring-2'"
+              @change="onToChange($event)"
+            >
+              <option v-for="code in calculatorStore.destinationOptions" :key="code" :value="code">
+                {{ code.toUpperCase() }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
+
+      <p
+        v-if="amountOutOfRange"
+        class="text-center text-sm font-medium text-red-600"
+      >
+        {{ t('calculator_amount_out_of_range_contact_us') }}
+      </p>
 
       <!-- Reductions (Commission Fee and Exchange Rate) -->
       <div v-if="showReductions" class="space-y-2 border-t border-gray-200 pt-4">
@@ -104,20 +131,22 @@
         <div class="flex justify-between text-sm">
           <span class="text-gray-600">{{ t('exchange_rate') }}</span>
           <span class="font-semibold text-gray-900">
-            1 {{ calculatorStore.currencyFrom.toUpperCase() }} = {{ summaryRate }} {{ calculatorStore.currencyTo.toUpperCase() }}
+          {{ calculatorStore.currencyFrom.toUpperCase() }} = {{ summaryRate }} {{ calculatorStore.currencyTo.toUpperCase() }}
           </span>
         </div>
       </div>
 
+      <!-- Cupones -->
+
       <div
         v-if="calculatorStore.currentAutomaticCoupon"
-        class="rounded-2xl border border-teal-200 bg-stone-100 px-4 py-3"
+        class="rounded-2xl border border-primary/30 bg-lighter px-4 py-3"
       >
         <div class="flex items-center justify-between gap-3">
           <div class="flex min-w-0 flex-1 gap-3">
             <div
               v-if="!calculatorStore.skipAutomaticCoupon"
-              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-teal-500 text-teal-500"
+              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-secondary text-secondary"
             >
               <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path
@@ -129,21 +158,21 @@
             </div>
             <div class="min-w-0 text-sm">
               <template v-if="!calculatorStore.skipAutomaticCoupon">
-                <p class="font-medium text-slate-700">
+                <p class="font-medium text-on-surface">
                   {{ t('coupon_auto_applied') }}
                 </p>
-                <p class="truncate font-bold leading-none text-teal-500">
+                <p class="truncate font-bold leading-none text-secondary">
                   {{ calculatorStore.currentAutomaticCoupon.code }}
                 </p>
-                <p v-if="automaticCouponDetail" class="text-teal-600">
+                <p v-if="automaticCouponDetail" class="text-secondary">
                   {{ t('coupon_savings', { amount: automaticCouponDetail.savings, currency: calculatorStore.currencyFrom.toUpperCase() }) }}
                 </p>
               </template>
               <template v-else>
-                <p class="font-medium text-slate-700">
+                <p class="font-medium text-on-surface">
                   {{ t('coupon_available') }}
                 </p>
-                <p class="truncate font-bold leading-none text-teal-500">
+                <p class="truncate font-bold leading-none text-secondary">
                   {{ calculatorStore.currentAutomaticCoupon.code }}
                 </p>
               </template>
@@ -151,10 +180,10 @@
           </div>
           <button
             type="button"
-            class="flex shrink-0 items-center justify-center text-white transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-1"
+            class="flex shrink-0 items-center justify-center text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
             :class="calculatorStore.skipAutomaticCoupon
-              ? 'min-h-9 rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium hover:bg-teal-600'
-              : 'h-8 w-8 rounded-full bg-black hover:bg-slate-800'"
+              ? 'min-h-9 rounded-lg bg-secondary px-4 py-2 text-sm font-medium hover:bg-secondary'
+              : 'h-8 w-8 rounded-full bg-on-surface hover:bg-on-surface/80'"
             :aria-label="calculatorStore.skipAutomaticCoupon ? t('coupon_apply') : t('close')"
             @click="calculatorStore.setSkipAutomaticCoupon(!calculatorStore.skipAutomaticCoupon)"
           >
@@ -166,7 +195,7 @@
 
       <!-- Send Money Button -->
       <button v-if="showButton" type="button"
-        class="flex w-full items-center justify-center gap-2 rounded-lg bg-cyan-500 px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-cyan-600"
+        class="relative z-1 inline-flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-secondary px-[30px] py-[12px] text-base font-bold capitalize text-on-surface transition-colors duration-500 hover:text-white after:absolute after:left-1/2 after:top-1/2 after:z-[-1] after:h-[calc(100%+5px)] after:w-[calc(100%+5px)] after:content-[''] after:bg-primary after:-translate-x-1/2 after:-translate-y-1/2 after:scale-100 after:transition-transform after:duration-700 hover:after:scale-0 hover:after:rounded-full max-[575px]:px-[25px] max-[575px]:py-[9px]"
         @click="handleButtonClick">
         <Icon icon="ic:round-whatsapp" class="h-6 w-6 shrink-0" aria-hidden="true" />
         {{ buttonText || t('send_money') }}
@@ -191,7 +220,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { useCalculatorStore } from '../controllers/useCalculatorStore'
-import { CURRENCY_CODES, CURRENCY_OPTIONS } from '../../domain/models'
+import { CURRENCY_CODES } from '../../domain/models'
 import type { CurrencyCode } from '../../domain/models'
 
 type SupportedLocale = 'es' | 'en' | 'pt'
@@ -233,7 +262,7 @@ const props = withDefaults(defineProps<Props>(), {
   showButton: false,
   showReductions: true,
   showTerms: false,
-  buttonText: 'SEND MONEY NOW',
+  buttonText: 'SEND MONEY',
   title: undefined,
   subtitle: undefined,
   customClasses: '',
@@ -250,6 +279,7 @@ const calculatorStore = useCalculatorStore()
 const amountSendLocal = ref(props.initialAmount > 0 ? props.initialAmount.toFixed(2) : '')
 const amountReceiveLocal = ref('')
 const activeInput = ref<'send' | 'receive' | null>(null)
+const amountOutOfRange = ref(false)
 
 const whatsappCopy: Record<SupportedLocale, WhatsAppCopy> = {
   es: {
@@ -281,6 +311,13 @@ const shouldSendWhatsappOnClick = computed(() => route.name === 'homepage')
 const summaryCommission = computed(() => formatNumber(calculatorStore.result?.commission ?? 0))
 const summaryTotalToSend = computed(() => formatNumber(calculatorStore.result?.totalToSend ?? 0))
 const summaryRate = computed(() => formatRate(calculatorStore.result?.rate ?? 0))
+const currencyFlagSrcByCode: Record<CurrencyCode, string> = {
+  pen: '/assets/flags/peru.svg',
+  usd: '/assets/flags/usa.png',
+  brl: '/assets/flags/bra.svg',
+}
+const currencyFromFlagSrc = computed(() => currencyFlagSrcByCode[calculatorStore.currencyFrom])
+const currencyToFlagSrc = computed(() => currencyFlagSrcByCode[calculatorStore.currencyTo])
 const automaticCouponDetail = computed(() => {
   const coupon = calculatorStore.currentAutomaticCoupon
   const result = calculatorStore.result
@@ -318,6 +355,25 @@ function normalizeAmountInput(raw: string): string {
   }
 
   return compact.replace(',', '.')
+}
+
+/**
+ * Sanitiza el input para que solo permita números y un separador decimal.
+ * - Elimina letras o caracteres no numéricos.
+ * - Permite como máximo 2 decimales.
+ */
+function sanitizeNumericInput(raw: string): string {
+  let normalized = normalizeAmountInput(raw)
+  normalized = normalized.replace(/[^\d.]/g, '')
+  if (!normalized) return ''
+
+  const parts = normalized.split('.')
+  const intPart = parts[0] ?? ''
+  const decPart = parts.slice(1).join('').slice(0, 2)
+
+  if (parts.length === 1) return intPart
+  if (decPart.length === 0) return `${intPart}.`
+  return `${intPart}.${decPart}`
 }
 
 function parseAmountInput(raw: string): number | null {
@@ -401,12 +457,14 @@ watch(
 
 function onAmountSendInput(event: Event) {
   const rawValue = (event.target as HTMLInputElement).value
-  amountSendLocal.value = rawValue
+  const sanitized = sanitizeNumericInput(rawValue)
+  amountSendLocal.value = sanitized
   activeInput.value = 'send'
-  const parsedValue = parseAmountInput(rawValue)
+  const parsedValue = parseAmountInput(sanitized)
 
   if (parsedValue === null) {
-    if (!normalizeAmountInput(rawValue)) {
+    amountOutOfRange.value = false
+    if (!sanitized) {
       calculatorStore.resetAmounts()
       amountReceiveLocal.value = ''
     }
@@ -414,6 +472,17 @@ function onAmountSendInput(event: Event) {
   }
 
   const value = toTwoDecimals(parsedValue)
+
+  const min = calculatorStore.minAmount
+  const max = calculatorStore.maxAmount
+  if (value < min || value > max) {
+    amountOutOfRange.value = true
+    calculatorStore.resetAmounts()
+    amountReceiveLocal.value = ''
+    return
+  }
+  amountOutOfRange.value = false
+
   calculatorStore.setAmountSend(value)
   calculatorStore.recalcFromSend()
   amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
@@ -421,12 +490,14 @@ function onAmountSendInput(event: Event) {
 
 function onAmountReceiveInput(event: Event) {
   const rawValue = (event.target as HTMLInputElement).value
-  amountReceiveLocal.value = rawValue
+  const sanitized = sanitizeNumericInput(rawValue)
+  amountReceiveLocal.value = sanitized
   activeInput.value = 'receive'
-  const parsedValue = parseAmountInput(rawValue)
+  const parsedValue = parseAmountInput(sanitized)
 
   if (parsedValue === null) {
-    if (!normalizeAmountInput(rawValue)) {
+    amountOutOfRange.value = false
+    if (!sanitized) {
       calculatorStore.resetAmounts()
       amountSendLocal.value = ''
     }
@@ -435,6 +506,16 @@ function onAmountReceiveInput(event: Event) {
 
   const value = toTwoDecimals(parsedValue)
   calculatorStore.setAmountReceive(value)
+
+  const min = calculatorStore.minAmount
+  const max = calculatorStore.maxAmount
+  if (calculatorStore.amountSend < min || calculatorStore.amountSend > max) {
+    amountOutOfRange.value = true
+    calculatorStore.resetAmounts()
+    return
+  }
+
+  amountOutOfRange.value = false
   amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
 }
 
@@ -442,6 +523,15 @@ function onAmountSendBlur() {
   activeInput.value = null
   const parsedValue = parseAmountInput(amountSendLocal.value)
   amountSendLocal.value = parsedValue === null ? '' : formatInputValue(parsedValue)
+
+  if (parsedValue !== null) {
+    const min = calculatorStore.minAmount
+    const max = calculatorStore.maxAmount
+    amountOutOfRange.value = parsedValue < min || parsedValue > max
+  } else {
+    amountOutOfRange.value = false
+  }
+
   amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
 }
 
@@ -449,6 +539,16 @@ function onAmountReceiveBlur() {
   activeInput.value = null
   const parsedValue = parseAmountInput(amountReceiveLocal.value)
   amountReceiveLocal.value = parsedValue === null ? '' : formatInputValue(parsedValue)
+
+  if (parsedValue !== null) {
+    const min = calculatorStore.minAmount
+    const max = calculatorStore.maxAmount
+    // En modo "receive", validamos con el monto derivado que usa el backend para el rango.
+    amountOutOfRange.value = calculatorStore.amountSend < min || calculatorStore.amountSend > max
+  } else {
+    amountOutOfRange.value = false
+  }
+
   amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
 }
 
@@ -461,27 +561,6 @@ function onFromChange(e: Event) {
 function onToChange(e: Event) {
   const value = (e.target as HTMLSelectElement).value as CurrencyCode
   calculatorStore.setCurrencyTo(value)
-  recalculateAfterCurrencyChange()
-}
-
-function swapCurrencies() {
-  const from = calculatorStore.currencyFrom
-  const to = calculatorStore.currencyTo
-  const reverseOptions = CURRENCY_OPTIONS[to] ?? []
-  if (reverseOptions.length === 0) return
-
-  const nextTo = reverseOptions.includes(from) ? from : reverseOptions[0]
-  const previousResult = calculatorStore.result
-
-  calculatorStore.setCurrencyFrom(to)
-  calculatorStore.setCurrencyTo(nextTo)
-
-  if (previousResult && previousResult.amountReceive > 0) {
-    const nextAmount = toTwoDecimals(previousResult.amountReceive)
-    amountSendLocal.value = formatInputValue(nextAmount)
-    calculatorStore.setAmountSend(nextAmount)
-  }
-
   recalculateAfterCurrencyChange()
 }
 
@@ -577,7 +656,7 @@ function handleButtonClick() {
 const getContainerClasses = computed(() => {
   const baseClasses = {
     'default': 'rounded-lg bg-white p-6 shadow-sm',
-    'banner': 'w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl',
+    'banner': 'w-full max-w-lg rounded-2xl bg-white p-7 shadow-2xl md:p-8',
     'compact': 'rounded-lg bg-white p-4 shadow-sm',
     'inline': 'bg-transparent p-0 shadow-none'
   }

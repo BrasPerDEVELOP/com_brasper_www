@@ -5,19 +5,25 @@ export default {
     extend: {
       colors: {
         // Primarios
-        primary: '#007bff',
+        primary: '#01e8fc',
         'primary-hover': '#066ac9',
         'primary-ios': '#007aff',
         'primary-tailwind': '#3b82f6',
         // Secundarios
-        secondary: '#10b981',
+        secondary: '#4a52d8',
         'blue-medium': '#4484f3',
         'success-teal': '#5ED6B3',
         lime: '#e6ff00',
         purple: '#A386FF',
         'purple-dark': '#4A52D8',
+        // Navegacion
+        'icon-navbar': '#d7e6ff00',
+        // Tokens base del theme (derivados de CSS vars)
+        base: '#737683',
+        heading: '#1b1f2e',
+        lighter: '#f7f7f9',
         // Texto
-        'on-surface': '#333333',
+        'on-surface': '#1b1f2e',
         'text-secondary': '#555555',
         'text-muted': '#666666',
         // Errores

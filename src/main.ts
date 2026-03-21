@@ -27,10 +27,17 @@ app.mount('#app')
 
 /* if (typeof window !== 'undefined' && (window as any).EmbeddingGemmaChat) {
   ;(window as any).EmbeddingGemmaChat.init({
-    apiUrl: import.meta.env.VITE_CHAT_API_URL,
+    apiUrl: import.meta.env.VITE_CHAT_API_URL as string,
     title: 'Asistente Brasper',
-    position: 'bottom-right'
+    position: 'bottom-right',
+    subtitle: 'Remesas y consultas',
+    primaryColor: '#4a52d8',
+    secondaryColor: '#01e8fc',
+    welcomeMessage: 'Hola, ¿en qué te ayudo?',
+    launcherImageUrl: '/assets/projects/bot.gif',
+    fontImportUrl: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap',
+    onOpen: () => console.log('chat abierto'),
   })
 } */
-
+ 
 useAuthStore().restoreSession()

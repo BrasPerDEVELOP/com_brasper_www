@@ -1,12 +1,24 @@
-var EmbeddingGemmaChat=(function(m){"use strict";const S={value:0};function R(t={}){return S.value+=1,{apiUrl:t.apiUrl||"http://localhost:8001/consulta-webchat",position:t.position==="bottom-right"?"bottom-right":"bottom-left",title:t.title||"Asistente de remesas",welcomeMessage:t.welcomeMessage||"Hola, ¿en qué puedo ayudarte?",primaryColor:t.primaryColor||"#0b8a68",accentColor:t.accentColor||"#e3fff4",textColor:t.textColor||"#17342c",zIndex:Number(t.zIndex||9999),width:t.width||360,height:t.height||560,placeholder:t.placeholder||"Escribe tu consulta...",avatarUrl:t.avatarUrl||"",launcherIcon:t.launcherIcon||"",containerId:t.containerId||`embedding-gemma-chat-${S.value}`,errorMessage:t.errorMessage||"No pude conectarme con el servicio. Verifica que el backend esté disponible.",callbacks:{onOpen:t.onOpen,onClose:t.onClose,onMessageSent:t.onMessageSent,onMessageReceived:t.onMessageReceived,onError:t.onError}}}function r(t,e={}){const a=document.createElement(t);return e.className&&(a.className=e.className),e.text&&(a.textContent=e.text),e.type&&(a.type=e.type),e.attributes&&Object.entries(e.attributes).forEach(([s,g])=>{g!=null&&a.setAttribute(s,g)}),a}function U(t){return typeof t=="number"?`${t}px`:t}function f(t){return typeof t=="string"&&t.trim()?t:"#0b8a68"}function N(t){return{launcher:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 6.67 15.05l2.14 2.14a1 1 0 0 0 1.41-1.41l-2.14-2.14A9 9 0 0 0 12 3Zm0 2a7 7 0 1 1-4.95 11.95A7 7 0 0 1 12 5Zm-2.5 4a1 1 0 0 0 0 2H14a1 1 0 0 0 .8-1.6l-2-2.67a1 1 0 0 0-1.6 1.2L12 9H9.5Zm5 4H10a1 1 0 1 0-.8 1.6l2 2.67a1 1 0 0 0 1.6-1.2L12 15h2.5a1 1 0 1 0 0-2Z"/></svg>',avatar:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 5a3.25 3.25 0 1 1-3.25 3.25A3.25 3.25 0 0 1 12 7Zm0 12.2a7.2 7.2 0 0 1-5.32-2.36 5.9 5.9 0 0 1 10.64 0A7.2 7.2 0 0 1 12 19.2Z"/></svg>',close:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.7 5.3 12 10.59l5.3-5.3a1 1 0 1 1 1.4 1.42L13.41 12l5.29 5.3a1 1 0 0 1-1.4 1.4L12 13.41l-5.3 5.29a1 1 0 0 1-1.4-1.4L10.59 12 5.3 6.7a1 1 0 0 1 1.4-1.4Z"/></svg>',send:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.4 20.6a1 1 0 0 1-.33-1.05l2.2-6.61a1 1 0 0 0 0-.63l-2.2-6.61a1 1 0 0 1 1.4-1.2l16.8 7.6a1 1 0 0 1 0 1.82l-16.8 7.6a1 1 0 0 1-1.07-.12Zm3.83-7.1-1.46 4.37L17.9 12.4 5.77 6.93l1.46 4.37h5.27a1 1 0 0 1 0 2Z"/></svg>'}[t]||""}async function q(t,e){const a=await fetch(t,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:e})});if(!a.ok)throw new Error(`HTTP ${a.status}`);const s=await a.json();if(!s||typeof s.response!="string")throw new Error("Invalid chat response payload");return s.response}const W=`
+var EmbeddingGemmaChat=(function(y){"use strict";const B={value:0};function F(t={}){return B.value+=1,{apiUrl:t.apiUrl||"http://localhost:8001/consulta-webchat",position:t.position==="bottom-right"?"bottom-right":"bottom-left",title:t.title||"Asistente de remesas",subtitle:t.subtitle||"Cotización y requisitos en una conversación",welcomeMessage:t.welcomeMessage||"Hola, ¿en qué puedo ayudarte?",primaryColor:t.primaryColor||"#0b8a68",accentColor:t.accentColor||"#e3fff4",textColor:t.textColor||"#17342c",fontFamily:t.fontFamily||'"DM Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',fontImportUrl:t.fontImportUrl||"",launcherImageUrl:t.launcherImageUrl||"",headerBackground:t.headerBackground||"",headerColor:t.headerColor||"",headerTextColor:t.headerTextColor||"",headerSubtitleColor:t.headerSubtitleColor||"",panelBackground:t.panelBackground||"",zIndex:Number(t.zIndex||9999),width:t.width||360,height:t.height||560,placeholder:t.placeholder||"Escribe tu consulta...",avatarUrl:t.avatarUrl||"",launcherIcon:t.launcherIcon||"",containerId:t.containerId||`embedding-gemma-chat-${B.value}`,errorMessage:t.errorMessage||"No pude conectarme con el servicio. Verifica que el backend esté disponible.",callbacks:{onOpen:t.onOpen,onClose:t.onClose,onMessageSent:t.onMessageSent,onMessageReceived:t.onMessageReceived,onError:t.onError}}}function a(t,e={}){const r=document.createElement(t);return e.className&&(r.className=e.className),e.text&&(r.textContent=e.text),e.type&&(r.type=e.type),e.attributes&&Object.entries(e.attributes).forEach(([l,g])=>{g!=null&&r.setAttribute(l,g)}),r}function O(t){return typeof t=="number"?`${t}px`:t}function b(t){return typeof t=="string"&&t.trim()?t:"#0b8a68"}function W(t){return`linear-gradient(180deg, color-mix(in srgb, ${t} 72%, #000), color-mix(in srgb, ${t} 48%, #000))`}function M(t){return{launcher:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 6.67 15.05l2.14 2.14a1 1 0 0 0 1.41-1.41l-2.14-2.14A9 9 0 0 0 12 3Zm0 2a7 7 0 1 1-4.95 11.95A7 7 0 0 1 12 5Zm-2.5 4a1 1 0 0 0 0 2H14a1 1 0 0 0 .8-1.6l-2-2.67a1 1 0 0 0-1.6 1.2L12 9H9.5Zm5 4H10a1 1 0 1 0-.8 1.6l2 2.67a1 1 0 0 0 1.6-1.2L12 15h2.5a1 1 0 1 0 0-2Z"/></svg>',avatar:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 5a3.25 3.25 0 1 1-3.25 3.25A3.25 3.25 0 0 1 12 7Zm0 12.2a7.2 7.2 0 0 1-5.32-2.36 5.9 5.9 0 0 1 10.64 0A7.2 7.2 0 0 1 12 19.2Z"/></svg>',close:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.7 5.3 12 10.59l5.3-5.3a1 1 0 1 1 1.4 1.42L13.41 12l5.29 5.3a1 1 0 0 1-1.4 1.4L12 13.41l-5.3 5.29a1 1 0 0 1-1.4-1.4L10.59 12 5.3 6.7a1 1 0 0 1 1.4-1.4Z"/></svg>',send:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.4 20.6a1 1 0 0 1-.33-1.05l2.2-6.61a1 1 0 0 0 0-.63l-2.2-6.61a1 1 0 0 1 1.4-1.2l16.8 7.6a1 1 0 0 1 0 1.82l-16.8 7.6a1 1 0 0 1-1.07-.12Zm3.83-7.1-1.46 4.37L17.9 12.4 5.77 6.93l1.46 4.37h5.27a1 1 0 0 1 0 2Z"/></svg>'}[t]||""}async function R(t,e){const r=await fetch(t,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:e})});if(!r.ok)throw new Error(`HTTP ${r.status}`);const l=await r.json();if(!l||typeof l.response!="string")throw new Error("Invalid chat response payload");return l.response}const q=`
+/* La fuente del widget es independiente de la página: se define en :host y hereda al árbol del shadow */
 :host {
   all: initial;
+  font-family: var(
+    --eg-font-family,
+    "DM Sans",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif
+  );
 }
 
-.eg-chat-host,
-.eg-chat-host * {
+:host *,
+:host *::before,
+:host *::after {
   box-sizing: border-box;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: inherit;
 }
 
 .eg-chat-shell {
@@ -37,6 +49,8 @@ var EmbeddingGemmaChat=(function(m){"use strict";const S={value:0};function R(t=
   place-items: center;
   cursor: pointer;
   transition: transform 180ms ease, opacity 180ms ease;
+  overflow: hidden;
+  padding: 0;
 }
 
 .eg-chat-launcher:hover {
@@ -49,10 +63,25 @@ var EmbeddingGemmaChat=(function(m){"use strict";const S={value:0};function R(t=
   fill: currentColor;
 }
 
+.eg-chat-launcher-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
 .eg-chat-launcher--hidden {
   opacity: 0;
   pointer-events: none;
   transform: translateY(6px);
+}
+
+/** Botón con GIF/imagen: sin relleno degradado, borde con color primario */
+.eg-chat-launcher--media {
+  background: var(--eg-launcher-media-bg, transparent);
+  border: 3px solid var(--eg-primary, #0b8a68);
+  box-shadow: 0 18px 40px rgba(5, 33, 28, 0.28);
 }
 
 .eg-chat-panel {
@@ -60,7 +89,7 @@ var EmbeddingGemmaChat=(function(m){"use strict";const S={value:0};function R(t=
   flex-direction: column;
   overflow: hidden;
   border-radius: 28px;
-  background: #f5efe5;
+  background: var(--eg-panel-bg, #f5efe5);
   color: var(--eg-text, #17342c);
   box-shadow: 0 30px 70px rgba(13, 27, 23, 0.28);
   border: 1px solid rgba(7, 32, 26, 0.08);
@@ -75,8 +104,16 @@ var EmbeddingGemmaChat=(function(m){"use strict";const S={value:0};function R(t=
   align-items: center;
   gap: 12px;
   padding: 18px;
-  background: linear-gradient(180deg, #123629, #102d23);
-  color: #fff;
+  /* Por defecto el header sigue a --eg-primary (config.primaryColor). Sobrescribe con headerBackground. */
+  background: var(
+    --eg-header-bg,
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--eg-primary, #0b8a68) 72%, #000),
+      color-mix(in srgb, var(--eg-primary, #0b8a68) 48%, #000)
+    )
+  );
+  color: var(--eg-header-text, #fff);
 }
 
 .eg-chat-avatar {
@@ -117,7 +154,7 @@ var EmbeddingGemmaChat=(function(m){"use strict";const S={value:0};function R(t=
 
 .eg-chat-subtitle {
   font-size: 12px;
-  color: rgba(228, 242, 237, 0.85);
+  color: var(--eg-header-subtitle, rgba(255, 255, 255, 0.82));
 }
 
 .eg-chat-close {
@@ -126,7 +163,7 @@ var EmbeddingGemmaChat=(function(m){"use strict";const S={value:0};function R(t=
   border: 0;
   border-radius: 12px;
   background: transparent;
-  color: #fff;
+  color: inherit;
   cursor: pointer;
 }
 
@@ -174,6 +211,52 @@ var EmbeddingGemmaChat=(function(m){"use strict";const S={value:0};function R(t=
   background: #fff;
   color: #21342e;
   border-top-left-radius: 8px;
+}
+
+/* Indicador "escribiendo…" (estilo WhatsApp) */
+.eg-chat-bubble--typing {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 0;
+  box-shadow: 0 1px 0.5px rgba(11, 20, 26, 0.13);
+}
+
+.eg-chat-typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 10px;
+}
+
+.eg-chat-typing-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #8696a0;
+  animation: eg-chat-typing-bounce 1.35s ease-in-out infinite both;
+}
+
+.eg-chat-typing-dot:nth-child(2) {
+  animation-delay: 0.22s;
+}
+
+.eg-chat-typing-dot:nth-child(3) {
+  animation-delay: 0.44s;
+}
+
+@keyframes eg-chat-typing-bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  30% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
 }
 
 .eg-chat-bubble--user {
@@ -276,5 +359,5 @@ var EmbeddingGemmaChat=(function(m){"use strict";const S={value:0};function R(t=
     height: min(78vh, 580px) !important;
   }
 }
-`;function G(t={}){const e=R(t),a={isOpen:!1,isLoading:!1,messages:[],error:null};let s=null,g=null,C=null,c=null,l=null,d=null,x=null,p=null,y=null;function w(n){Object.assign(a,n),z()}function v(n,o){const i=e.callbacks?.[n];typeof i=="function"&&i(o)}function I(n){a.messages.push(n),H()}function Y(){s=r("div",{className:"eg-chat-host",attributes:{id:e.containerId}}),document.body.appendChild(s),g=s.attachShadow({mode:"open"}),C=r("style"),C.textContent=W,g.appendChild(C);const n=r("div",{className:`eg-chat-shell eg-chat-shell--${e.position}`});c=r("button",{className:"eg-chat-launcher",type:"button",text:"",attributes:{"aria-label":"Abrir chat"}}),c.innerHTML=e.launcherIcon||N("launcher"),c.addEventListener("click",B),l=r("section",{className:"eg-chat-panel",attributes:{"aria-hidden":"true"}});const o=r("header",{className:"eg-chat-header"}),i=r("div",{className:"eg-chat-title-wrap"}),u=r("div",{className:"eg-chat-avatar"});if(e.avatarUrl){const k=r("img",{className:"eg-chat-avatar-image",attributes:{src:e.avatarUrl,alt:e.title}});u.appendChild(k)}else u.innerHTML=N("avatar");const M=r("strong",{className:"eg-chat-title",text:e.title}),h=r("span",{className:"eg-chat-subtitle",text:"Cotización y requisitos en una conversación"});i.append(M,h);const b=r("button",{className:"eg-chat-close",type:"button",attributes:{"aria-label":"Cerrar chat"}});b.innerHTML=N("close"),b.addEventListener("click",E),o.append(u,i,b),d=r("div",{className:"eg-chat-messages",attributes:{role:"log","aria-live":"polite"}}),y=r("div",{className:"eg-chat-status"}),x=r("form",{className:"eg-chat-form"}),p=r("input",{className:"eg-chat-input",attributes:{type:"text",placeholder:e.placeholder,autocomplete:"off","aria-label":"Mensaje"}});const L=r("button",{className:"eg-chat-submit",type:"submit",attributes:{"aria-label":"Enviar"}});L.innerHTML=N("send"),x.addEventListener("submit",V),x.append(p,L),l.append(o,d,y,x),n.append(c,l),g.appendChild(n),e.welcomeMessage&&(a.messages=[{id:crypto.randomUUID(),role:"assistant",text:e.welcomeMessage}]),z()}function z(){!l||!c||!d||!y||!p||(s.style.zIndex=String(e.zIndex),l.style.width=U(e.width),l.style.height=U(e.height),l.style.setProperty("--eg-primary",f(e.primaryColor)),l.style.setProperty("--eg-accent",f(e.accentColor)),l.style.setProperty("--eg-text",f(e.textColor)),c.style.setProperty("--eg-primary",f(e.primaryColor)),c.style.setProperty("--eg-accent",f(e.accentColor)),l.classList.toggle("eg-chat-panel--open",a.isOpen),l.setAttribute("aria-hidden",String(!a.isOpen)),c.classList.toggle("eg-chat-launcher--hidden",a.isOpen),p.disabled=a.isLoading,x.querySelector(".eg-chat-submit").disabled=a.isLoading,y.textContent=a.isLoading?"Respondiendo...":a.error||"",y.classList.toggle("eg-chat-status--visible",!!(a.isLoading||a.error)),H())}function H(){d&&(d.innerHTML="",a.messages.forEach(n=>{const o=r("div",{className:`eg-chat-row eg-chat-row--${n.role}`}),i=r("div",{className:`eg-chat-bubble eg-chat-bubble--${n.role}`});J(i,n.text),o.appendChild(i),d.appendChild(o)}),d.scrollTop=d.scrollHeight)}function J(n,o){String(o||"").split(`
-`).filter((M,h,b)=>M.trim()||h<b.length-1).forEach(M=>{const h=M.trim();if(h.match(/^https?:\/\/\S+$/)){const k=h,D=r("button",{className:"eg-chat-link-button",text:k.includes("wa.me")?"Abrir WhatsApp":"Abrir enlace",type:"button"});D.addEventListener("click",$=>{$.preventDefault(),$.stopPropagation(),window.open(k,"_blank","noopener,noreferrer")||window.location.assign(k)}),n.appendChild(D);return}const L=r("p",{className:"eg-chat-paragraph",text:h||" "});n.appendChild(L)})}function Z(){a.isOpen||(w({isOpen:!0}),v("onOpen",{config:e}),requestAnimationFrame(()=>{p?.focus()}))}function E(){a.isOpen&&(w({isOpen:!1}),v("onClose",{config:e}))}function B(){if(a.isOpen){E();return}Z()}async function V(n){if(n.preventDefault(),a.isLoading||!p)return;const o=p.value.trim();if(o){I({id:crypto.randomUUID(),role:"user",text:o}),v("onMessageSent",{message:o}),p.value="",w({isLoading:!0,error:null});try{const i=await q(e.apiUrl,o);I({id:crypto.randomUUID(),role:"assistant",text:i}),v("onMessageReceived",{message:i}),w({isLoading:!1,error:null})}catch(i){const u=e.errorMessage;I({id:crypto.randomUUID(),role:"assistant",text:u}),w({isLoading:!1,error:"No se pudo completar la solicitud."}),v("onError",i)}}}function P(){s?.remove()}return{config:e,mount:Y,destroy:P,publicApi:{open:Z,close:E,toggle:B,destroy:P,getState:()=>({...a,messages:[...a.messages]})}}}function _(){return typeof window<"u"?window:typeof globalThis<"u"?globalThis:{}}const O=new Map;function A(t={}){const e=G(t);return e.mount(),e.config.containerId&&O.set(e.config.containerId,e),e.publicApi}function T(t){const e=O.get(t);return e?(e.destroy(),O.delete(t),!0):!1}const j={init:A,destroy:T},F=_();return F.EmbeddingGemmaChat=j,m.default=j,m.destroy=T,m.init=A,Object.defineProperties(m,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}}),m})({});
+`;function G(t={}){const e=F(t),r={isOpen:!1,isLoading:!1,messages:[],error:null};let l=null,g=null,L=null,c=null,n=null,d=null,x=null,h=null,v=null;function w(o){Object.assign(r,o),A()}function k(o,i){const s=e.callbacks?.[o];typeof s=="function"&&s(i)}function S(o){r.messages.push(o),j()}function J(){if(l=a("div",{className:"eg-chat-host",attributes:{id:e.containerId}}),document.body.appendChild(l),g=l.attachShadow({mode:"open"}),e.fontImportUrl){const p=a("link",{attributes:{rel:"stylesheet",href:e.fontImportUrl}});g.appendChild(p)}L=a("style"),L.textContent=q,g.appendChild(L);const o=a("div",{className:`eg-chat-shell eg-chat-shell--${e.position}`});if(c=a("button",{className:"eg-chat-launcher",type:"button",text:"",attributes:{"aria-label":"Abrir chat"}}),e.launcherImageUrl){const p=a("img",{className:"eg-chat-launcher-img",attributes:{src:e.launcherImageUrl,alt:"",decoding:"async"}});c.appendChild(p),c.classList.add("eg-chat-launcher--media")}else c.innerHTML=e.launcherIcon||M("launcher");c.addEventListener("click",H),n=a("section",{className:"eg-chat-panel",attributes:{"aria-hidden":"true"}});const i=a("header",{className:"eg-chat-header"}),s=a("div",{className:"eg-chat-title-wrap"}),m=a("div",{className:"eg-chat-avatar"});if(e.avatarUrl){const p=a("img",{className:"eg-chat-avatar-image",attributes:{src:e.avatarUrl,alt:e.title}});m.appendChild(p)}else m.innerHTML=M("avatar");const N=a("strong",{className:"eg-chat-title",text:e.title}),u=a("span",{className:"eg-chat-subtitle",text:e.subtitle});s.append(N,u);const f=a("button",{className:"eg-chat-close",type:"button",attributes:{"aria-label":"Cerrar chat"}});f.innerHTML=M("close"),f.addEventListener("click",U),i.append(m,s,f),d=a("div",{className:"eg-chat-messages",attributes:{role:"log","aria-live":"polite"}}),v=a("div",{className:"eg-chat-status"}),x=a("form",{className:"eg-chat-form"}),h=a("input",{className:"eg-chat-input",attributes:{type:"text",placeholder:e.placeholder,autocomplete:"off","aria-label":"Mensaje"}});const I=a("button",{className:"eg-chat-submit",type:"submit",attributes:{"aria-label":"Enviar"}});I.innerHTML=M("send"),x.addEventListener("submit",K),x.append(h,I),n.append(i,d,v,x),o.append(c,n),g.appendChild(o),e.welcomeMessage&&(r.messages=[{id:crypto.randomUUID(),role:"assistant",text:e.welcomeMessage}]),A()}function A(){!n||!c||!d||!v||!h||(l.style.zIndex=String(e.zIndex),l.style.setProperty("--eg-font-family",e.fontFamily),n.style.width=O(e.width),n.style.height=O(e.height),n.style.setProperty("--eg-primary",b(e.primaryColor)),n.style.setProperty("--eg-accent",b(e.accentColor)),n.style.setProperty("--eg-text",b(e.textColor)),e.headerBackground?n.style.setProperty("--eg-header-bg",e.headerBackground):typeof e.headerColor=="string"&&e.headerColor.trim()?n.style.setProperty("--eg-header-bg",W(b(e.headerColor))):n.style.removeProperty("--eg-header-bg"),e.headerTextColor?n.style.setProperty("--eg-header-text",e.headerTextColor):n.style.removeProperty("--eg-header-text"),e.headerSubtitleColor?n.style.setProperty("--eg-header-subtitle",e.headerSubtitleColor):n.style.removeProperty("--eg-header-subtitle"),e.panelBackground?n.style.setProperty("--eg-panel-bg",e.panelBackground):n.style.removeProperty("--eg-panel-bg"),c.style.setProperty("--eg-primary",b(e.primaryColor)),c.style.setProperty("--eg-accent",b(e.accentColor)),n.classList.toggle("eg-chat-panel--open",r.isOpen),n.setAttribute("aria-hidden",String(!r.isOpen)),c.classList.toggle("eg-chat-launcher--hidden",r.isOpen),h.disabled=r.isLoading,x.querySelector(".eg-chat-submit").disabled=r.isLoading,v.textContent=r.error||"",v.classList.toggle("eg-chat-status--visible",!!r.error),j())}function j(){if(d){if(d.innerHTML="",r.messages.forEach(o=>{const i=a("div",{className:`eg-chat-row eg-chat-row--${o.role}`}),s=a("div",{className:`eg-chat-bubble eg-chat-bubble--${o.role}`});V(s,o.text),i.appendChild(s),d.appendChild(i)}),r.isLoading){const o=a("div",{className:"eg-chat-row eg-chat-row--assistant"}),i=a("div",{className:"eg-chat-bubble eg-chat-bubble--assistant eg-chat-bubble--typing",attributes:{"aria-label":"El asistente está escribiendo",role:"status"}}),s=a("span",{className:"eg-chat-typing"});s.append(a("span",{className:"eg-chat-typing-dot"}),a("span",{className:"eg-chat-typing-dot"}),a("span",{className:"eg-chat-typing-dot"})),i.appendChild(s),o.appendChild(i),d.appendChild(o)}d.scrollTop=d.scrollHeight}}function V(o,i){String(i||"").split(`
+`).filter((N,u,f)=>N.trim()||u<f.length-1).forEach(N=>{const u=N.trim();if(u.match(/^https?:\/\/\S+$/)){const p=u,D=a("button",{className:"eg-chat-link-button",text:p.includes("wa.me")?"Abrir WhatsApp":"Abrir enlace",type:"button"});D.addEventListener("click",$=>{$.preventDefault(),$.stopPropagation(),window.open(p,"_blank","noopener,noreferrer")||window.location.assign(p)}),o.appendChild(D);return}const I=a("p",{className:"eg-chat-paragraph",text:u||" "});o.appendChild(I)})}function z(){r.isOpen||(w({isOpen:!0}),k("onOpen",{config:e}),requestAnimationFrame(()=>{h?.focus()}))}function U(){r.isOpen&&(w({isOpen:!1}),k("onClose",{config:e}))}function H(){if(r.isOpen){U();return}z()}async function K(o){if(o.preventDefault(),r.isLoading||!h)return;const i=h.value.trim();if(i){S({id:crypto.randomUUID(),role:"user",text:i}),k("onMessageSent",{message:i}),h.value="",w({isLoading:!0,error:null});try{const s=await R(e.apiUrl,i);S({id:crypto.randomUUID(),role:"assistant",text:s}),k("onMessageReceived",{message:s}),w({isLoading:!1,error:null})}catch(s){const m=e.errorMessage;S({id:crypto.randomUUID(),role:"assistant",text:m}),w({isLoading:!1,error:"No se pudo completar la solicitud."}),k("onError",s)}}}function Z(){l?.remove()}return{config:e,mount:J,destroy:Z,publicApi:{open:z,close:U,toggle:H,destroy:Z,getState:()=>({...r,messages:[...r.messages]})}}}function Y(){return typeof window<"u"?window:typeof globalThis<"u"?globalThis:{}}const C=new Map;function P(t={}){const e=G(t);return e.mount(),e.config.containerId&&C.set(e.config.containerId,e),e.publicApi}function E(t){const e=C.get(t);return e?(e.destroy(),C.delete(t),!0):!1}const T={init:P,destroy:E},_=Y();return _.EmbeddingGemmaChat=T,y.default=T,y.destroy=E,y.init=P,Object.defineProperties(y,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}}),y})({});

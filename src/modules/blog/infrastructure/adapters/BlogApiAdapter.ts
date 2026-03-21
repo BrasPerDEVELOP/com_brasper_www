@@ -2,7 +2,7 @@ import { apiClient } from '@/interface/api/client'
 import type { BlogRepository } from './BlogRepository'
 import type { Blog, BlogPage } from '../../domain/models'
 
-const BLOG_API_BASE_URL = 'https://pro.brasper.site/api/v1'
+const BLOG_API_BASE_URL = 'https://pro.finzeler.com/api/v1'
 
 function stripHtml(value: string): string {
   return value.replace(/<[^>]*>/g, '').trim()

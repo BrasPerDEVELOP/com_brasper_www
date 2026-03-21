@@ -115,6 +115,9 @@ export const TR = {
   /** Enviar dinero | send_money */
   get sendMoney(): string { return "send_money" },
 
+  /** ¡Para montos mayores o menores, contáctanos! | calculator_amount_out_of_range_contact_us */
+  get calculatorAmountOutOfRangeContactUs(): string { return "calculator_amount_out_of_range_contact_us" },
+
   /** Perfecto, los detalles de tu envío Brasper de hoy son los siguientes: | transfer_details_intro */
   get transferDetailsIntro(): string { return "transfer_details_intro" },
 

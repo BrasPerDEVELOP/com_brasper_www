@@ -13,9 +13,9 @@
 
       <!-- Contenedor principal (igual estructura que el primero) -->
       <div
-        class="relative z-10  mx-auto flex flex-col lg:flex-row items-center justify-center px-6 lg:px-12 py-20 gap-12">
+        class="relative z-10 mx-auto flex flex-col lg:flex-row items-center justify-center gap-10 px-6 py-5 lg:gap-14 lg:px-12 lg:py-20">
         <!-- 🔹 Columna Izquierda: Texto -->
-        <div class="lg:w-1/2 w-full text-center lg:text-left">
+        <div class="w-full text-center lg:w-5/12 lg:text-left">
           <div class="flex items-center gap-2">
 
             <Icon icon="ic:round-whatsapp" width="32" height="32" class="shrink-0" />
@@ -28,7 +28,7 @@
           </div>
 
 
-          <h1 class="text-xl font-bold leading-tight sm:text-2xl lg:text-5xl">
+          <h1 class="text-xl font-bold leading-tight sm:text-2xl lg:text-4xl xl:text-4xl">
             {{ t('landing_title') }}
           </h1>
 
@@ -40,11 +40,10 @@
             <!--     <router-link :to="{ name: 'auth' }"
               class="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-hover">
               {{ t('landing_cta_start') }}
-            </router-link>
- -->
+            </router-link> -->
 
             <img :src="bannerImageSrc" :alt="t('landing_badge')" loading="eager" decoding="async"
-              class="w-4/5 h-auto scale-110 transform transition-transform duration-700 ease-out hover:-translate-y-1" />
+              class="h-auto w-[72%] transform transition-transform duration-700 ease-out hover:-translate-y-1 sm:w-[68%] lg:w-[85%]" />
             <!--             <a href="#how-it-works"
               class="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100">
               {{ t('landing_cta_how') }}
@@ -66,15 +65,15 @@
         </div>
 
         <!-- 🔹 Columna Derecha: Calculadora -->
-        <div class="lg:w-1/2 w-full max-w-md">
+        <div class="w-full max-w-xl lg:w-[25%]">
           <div class="relative">
             <div
-              class="absolute -inset-3 -z-10 rounded-[30px] bg-gradient-to-r from-cyan-300/60 via-blue-300/40 to-cyan-300/60 blur-2xl">
+              class="absolute -inset-3 -z-10 rounded-[30px] from-cyan-300/60 via-blue-300/40 to-cyan-300/60 blur-2xl">
             </div>
 
             <CalculatorView variant="banner" :initial-amount="1000" :show-button="true" :show-terms="true"
               :show-reductions="true" :button-text="t('send_money_now')" :title="t('calculatorTitle')"
-              :subtitle="t('calculator_description')" custom-classes="!max-w- !rounded-[30px] !p-7" />
+              :subtitle="t('calculator_description')" custom-classes="!max-w-xl !rounded-[30px] !p-7" />
 
 
           </div>
