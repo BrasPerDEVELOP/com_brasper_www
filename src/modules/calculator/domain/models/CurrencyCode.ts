@@ -12,7 +12,7 @@ export const CURRENCY_LABELS: Record<CurrencyCode, string> = {
 
 /** Pares permitidos: desde cada moneda, a cuáles se puede enviar. */
 export const CURRENCY_OPTIONS: Record<CurrencyCode, CurrencyCode[]> = {
-  pen: ['brl', 'usd'],
+  pen: ['brl'],
   usd: ['brl'],
   brl: ['pen', 'usd']
 }

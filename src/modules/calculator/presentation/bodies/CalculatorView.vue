@@ -53,22 +53,6 @@
         </div>
       </div>
 
-      <!-- Transfer Arrow -->
-<!--       <div class="flex justify-center">
-        <button
-          type="button"
-          class="group flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary-hover"
-          :title="t('exchange_rate')"
-          @click="swapCurrencies"
-        >
-          <svg class="h-6 w-6" viewBox="0 0 48 48" fill="currentColor"
-            xmlns="http://www.w3.org/2000/svg"
-            :class="'transition-transform duration-200 group-hover:rotate-180'">
-            <path d="M14 4  L4 14       Q2 16 4 18       Q6 20 8 18       L12 14       V36       Q12 40 16 40       Q20 40 20 36       V14       L24 18       Q26 20 28 18       Q30 16 28 14       L18 4       Q16 2 14 4Z" />
-            <path d="M34 44       L44 34       Q46 32 44 30       Q42 28 40 30       L36 34       V12       Q36 8 32 8       Q28 8 28 12       V34       L24 30       Q22 28 20 30       Q18 32 20 34       L30 44       Q32 46 34 44Z" />
-          </svg>
-        </button>
-      </div> -->
 
       <!-- RECIPIENT RECEIVES Section -->
       <div class="border overflow-visible border-gray-300 text-2xl rounded-xl px-3 py-2 shadow-lg">
@@ -131,22 +115,20 @@
         <div class="flex justify-between text-sm">
           <span class="text-gray-600">{{ t('exchange_rate') }}</span>
           <span class="font-semibold text-gray-900">
-          {{ calculatorStore.currencyFrom.toUpperCase() }} = {{ summaryRate }} {{ calculatorStore.currencyTo.toUpperCase() }}
+            1 {{ calculatorStore.currencyFrom.toUpperCase() }} = {{ summaryRate }} {{ calculatorStore.currencyTo.toUpperCase() }}
           </span>
         </div>
       </div>
 
-      <!-- Cupones -->
-
       <div
         v-if="calculatorStore.currentAutomaticCoupon"
-        class="rounded-2xl border border-primary/30 bg-lighter px-4 py-3"
+        class="rounded-2xl border border-teal-200 bg-stone-100 px-4 py-3"
       >
         <div class="flex items-center justify-between gap-3">
           <div class="flex min-w-0 flex-1 gap-3">
             <div
               v-if="!calculatorStore.skipAutomaticCoupon"
-              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-secondary text-secondary"
+              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-teal-500 text-teal-500"
             >
               <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path
@@ -656,7 +638,7 @@ function handleButtonClick() {
 const getContainerClasses = computed(() => {
   const baseClasses = {
     'default': 'rounded-lg bg-white p-6 shadow-sm',
-    'banner': 'w-full max-w-lg rounded-2xl bg-white p-7 shadow-2xl md:p-8',
+    'banner': 'w-full max-w-full rounded-2xl bg-white p-6 shadow-2xl',
     'compact': 'rounded-lg bg-white p-4 shadow-sm',
     'inline': 'bg-transparent p-0 shadow-none'
   }
