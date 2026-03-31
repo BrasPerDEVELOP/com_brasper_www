@@ -18,7 +18,7 @@
     <div class="mt-4 space-y-4">
       <!-- YOU SEND Section -->
       <div class="border overflow-visible border-gray-300 text-2xl rounded-xl px-3 py-2 shadow-lg">
-        <label class="block text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <label class="block text-xs font-semibold uppercase pl-2 tracking-wide text-gray-500">
           {{ t('you_send') }}
         </label>
         <div class="flex gap-0">
@@ -27,7 +27,7 @@
             type="text"
             inputmode="decimal"
             autocomplete="off"
-            :class="variant === 'banner' ? 'min-w-0 flex-1 text-black   font-semibold focus:outline-none' : 'min-w-0 flex-1 rounded-lg border px-3 sm:px-4 py-3 text-base  focus:outline-none focus:ring-2 '"
+            :class="variant === 'banner' ? 'min-w-0 flex-1 text-black pl-2  font-semibold focus:outline-none' : 'min-w-0 flex-1 rounded-lg border px-3 sm:px-4 py-3 text-base  focus:outline-none focus:ring-2 '"
             placeholder="1000"
             @focus="activeInput = 'send'"
             @input="onAmountSendInput"
@@ -42,7 +42,7 @@
             />
             <select
               :value="calculatorStore.currencyFrom"
-              :class="variant === 'banner' ? 'w-full text-black bg-white py-3 pr-3 pl-8 text-lg font-light  focus:outline-none' : 'w-full rounded-lg border bg-white py-3 pr-2 sm:pr-3 pl-8 text-sm focus:outline-none focus:ring-2'"
+              :class="variant === 'banner' ? 'w-full text-black bg-white py-2 pl-10 pr-10 text-lg font-light  focus:outline-none' : 'w-full rounded-lg border bg-white py-3 pr-2 sm:pr-3 pl-8 text-sm focus:outline-none focus:ring-2'"
               @change="onFromChange($event)"
             >
               <option v-for="code in CURRENCY_CODES" :key="code" :value="code">
@@ -55,8 +55,8 @@
 
 
       <!-- RECIPIENT RECEIVES Section -->
-      <div class="border overflow-visible border-gray-300 text-2xl rounded-xl px-3 py-2 shadow-lg">
-        <label class="block text-xs font-semibold uppercase tracking-wide text-gray-500">
+      <div class="border overflow-visible border-gray-300  text-2xl rounded-xl px-3 py-2 shadow-lg">
+        <label class="block text-xs font-semibold uppercase pl-2 tracking-wide text-gray-500">
           {{ t('recipient_receives') }}
         </label>
       <div class="flex gap-0">
@@ -65,7 +65,7 @@
             type="text"
             inputmode="decimal"
             autocomplete="off"
-            :class="variant === 'banner' ? 'min-w-0 flex-1 text-black   font-semibold focus:outline-none' : 'min-w-0 flex-1 rounded-lg border px-3 sm:px-4 py-3 text-base  focus:outline-none focus:ring-2 '"
+            :class="variant === 'banner' ? 'min-w-0 flex-1 text-black pl-2  font-semibold focus:outline-none' : 'min-w-0 flex-1 rounded-lg border px-3 sm:px-4 py-3 text-base  focus:outline-none focus:ring-2 '"
             placeholder="0.00"
             @focus="activeInput = 'receive'"
             @input="onAmountReceiveInput"
@@ -80,7 +80,7 @@
             />
             <select
               :value="calculatorStore.currencyTo"
-              :class="variant === 'banner' ? 'w-full text-black bg-white py-3 pr-3 pl-8 text-lg font-light focus:outline-none' : 'w-full rounded-lg border bg-white py-3 pr-2 sm:pr-3 pl-8 text-sm focus:outline-none focus:ring-2'"
+              :class="variant === 'banner' ? 'w-full text-black bg-white py-2 pr-10 pl-10  text-lg font-light focus:outline-none' : 'w-full rounded-lg border bg-white py-3 pr-2 sm:pr-3 pl-8 text-sm focus:outline-none focus:ring-2'"
               @change="onToChange($event)"
             >
               <option v-for="code in calculatorStore.destinationOptions" :key="code" :value="code">

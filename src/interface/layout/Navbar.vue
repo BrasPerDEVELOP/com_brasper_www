@@ -8,7 +8,7 @@
         <img
           src="/assets/images/logo/logo_completo.png"
           alt="Brasper"
-          class="h-10 w-auto sm:h-11"
+          class="h-10 w-auto sm:h-14"
         />
       </router-link>
 

@@ -15,14 +15,14 @@
       <div
         class="relative z-10 mx-auto flex max-w-7xl flex-col items-stretch justify-center gap-8 px-4 py-12 sm:px-6 md:flex-row md:items-start md:gap-6 lg:gap-12 lg:px-12 lg:py-20">
         <!-- 🔹 Columna Izquierda: puede reducirse para dejar espacio a la calculadora -->
-        <div class="min-w-0 w-full flex-1 text-center md:text-left">
-          <div class="flex items-center gap-2">
+        <div class="min-w-0 w-full  flex-1 text-center md:text-left">
+          <div class="flex items-center gap-2 font-bold">
 
             <Icon icon="ic:round-whatsapp" width="32" height="32" class="shrink-0" />
             <span
-              class="inline-flex rounded-full border bg-cyan-50 px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-widest text-cyan-700">
+              class="inline-flex rounded-full text-xs px-3 py-1.5 uppercase tracking-widest text-white">
 
-              <p class="text-yellow-500">{{ t('landing_badge_title') }}</p>
+              <p class="text-yellow-400">{{ t('landing_badge_title') }}</p>
               {{ t('landing_badge') }}
             </span>
           </div>
@@ -45,7 +45,7 @@
  -->
 
             <img :src="bannerImageSrc" :alt="t('landing_badge')" loading="eager" decoding="async"
-              class="mx-auto h-auto w-full max-w-md object-contain md:mx-0 md:max-w-full transform transition-transform duration-700 ease-out hover:-translate-y-0.5" />
+              class=""/>
             <!--             <a href="#how-it-works"
               class="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100">
               {{ t('landing_cta_how') }}
@@ -67,7 +67,7 @@
         </div>
 
         <!-- 🔹 Columna Derecha: calculadora con ancho fijo mínimo; no flex-shrink -->
-        <div class="mx-auto w-full shrink-0 md:mx-0 md:w-[min(100%,22rem)] lg:w-[min(100%,28rem)] xl:w-[min(100%,36rem)]">
+        <div class="mx-auto sm:w-lg w-full">
           <div class="relative w-full min-w-[min(100%,280px)]">
             <div
               class="absolute -inset-3 -z-10 rounded-[30px] bg-gradient-to-r from-cyan-300/60 via-blue-300/40 to-cyan-300/60 blur-2xl">
