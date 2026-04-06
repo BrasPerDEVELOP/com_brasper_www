@@ -5,11 +5,7 @@
         <!-- Columna 1: Logo y descripción -->
         <div class="space-y-4">
           <div class="flex items-center gap-2">
-            <img
-              src="/assets/images/logo/logo_completo.png"
-              alt="Brasper"
-              class="h-8 w-auto"
-            />
+            <img :src="logoCompleto" alt="Brasper" class="h-8 w-auto" />
           </div>
           <p class="text-sm leading-relaxed text-white/90">
             {{ t('footer_description') }}
@@ -97,6 +93,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import logoCompleto from '@/assets/images/logo/logo_completo.png'
 
 const { t } = useI18n()
 </script>

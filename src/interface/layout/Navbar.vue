@@ -5,11 +5,7 @@
   >
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
       <router-link :to="{ name: 'homepage' }" class="flex items-center">
-        <img
-          src="/assets/images/logo/logo_completo.png"
-          alt="Brasper"
-          class="h-10 w-auto sm:h-14"
-        />
+        <img :src="logoCompleto" alt="Brasper" class="h-10 w-auto sm:h-14" />
       </router-link>
 
       <div class="hidden items-center gap-8 lg:flex">
@@ -137,6 +133,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import logoCompleto from '@/assets/images/logo/logo_completo.png'
 // import { useAuthStore } from '@/modules/auth/presentation/controllers/useAuthStore'
 import { useLanguage } from '@/interface/presentation/composables/useLanguage'
 import type { Locale } from '@/interface/presentation/composables/useLanguage'
