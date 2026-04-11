@@ -55,7 +55,7 @@
               :href="slide.channelUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700 sm:text-base"
+              class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700 sm:text-white"
             >
               {{ slide.buttonLabel }}
             </a>
