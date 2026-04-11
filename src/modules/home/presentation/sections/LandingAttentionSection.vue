@@ -23,54 +23,76 @@
             class="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl lg:leading-[1.1]"
           >
             {{ t('landing_attention_title_prefix') }}
-            <span class="text-cyan-600">{{ t('landing_attention_title_highlight') }}</span>
+            <span class="text-secondary">{{ t('landing_attention_title_highlight') }}</span>
           </h2>
-          <p class="max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-            {{ t('landing_attention_description') }}
+         
+        </div>
+
+        <div class="max-w-2xl rounded-2xl border border-slate-100 bg-white p-6 shadow-sm sm:p-7">
+          <h3 class="text-xl font-bold tracking-tight text-secondary sm:text-2xl">
+            {{ t('landing_attention_hours_title') }}
+          </h3>
+
+          <p class="mt-5 text-sm font-semibold text-slate-700">
+            {{ t('landing_attention_hours_section_regular') }}
+          </p>
+          <ul class="mt-3 space-y-4" role="list">
+            <li v-for="row in attentionRegularRows" :key="row.hoursKey" class="flex gap-3">
+              <span
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary text-white shadow-sm"
+                aria-hidden="true"
+              >
+                <Icon icon="mdi:clock-outline" class="h-4 w-4" />
+              </span>
+              <p class="pt-0.5 text-base font-semibold leading-snug text-secondary">
+                {{ t(row.labelKey) }}:
+                <span class="font-bold"> {{ t(row.hoursKey) }}</span>
+              </p>
+            </li>
+          </ul>
+
+          <p class="mt-6 text-sm font-semibold text-slate-700">
+            {{ t('landing_attention_hours_section_extended') }}
+          </p>
+          <ul class="mt-3 space-y-4" role="list">
+            <li v-for="row in attentionExtendedRows" :key="row.hoursKey" class="flex gap-3">
+              <span
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary text-white shadow-sm"
+                aria-hidden="true"
+              >
+                <Icon icon="mdi:clock-outline" class="h-4 w-4" />
+              </span>
+              <p class="pt-0.5 text-base font-semibold leading-snug text-secondary">
+                {{ t(row.labelKey) }}:
+                <span class="font-bold"> {{ t(row.hoursKey) }}</span>
+              </p>
+            </li>
+          </ul>
+
+          <p class="mt-6 text-sm font-semibold text-slate-700">
+            {{ t('landing_attention_hours_section_holidays') }}
+          </p>
+          <ul class="mt-3 space-y-4" role="list">
+            <li v-for="row in attentionHolidayRows" :key="row.hoursKey" class="flex gap-3">
+              <span
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary text-white shadow-sm"
+                aria-hidden="true"
+              >
+                <Icon icon="mdi:clock-outline" class="h-4 w-4" />
+              </span>
+              <p class="pt-0.5 text-base font-semibold leading-snug text-secondary">
+                {{ t(row.labelKey) }}:
+                <span class="font-bold"> {{ t(row.hoursKey) }}</span>
+              </p>
+            </li>
+          </ul>
+
+          <p class="mt-5 text-xs leading-relaxed text-slate-500">
+            {{ t('landing_attention_hours_footnote') }}
           </p>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <article
-            class="flex flex-col gap-4 rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_12px_32px_-4px_rgba(44,47,48,0.06)]"
-          >
-            <div
-              class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white"
-            >
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-            <div>
-              <h3 class="text-lg font-bold text-slate-900">
-                {{ t('landing_attention_card_avg_title') }}
-              </h3>
-              <p class="mt-1 font-medium text-slate-600">
-                {{ t('landing_attention_card_avg_description') }}
-              </p>
-            </div>
-          </article>
-          <article
-            class="flex flex-col gap-4 rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_12px_32px_-4px_rgba(44,47,48,0.06)]"
-          >
-            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-cyan-700">
-              <Icon icon="ic:round-support-agent" class="h-6 w-6" aria-hidden="true" />
-            </div>
-            <div>
-              <h3 class="text-lg font-bold text-slate-900">
-                {{ t('landing_attention_card_support_title') }}
-              </h3>
-              <p class="mt-1 font-medium text-slate-600">
-                {{ t('landing_attention_card_support_description') }}
-              </p>
-            </div>
-          </article>
-        </div>
+    
 
         <div class="pt-2">
           <a
@@ -95,7 +117,7 @@
         <div class="relative z-10 overflow-hidden rounded-[2rem] shadow-2xl ring-1 ring-slate-200/60">
           <div class="relative aspect-square w-full min-h-[280px] sm:min-h-0">
             <img
-              src="/assets/images/home/horario.jpeg"
+              src="/assets/images/home/horario.png"
               :alt="t('landing_attention_image_alt')"
               class="absolute inset-0 h-full w-full object-cover"
               loading="lazy"
@@ -113,4 +135,17 @@ import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
 
 const { t } = useI18n()
+
+const attentionRegularRows = [
+  { labelKey: 'landing_attention_hours_weekdays_label', hoursKey: 'landing_attention_hours_weekdays_hours' },
+] as const
+
+const attentionExtendedRows = [
+  { labelKey: 'landing_attention_hours_saturday_label', hoursKey: 'landing_attention_hours_saturday_hours' },
+  { labelKey: 'landing_attention_hours_sunday_label', hoursKey: 'landing_attention_hours_sunday_hours' },
+] as const
+
+const attentionHolidayRows = [
+  { labelKey: 'landing_attention_hours_holiday_label', hoursKey: 'landing_attention_hours_holiday_hours' },
+] as const
 </script>

@@ -69,37 +69,7 @@
         </article>
       </div>
 
-     <!--  <div
-        class="relative mt-16 overflow-hidden rounded-2xl border border-slate-200/80 bg-white/85 p-10 shadow-2xl backdrop-blur-md sm:p-14 md:p-16"
-      >
-        <div
-          class="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-blue-600/10"
-          aria-hidden="true"
-        />
-        <div class="relative z-10 mx-auto max-w-3xl text-center">
-          <h3 class="mb-6 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl lg:text-5xl">
-            {{ t('landing_impact_cta_title') }}
-          </h3>
-          <p class="mb-10 text-lg font-normal text-slate-600">
-            {{ t('landing_impact_cta_description') }}
-          </p>
-          <router-link
-            :to="{ name: 'register' }"
-            class="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-blue-600 to-cyan-400 px-8 py-4 text-sm font-black uppercase tracking-widest text-white shadow-lg transition-all duration-300 hover:shadow-cyan-200/50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 sm:px-10 sm:py-5"
-          >
-            {{ t('landing_impact_cta_button') }}
-            <svg
-              class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </router-link>
-        </div>
-      </div> -->
+   
 
     </div>
   </section>
@@ -144,7 +114,7 @@ const impactStatItems = computed<ImpactStatItem[]>(() => [
     glowOrbClass: 'bg-blue-600/10 group-hover:bg-blue-600/15'
   },
   {
-    icon: 'mdi:currency-exchange',
+    icon: 'mdi:currency-usd',
     valueKey: 'landing_impact_stat_3_value',
     valueNoteKey: 'landing_impact_millions_abbrev',
     labelKey: 'landing_impact_stat_3_label',

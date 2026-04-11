@@ -38,6 +38,6 @@ app.mount('#app')
     fontImportUrl: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap',
     onOpen: () => console.log('chat abierto'),
   })
-} */
+}  */
  
 useAuthStore().restoreSession()

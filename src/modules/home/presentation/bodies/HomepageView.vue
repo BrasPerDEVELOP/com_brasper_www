@@ -6,11 +6,9 @@
 
     <BancosSlider />
 
-    <ScheduleTransferForm />
+    <LandingImpactSection /> 
 
-<!--     <LandingAttentionSection /> -->
-
-<!--     <LandingImpactSection /> -->
+    <LandingAttentionSection />
 
     <LandingAboutContactSection />
 
@@ -19,6 +17,8 @@
     <LandingPartnersSection />
 
     <LandingBestRatesSection />
+    
+    <ScheduleTransferForm />
 
     <LandingAboutAdvantagesSection />
 
@@ -37,10 +37,10 @@ import BancosSlider from '../widgets/BancosSlider.vue'
 import ScheduleTransferForm from '../widgets/ScheduleTransferForm.vue'
 import SocialHelpWidget from '../widgets/SocialHelpWidget.vue'
 import HomeHeroBanner from '../sections/HomeHeroBanner.vue'
-/* import LandingAttentionSection from '../sections/LandingAttentionSection.vue' */
+import LandingAttentionSection from '../sections/LandingAttentionSection.vue' 
 
 const GetInformedSlider = defineAsyncComponent(() => import('../widgets/GetInformedSlider.vue'))
-/* const LandingImpactSection = defineAsyncComponent(() => import('../sections/LandingImpactSection.vue')) */
+const LandingImpactSection = defineAsyncComponent(() => import('../sections/LandingImpactSection.vue')) 
 const LandingAboutContactSection = defineAsyncComponent(() => import('../sections/LandingAboutContactSection.vue'))
 const LandingPartnersSection = defineAsyncComponent(() => import('../sections/LandingPartnersSection.vue'))
 const LandingBestRatesSection = defineAsyncComponent(() => import('../sections/LandingBestRatesSection.vue'))
