@@ -26,7 +26,31 @@ export function http(path: string): string {
   return `${base}${normalizedPath}`
 }
 
+/**
+ * URL absoluta para ficheros media (p. ej. home_banner/..., profile_image).
+ * Misma regla que el backoffice: http(s) tal cual; media/ bajo base; resto bajo /media/.
+ */
+export function mediaUrl(relativePath: string): string {
+  if (!relativePath || typeof relativePath !== 'string') return ''
+  const trimmed = relativePath.trim()
+  if (!trimmed) return ''
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed
+
+  const rawBase = env.mediaBaseUrl.trim() || buildBaseUrl()
+  const base = rawBase.replace(/\/$/, '')
+  let path = trimmed.startsWith('/') ? trimmed.slice(1) : trimmed
+
+  if (path.startsWith('media/')) {
+    return `${base}/${path}`
+  }
+  if (!path.includes('/')) {
+    path = `profile_images/${path}`
+  }
+  return `${base}/media/${path}`
+}
+
 export const Domain = {
   buildBaseUrl,
-  http
+  http,
+  mediaUrl
 }

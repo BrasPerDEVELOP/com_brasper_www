@@ -32,6 +32,14 @@ export const env = {
     return getEnv('VITE_DOMAIN', '')
   },
 
+  /**
+   * Base para URLs de ficheros media (CDN u otro host).
+   * Vacío → misma base que el API (buildBaseUrl).
+   */
+  get mediaBaseUrl(): string {
+    return getEnv('VITE_MEDIA_BASE_URL', '')
+  },
+
   /** Prefijo de ruta opcional (empresa/tenant) */
   get company(): string {
     return getEnv('VITE_COMPANY', '')
@@ -40,6 +48,14 @@ export const env = {
   /** País por defecto */
   get country(): string {
     return getEnv('VITE_COUNTRY', 'US')
+  },
+
+  /**
+   * UUID del banner home (GET /home-banner/home-image/{id}/).
+   * Vacío → se usa la lista GET /home-banner/home-image/ y se elige uno habilitado.
+   */
+  get homeBannerId(): string {
+    return getEnv('VITE_HOME_BANNER_ID', '')
   },
 
   /** Usuario para prellenar login (desarrollo) */
