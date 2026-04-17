@@ -13,7 +13,8 @@ dist-ssr
 *.local
 
 skills/
- 
+
+ads.txt
 .pnpm-store/
 
 .env

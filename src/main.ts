@@ -26,7 +26,7 @@ setAuthCallbacks(
 app.mount('#app')
 
 /* if (typeof window !== 'undefined' && (window as any).EmbeddingGemmaChat) {
-  ;(window as any).EmbeddingGemmaChat.init({
+  (window as any).EmbeddingGemmaChat.init({
     apiUrl: import.meta.env.VITE_CHAT_API_URL as string,
     title: 'Asistente Brasper',
     position: 'bottom-right',
@@ -38,6 +38,6 @@ app.mount('#app')
     fontImportUrl: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap',
     onOpen: () => console.log('chat abierto'),
   })
-}  */
+}   */
  
 useAuthStore().restoreSession()

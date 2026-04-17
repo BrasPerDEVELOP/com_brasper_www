@@ -116,7 +116,6 @@ const impactStatItems = computed<ImpactStatItem[]>(() => [
   {
     icon: 'mdi:currency-usd',
     valueKey: 'landing_impact_stat_3_value',
-    valueNoteKey: 'landing_impact_millions_abbrev',
     labelKey: 'landing_impact_stat_3_label',
     descKey: 'landing_impact_stat_3_description',
     barWidthClass: 'w-5/6',
