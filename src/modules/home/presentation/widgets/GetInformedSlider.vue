@@ -21,11 +21,23 @@
             :aria-label="slide.alt"
             @click="openVideo(slide.videoSrc)"
           >
-            <img
-              :src="slide.thumbnail"
-              :alt="slide.alt"
-              class="aspect-video w-full object-cover transition duration-500 group-hover:scale-105"
-            />
+            <picture>
+              <source
+                v-if="slide.thumbnailSmall"
+                :srcset="slide.thumbnailSmall"
+                media="(max-width: 768px)"
+              >
+              <img
+                :src="slide.thumbnail"
+                :alt="slide.alt"
+                class="aspect-video w-full object-cover transition duration-500 group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
+                width="550"
+                height="390"
+                sizes="(max-width: 768px) 100vw, 332px"
+              />
+            </picture>
             <div class="absolute inset-0 bg-slate-900/20 transition group-hover:bg-slate-900/30" />
             <div
               class="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-2xl text-indigo-600 shadow-lg transition group-hover:scale-105"
@@ -125,6 +137,7 @@ import { useI18n } from 'vue-i18n'
 
 interface InformedSlide {
   thumbnail: string
+  thumbnailSmall?: string
   videoSrc: string
   alt: string
   title: string
@@ -142,6 +155,7 @@ const activeVideoSrc = ref('')
 const slides = computed<InformedSlide[]>(() => [
   {
     thumbnail: '/assets/projects/img_video2.png',
+    thumbnailSmall: '/assets/projects/img_video2-332.jpg',
     videoSrc: 'https://www.youtube.com/embed/r3lA3P9evjk?start=18&rel=0&autoplay=1',
     alt: t('landing_get_informed_slide_1_alt'),
     title: t('landing_get_informed_slide_1_title'),

@@ -1,6 +1,7 @@
 import axios, { type AxiosInstance } from 'axios'
 import { Domain } from '@/interface/infrastructure/services'
 import { createLoggerWithContext } from '@/interface/infrastructure/logger'
+import { appLocaleToRouteLocale, getSavedAppLocale } from '@/interface/presentation/i18n/locales'
 
 const log = createLoggerWithContext('api')
 
@@ -17,7 +18,10 @@ let onUnauthorized: OnUnauthorizedFn = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('auth_user')
   }
-  if (typeof window !== 'undefined') window.location.href = '/auth'
+  if (typeof window !== 'undefined') {
+    const locale = appLocaleToRouteLocale(getSavedAppLocale())
+    window.location.href = `/${locale}/auth`
+  }
 }
 
 /**

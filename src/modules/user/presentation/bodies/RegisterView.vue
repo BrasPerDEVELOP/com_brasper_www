@@ -72,7 +72,7 @@
         </p>
         <p class="text-center text-sm text-on-surface/80">
           ¿Ya tienes cuenta?
-          <router-link to="/auth" class="font-medium text-primary hover:underline">
+          <router-link :to="{ name: 'auth' }" class="font-medium text-primary hover:underline">
             {{ t(TR.login) }}
           </router-link>
         </p>
@@ -138,7 +138,7 @@ async function handleSubmit() {
   }
   try {
     await registerStore.register(cmd)
-    router.push('/auth')
+    router.push({ name: 'auth' })
   } catch {
     // Error ya mostrado en el store
   }

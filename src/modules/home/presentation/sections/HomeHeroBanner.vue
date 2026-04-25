@@ -25,11 +25,15 @@
         </h1>
 
         <div class="mt-4 flex flex-wrap items-center justify-center gap-4 lg:justify-center">
-             <img
+              <img
                 :src="bannerImageSrc"
                 :alt="t('landing_badge')"
                 loading="eager"
+                fetchpriority="high"
                 decoding="async"
+                width="760"
+                height="366"
+                sizes="(max-width: 768px) 100vw, 380px"
                 class="h-full w-full object-cover"
                 @error="onBannerImageError"
               />
@@ -44,7 +48,7 @@
           />
           <CalculatorView
             variant="banner"
-            :initial-amount="1000"
+            :initial-amount="300"
             :show-button="true"
             :show-terms="true"
             :show-reductions="true"

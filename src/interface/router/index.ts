@@ -1,43 +1,55 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import ClientLayout from '@/interface/layout/ClientLayout.vue'
+import { i18n } from '@/interface/presentation/i18n'
+import {
+  appLocaleToRouteLocale,
+  getPreferredRouteLocale,
+  isRouteLocale,
+  routeLocaleToAppLocale,
+  type RouteLocale
+} from '@/interface/presentation/i18n/locales'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
+    redirect: () => ({ name: 'homepage', params: { locale: getPreferredRouteLocale() } })
+  },
+  {
+    path: '/:locale(es|en|pr)',
     name: 'homepage',
     component: () => import('@/modules/home/presentation/bodies/HomepageView.vue'),
-    meta: { public: true }
+    meta: { public: true, localized: true }
   },
   {
-    path: '/blog',
+    path: '/:locale(es|en|pr)/blog',
     name: 'blog-list',
     component: () => import('@/modules/blog/presentation/bodies/BlogListView.vue'),
-    meta: { public: true }
+    meta: { public: true, localized: true }
   },
   {
-    path: '/blog/:slug',
+    path: '/:locale(es|en|pr)/blog/:slug',
     name: 'blog-detail',
     component: () => import('@/modules/blog/presentation/bodies/BlogDetailView.vue'),
-    meta: { public: true }
+    meta: { public: true, localized: true }
   },
   {
-    path: '/faq',
+    path: '/:locale(es|en|pr)/faq',
     name: 'faq',
     component: () => import('@/modules/home/presentation/bodies/FaqView.vue'),
-    meta: { public: true }
+    meta: { public: true, localized: true }
   },
   {
-    path: '/auth',
+    path: '/:locale(es|en|pr)/auth',
     name: 'auth',
     component: () => import('@/modules/auth/presentation/bodies/LoginView.vue'),
-    meta: { public: true }
+    meta: { public: true, localized: true, robots: 'noindex,follow' }
   },
   {
-    path: '/register',
+    path: '/:locale(es|en|pr)/register',
     name: 'register',
     component: () => import('@/modules/user/presentation/bodies/RegisterView.vue'),
-    meta: { public: true }
+    meta: { public: true, localized: true, robots: 'noindex,follow' }
   },
   {
     path: '/dashboard',
@@ -134,6 +146,31 @@ const TOKEN_KEY = 'token'
 
 // Guard: rutas públicas (/, /auth, /register) libres; todo lo bajo /dashboard requiere auth.
 router.beforeEach(async (to, _from, next) => {
+  const targetLocale = isRouteLocale(to.params.locale)
+    ? (to.params.locale as RouteLocale)
+    : undefined
+
+  if (to.meta.localized === true && !targetLocale && to.name) {
+    next({
+      name: String(to.name),
+      params: {
+        ...to.params,
+        locale: getPreferredRouteLocale()
+      },
+      query: to.query,
+      hash: to.hash,
+      replace: true
+    })
+    return
+  }
+
+  if (targetLocale) {
+    const appLocale = routeLocaleToAppLocale(targetLocale)
+    i18n.global.locale.value = appLocale
+    localStorage.setItem('locale', appLocale)
+    document.documentElement.lang = appLocale === 'pt' ? 'pt-BR' : appLocale === 'en' ? 'en-US' : 'es-PE'
+  }
+
   const requiresAuth = to.matched.some((r) => r.meta.requiresAuth)
   const isPublic = to.meta.public === true
 
@@ -144,7 +181,11 @@ router.beforeEach(async (to, _from, next) => {
 
   const token = localStorage.getItem(TOKEN_KEY)
   if (!token) {
-    next({ path: '/auth', query: { redirect: to.fullPath } })
+    next({
+      name: 'auth',
+      params: { locale: appLocaleToRouteLocale(i18n.global.locale.value as 'es' | 'en' | 'pt') },
+      query: { redirect: to.fullPath }
+    })
     return
   }
 

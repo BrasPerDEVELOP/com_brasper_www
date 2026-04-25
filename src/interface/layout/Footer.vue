@@ -5,7 +5,7 @@
         <!-- Columna 1: Logo y descripción -->
         <div class="space-y-4">
           <div class="flex items-center gap-2">
-            <img :src="logoCompleto" alt="Brasper" class="h-8 w-auto" />
+            <img :src="logoCompleto" alt="Brasper" class="h-8 w-auto" width="166" height="40" loading="lazy" />
           </div>
           <p class="text-sm leading-relaxed text-white/90">
             {{ t('footer_description') }}
@@ -23,19 +23,19 @@
           <h3 class="text-sm font-bold uppercase mb-4">{{ t('footer_services_title') }}</h3>
           <ul class="space-y-2">
             <li>
-              <a href="#bancos-section" class="text-sm text-white/80 hover:text-white transition-colors">
+              <router-link :to="{ name: 'homepage', hash: '#bancos-section' }" class="text-sm text-white/80 hover:text-white transition-colors">
                 {{ t('footer_services_banks') }}
-              </a>
+              </router-link>
             </li>
             <li>
-              <a href="#about" class="text-sm text-white/80 hover:text-white transition-colors">
+              <router-link :to="{ name: 'homepage', hash: '#about' }" class="text-sm text-white/80 hover:text-white transition-colors">
                 {{ t('footer_services_about') }}
-              </a>
+              </router-link>
             </li>
             <li>
-              <a href="#services" class="text-sm text-white/80 hover:text-white transition-colors">
+              <router-link :to="{ name: 'homepage', hash: '#services' }" class="text-sm text-white/80 hover:text-white transition-colors">
                 {{ t('footer_services_services') }}
-              </a>
+              </router-link>
             </li>
             <li>
               <router-link :to="{ name: 'blog-list' }" class="text-sm text-white/80 hover:text-white transition-colors">
@@ -50,9 +50,9 @@
           <h3 class="text-sm font-bold uppercase mb-4">{{ t('footer_who_we_are_title') }}</h3>
           <ul class="space-y-2">
             <li>
-              <a href="#vymision" class="text-sm text-white/80 hover:text-white transition-colors">
+              <router-link :to="{ name: 'homepage', hash: '#vymision' }" class="text-sm text-white/80 hover:text-white transition-colors">
                 {{ t('footer_who_we_are_vision_mission') }}
-              </a>
+              </router-link>
             </li>
           </ul>
         </div>
@@ -93,7 +93,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import logoCompleto from '@/assets/images/logo/logo_completo.png'
 
 const { t } = useI18n()
+const logoCompleto = '/assets/images/logo/logo-completo-332.png'
 </script>

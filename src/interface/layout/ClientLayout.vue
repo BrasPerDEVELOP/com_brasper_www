@@ -30,7 +30,7 @@
         </template>
         <template v-else>
           <router-link
-            to="/auth"
+            :to="{ name: 'auth' }"
             class="block rounded-lg px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
           >
             Iniciar sesión

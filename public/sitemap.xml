@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://brasper.com/pr</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://brasper.com/pr" />
+    <xhtml:link rel="alternate" hreflang="es-PE" href="https://brasper.com/es" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://brasper.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brasper.com/pr" />
+  </url>
+  <url>
+    <loc>https://brasper.com/pr/blog</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://brasper.com/pr/blog" />
+    <xhtml:link rel="alternate" hreflang="es-PE" href="https://brasper.com/es/blog" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://brasper.com/en/blog" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brasper.com/pr/blog" />
+  </url>
+  <url>
+    <loc>https://brasper.com/pr/faq</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://brasper.com/pr/faq" />
+    <xhtml:link rel="alternate" hreflang="es-PE" href="https://brasper.com/es/faq" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://brasper.com/en/faq" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brasper.com/pr/faq" />
+  </url>
+</urlset>

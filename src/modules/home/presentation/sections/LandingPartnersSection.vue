@@ -25,6 +25,10 @@
                   :src="currentPartner.logo"
                   :alt="currentPartner.name"
                   class="mx-auto mb-4 max-h-[200px] max-w-full object-contain"
+                  loading="lazy"
+                  decoding="async"
+                  width="332"
+                  height="235"
                   @error="markLogoError(currentPartner.id)"
                 />
                 <div v-else class="text-sm text-gray-400">Logo no disponible</div>

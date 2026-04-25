@@ -198,6 +198,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Navbar from '@/interface/layout/Navbar.vue'
 import Footer from '@/interface/layout/Footer.vue'
+import { useSeo } from '@/interface/presentation/composables/useSeo'
 import { useBlogStore } from '../controllers/useBlogStore'
 import type { Blog } from '../../domain/models'
 
@@ -215,8 +216,32 @@ const recommendedPosts = computed((): Blog[] => {
 })
 
 function getCloudinaryImage(publicId: string): string {
-  return `https://res.cloudinary.com/dhkmdutec/image/upload/${publicId}`
+  return `https://res.cloudinary.com/dhkmdutec/image/upload/f_auto,q_auto,w_1200/${publicId}`
 }
+
+const seoTitle = computed(() => {
+  const activeBlog = blog.value
+  return activeBlog?.title ? `${activeBlog.title} | Brasper` : t('seo_blog_detail_title')
+})
+
+const seoDescription = computed(() => {
+  const activeBlog = blog.value
+  return activeBlog?.excerpt || t('seo_blog_detail_description')
+})
+
+const seoImage = computed(() => {
+  const activeBlog = blog.value
+  return activeBlog?.public_id ? getCloudinaryImage(activeBlog.public_id) : '/assets/images/logo/logo_completo.png'
+})
+
+useSeo(
+  computed(() => ({
+    title: seoTitle.value,
+    description: seoDescription.value,
+    image: seoImage.value,
+    type: 'article'
+  }))
+)
 
 function formatDate(dateValue: string): string {
   if (!dateValue) return t('blog_no_date')

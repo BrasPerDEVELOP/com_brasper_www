@@ -7,12 +7,12 @@ export interface Banco {
 export const databancos: Banco[] = [
   {
     nombre: 'BCP',
-    img1: '/assets/images/bancos/bcp.png',
+    img1: '/assets/images/bancos/bcp_transparent.png',
     enlace: 'https://www.viabcp.com/'
   },
   {
     nombre: 'Banco do Brasil',
-    img1: '/assets/images/bancos/banco-do-brasil.png',
+    img1: '/assets/images/bancos/bdb.png',
     enlace: 'https://www.bb.com.br/'
   },
   {

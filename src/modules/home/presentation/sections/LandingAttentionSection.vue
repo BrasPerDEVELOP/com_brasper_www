@@ -116,13 +116,19 @@
       <div class="relative lg:col-span-5">
         <div class="relative z-10 overflow-hidden rounded-2xl shadow-2xl ring-1 ring-slate-200/60">
           <div class="relative aspect-square w-full min-h-[280px] sm:min-h-0">
-            <img
-              src="/assets/images/home/horario.png"
-              :alt="t('landing_attention_image_alt')"
-              class="absolute inset-0 h-full w-full object-cover"
-              loading="lazy"
-              decoding="async"
-            />
+            <picture>
+              <source srcset="/assets/images/home/horario-760.jpg" media="(max-width: 768px)">
+              <img
+                src="/assets/images/home/horario-1024.jpg"
+                :alt="t('landing_attention_image_alt')"
+                class="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+                width="1024"
+                height="1000"
+                sizes="(max-width: 768px) 100vw, 389px"
+              />
+            </picture>
           </div>
         </div>
       </div>

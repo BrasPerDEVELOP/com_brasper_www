@@ -172,6 +172,7 @@
                 <select
                   id="currencyRange"
                   v-model="form.currencyRange"
+                  aria-label="Rango de moneda"
                   class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="pen-brl">PEN → BRL</option>

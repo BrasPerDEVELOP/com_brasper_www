@@ -46,7 +46,7 @@ export function useLandingPartners() {
   const partners = computed<PartnerItem[]>(() => [
     {
       id: 1,
-      logo: '/assets/images/bancos/CLL.png',
+      logo: '/assets/images/bancos/CLL-480.png',
       name: t('landing_partner_ccl_subtitle'),
       title: t('landing_partner_ccl_title'),
       description: t('landing_partner_ccl_description'),

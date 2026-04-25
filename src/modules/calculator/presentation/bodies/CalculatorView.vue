@@ -3,7 +3,7 @@
     <!-- Header -->
     <template v-if="showTitle" >
       <div class="mb-6 flex items-center justify-center gap-2">
-       <img src="/assets/images/logo/logo.png" alt="Logo" class="w-10 h-10" />
+       <img src="/assets/images/logo/logo-80.png" alt="Logo Brasper" class="w-10 h-10" width="40" height="40" />
         <h1
           :class="variant === 'banner' ? 'text-xl font-semibold text-gray-900' : 'text-2xl font-semibold text-on-surface'">
           {{ t('calculatorTitle')}}
@@ -28,7 +28,7 @@
             inputmode="decimal"
             autocomplete="off"
             :class="variant === 'banner' ? 'min-w-0 flex-1 text-black pl-2  font-semibold focus:outline-none' : 'min-w-0 flex-1 rounded-lg border px-3 sm:px-4 py-3 text-base  focus:outline-none focus:ring-2 '"
-            placeholder="1000"
+            placeholder="300"
             @focus="activeInput = 'send'"
             @input="onAmountSendInput"
             @blur="onAmountSendBlur"
@@ -42,6 +42,7 @@
             />
             <select
               :value="calculatorStore.currencyFrom"
+              aria-label="Moneda de origen"
               :class="variant === 'banner' ? 'w-full text-black bg-white py-2 pl-10 pr-10 text-lg font-light  focus:outline-none' : 'w-full rounded-lg border bg-white py-3 pr-2 sm:pr-3 pl-8 text-sm focus:outline-none focus:ring-2'"
               @change="onFromChange($event)"
             >
@@ -80,6 +81,7 @@
             />
             <select
               :value="calculatorStore.currencyTo"
+              aria-label="Moneda de destino"
               :class="variant === 'banner' ? 'w-full text-black bg-white py-2 pr-10 pl-10  text-lg font-light focus:outline-none' : 'w-full rounded-lg border bg-white py-3 pr-2 sm:pr-3 pl-8 text-sm focus:outline-none focus:ring-2'"
               @change="onToChange($event)"
             >

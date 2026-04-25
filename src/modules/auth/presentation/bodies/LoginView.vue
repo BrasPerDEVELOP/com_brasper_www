@@ -53,7 +53,7 @@
             </p>
             <p class="text-center text-sm text-on-surface/80">
               ¿No tienes cuenta?
-              <router-link to="/register" class="font-medium text-primary hover:underline">
+              <router-link :to="{ name: 'register' }" class="font-medium text-primary hover:underline">
                 {{ t(TR.createAccount) }}
               </router-link>
             </p>

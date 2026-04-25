@@ -147,11 +147,19 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Navbar from '@/interface/layout/Navbar.vue'
 import Footer from '@/interface/layout/Footer.vue'
+import { useSeo } from '@/interface/presentation/composables/useSeo'
 import { useBlogStore } from '../controllers/useBlogStore'
 
 const blogStore = useBlogStore()
+const { t } = useI18n()
+
+useSeo({
+  title: t('seo_blog_title'),
+  description: t('seo_blog_description')
+})
 
 const categories = computed(() => blogStore.categories)
 const filteredBlogs = computed(() => blogStore.filteredBlogs)
@@ -163,7 +171,7 @@ const searchTerm = computed(() => blogStore.searchTerm)
 const activeCategory = computed(() => blogStore.category)
 
 function getCloudinaryImage(publicId: string): string {
-  return `https://res.cloudinary.com/dhkmdutec/image/upload/${publicId}`
+  return `https://res.cloudinary.com/dhkmdutec/image/upload/f_auto,q_auto,w_900/${publicId}`
 }
 
 function formatDate(dateValue: string): string {
