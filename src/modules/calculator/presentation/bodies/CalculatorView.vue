@@ -215,7 +215,7 @@ interface WhatsAppCopy {
   couponLine?: string
 }
 
-const WHATSAPP_PHONE_NUMBER = '51966991933'
+const WHATSAPP_PHONE_NUMBER = '51926032463'
 
 const { t, locale } = useI18n()
 const route = useRoute()
