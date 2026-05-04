@@ -459,7 +459,7 @@ const handleSendWhatsApp = () => {
     .replace(/{currencyRange}/g, formatCurrencyRange(form.value.currencyRange))
     .replace(/{amount}/g, form.value.amount ? `${currencySymbol.value}${form.value.amount}` : whatsapp.value.missingAmount)
 
-  const phoneNumber = '51926032463'
+  const phoneNumber = '51966991933'
   const encodedMessage = encodeURIComponent(message)
   window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank')
 }
