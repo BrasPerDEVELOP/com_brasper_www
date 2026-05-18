@@ -102,7 +102,7 @@
               </div>
               <div class="mt-4 flex justify-end">
                 <router-link
-                  :to="{ name: 'blog-detail', params: { slug: blog.slug } }"
+                  :to="{ name: 'blog-detail', params: { locale: routeLocale, slug: blog.slug } }"
                   class="inline-flex items-center gap-2 rounded bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors duration-300 hover:bg-indigo-700"
                 >
                   Leer más
@@ -147,13 +147,16 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Navbar from '@/interface/layout/Navbar.vue'
 import Footer from '@/interface/layout/Footer.vue'
 import { useSeo } from '@/interface/presentation/composables/useSeo'
+import { normalizeRouteLocale } from '@/interface/presentation/i18n/locales'
 import { useBlogStore } from '../controllers/useBlogStore'
 
 const blogStore = useBlogStore()
+const route = useRoute()
 const { t } = useI18n()
 
 useSeo({
@@ -169,6 +172,7 @@ const canPrev = computed(() => blogStore.canPrev)
 const canNext = computed(() => blogStore.canNext)
 const searchTerm = computed(() => blogStore.searchTerm)
 const activeCategory = computed(() => blogStore.category)
+const routeLocale = computed(() => normalizeRouteLocale(route.params.locale))
 
 function getCloudinaryImage(publicId: string): string {
   return `https://res.cloudinary.com/dhkmdutec/image/upload/f_auto,q_auto,w_900/${publicId}`

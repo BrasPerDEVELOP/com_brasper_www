@@ -72,7 +72,7 @@
         </p>
         <p class="text-center text-sm text-on-surface/80">
           ¿Ya tienes cuenta?
-          <router-link :to="{ name: 'auth' }" class="font-medium text-primary hover:underline">
+          <router-link :to="{ name: 'auth', params: { locale: routeLocale } }" class="font-medium text-primary hover:underline">
             {{ t(TR.login) }}
           </router-link>
         </p>
@@ -89,11 +89,13 @@ import { BaseButton, BaseInput } from '@/interface/widgets'
 import { TR } from '@/interface/domain/generated/tr'
 import { DOCUMENT_TYPES, PHONE_CODES } from '@/interface/enums'
 import type { DocumentType, PhoneCode } from '@/interface/enums'
+import { useLanguage } from '@/interface/presentation/composables/useLanguage'
 import type { UserCreateCmd } from '../../domain/models'
 import { useRegisterStore } from '../controllers/useRegisterStore'
 
 const router = useRouter()
 const { t } = useI18n()
+const { routeLocale } = useLanguage()
 const registerStore = useRegisterStore()
 
 const form = ref<{
@@ -138,7 +140,7 @@ async function handleSubmit() {
   }
   try {
     await registerStore.register(cmd)
-    router.push({ name: 'auth' })
+    router.push({ name: 'auth', params: { locale: routeLocale.value } })
   } catch {
     // Error ya mostrado en el store
   }

@@ -23,22 +23,22 @@
           <h3 class="text-sm font-bold uppercase mb-4">{{ t('footer_services_title') }}</h3>
           <ul class="space-y-2">
             <li>
-              <router-link :to="{ name: 'homepage', hash: '#bancos-section' }" class="text-sm text-white/80 hover:text-white transition-colors">
+              <router-link :to="{ name: 'homepage', params: { locale: routeLocale }, hash: '#bancos-section' }" class="text-sm text-white/80 hover:text-white transition-colors">
                 {{ t('footer_services_banks') }}
               </router-link>
             </li>
             <li>
-              <router-link :to="{ name: 'homepage', hash: '#about' }" class="text-sm text-white/80 hover:text-white transition-colors">
+              <router-link :to="{ name: 'homepage', params: { locale: routeLocale }, hash: '#about' }" class="text-sm text-white/80 hover:text-white transition-colors">
                 {{ t('footer_services_about') }}
               </router-link>
             </li>
             <li>
-              <router-link :to="{ name: 'homepage', hash: '#services' }" class="text-sm text-white/80 hover:text-white transition-colors">
+              <router-link :to="{ name: 'homepage', params: { locale: routeLocale }, hash: '#services' }" class="text-sm text-white/80 hover:text-white transition-colors">
                 {{ t('footer_services_services') }}
               </router-link>
             </li>
             <li>
-              <router-link :to="{ name: 'blog-list' }" class="text-sm text-white/80 hover:text-white transition-colors">
+              <router-link :to="{ name: 'blog-list', params: { locale: routeLocale } }" class="text-sm text-white/80 hover:text-white transition-colors">
                 {{ t('footer_services_blog') }}
               </router-link>
             </li>
@@ -50,7 +50,7 @@
           <h3 class="text-sm font-bold uppercase mb-4">{{ t('footer_who_we_are_title') }}</h3>
           <ul class="space-y-2">
             <li>
-              <router-link :to="{ name: 'homepage', hash: '#vymision' }" class="text-sm text-white/80 hover:text-white transition-colors">
+              <router-link :to="{ name: 'homepage', params: { locale: routeLocale }, hash: '#vymision' }" class="text-sm text-white/80 hover:text-white transition-colors">
                 {{ t('footer_who_we_are_vision_mission') }}
               </router-link>
             </li>
@@ -93,7 +93,9 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { useLanguage } from '@/interface/presentation/composables/useLanguage'
 
 const { t } = useI18n()
+const { routeLocale } = useLanguage()
 const logoCompleto = '/assets/images/logo/logo-completo-332.png'
 </script>

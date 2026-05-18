@@ -4,7 +4,7 @@
 
     <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
       <router-link
-        :to="{ name: 'blog-list' }"
+        :to="{ name: 'blog-list', params: { locale: routeLocale } }"
         class="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-700"
       >
         {{ t('blog_back_to_list') }}
@@ -135,7 +135,7 @@
               class="mb-4 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md"
             >
               <router-link
-                :to="{ name: 'blog-detail', params: { slug: item.slug } }"
+                :to="{ name: 'blog-detail', params: { locale: routeLocale, slug: item.slug } }"
                 class="block"
               >
                 <div class="h-32 w-full bg-slate-100">
@@ -199,6 +199,7 @@ import { useI18n } from 'vue-i18n'
 import Navbar from '@/interface/layout/Navbar.vue'
 import Footer from '@/interface/layout/Footer.vue'
 import { useSeo } from '@/interface/presentation/composables/useSeo'
+import { normalizeRouteLocale } from '@/interface/presentation/i18n/locales'
 import { useBlogStore } from '../controllers/useBlogStore'
 import type { Blog } from '../../domain/models'
 
@@ -209,6 +210,7 @@ const { t, locale } = useI18n()
 const blog = computed(() => blogStore.activeBlog)
 
 const currentSlug = computed(() => String(route.params.slug ?? ''))
+const routeLocale = computed(() => normalizeRouteLocale(route.params.locale))
 
 const recommendedPosts = computed((): Blog[] => {
   const s = currentSlug.value

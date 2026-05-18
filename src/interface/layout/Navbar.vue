@@ -4,37 +4,37 @@
     class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-md"
   >
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-      <router-link :to="{ name: 'homepage' }" class="flex items-center">
+      <router-link :to="{ name: 'homepage', params: { locale: routeLocale } }" class="flex items-center">
         <img :src="logoCompleto" alt="Brasper" class="h-10 w-auto sm:h-14" width="166" height="40" fetchpriority="high" />
       </router-link>
 
       <div class="hidden items-center gap-8 lg:flex">
         <router-link
-          :to="{ name: 'homepage', hash: '#about' }"
+          :to="{ name: 'homepage', params: { locale: routeLocale }, hash: '#about' }"
           class="text-sm font-medium text-slate-700 transition-colors hover:text-primary"
         >
           {{ t('about_us') }}
         </router-link>
         <router-link
-          :to="{ name: 'homepage', hash: '#bancos-section' }"
+          :to="{ name: 'homepage', params: { locale: routeLocale }, hash: '#bancos-section' }"
           class="text-sm font-medium text-slate-700 transition-colors hover:text-primary"
         >
           {{ t('nav_banks') }}
         </router-link>
         <router-link
-          :to="{ name: 'blog-list' }"
+          :to="{ name: 'blog-list', params: { locale: routeLocale } }"
           class="text-sm font-medium text-slate-700 transition-colors hover:text-primary"
         >
           {{ t('nav_blog') }}
         </router-link>
         <router-link
-          :to="{ name: 'faq' }"
+          :to="{ name: 'faq', params: { locale: routeLocale } }"
           class="text-sm font-medium text-slate-700 transition-colors hover:text-primary"
         >
           {{ t('faq') }}
         </router-link>
         <router-link
-          :to="{ name: 'homepage', hash: '#agenda' }"
+          :to="{ name: 'homepage', params: { locale: routeLocale }, hash: '#agenda' }"
           class="text-sm font-medium text-slate-700 transition-colors hover:text-primary"
         >
           {{ t('nav_agent') }}
@@ -81,23 +81,23 @@
 
     <div v-if="showMobileMenu" class="border-t border-slate-200 bg-white px-4 py-4 md:hidden">
       <div class="space-y-3">
-        <router-link :to="{ name: 'homepage', hash: '#about' }" class="block text-sm font-medium text-slate-700">
+        <router-link :to="{ name: 'homepage', params: { locale: routeLocale }, hash: '#about' }" class="block text-sm font-medium text-slate-700">
           {{ t('about_us') }}
         </router-link>
         <router-link
-          :to="{ name: 'homepage', hash: '#bancos-section' }"
+          :to="{ name: 'homepage', params: { locale: routeLocale }, hash: '#bancos-section' }"
           class="block text-sm font-medium text-slate-700"
         >
           {{ t('nav_banks') }}
         </router-link>
-        <router-link :to="{ name: 'blog-list' }" class="block text-sm font-medium text-slate-700">
+        <router-link :to="{ name: 'blog-list', params: { locale: routeLocale } }" class="block text-sm font-medium text-slate-700">
           {{ t('nav_blog') }}
         </router-link>
-        <router-link :to="{ name: 'faq' }" class="block text-sm font-medium text-slate-700">
+        <router-link :to="{ name: 'faq', params: { locale: routeLocale } }" class="block text-sm font-medium text-slate-700">
           {{ t('faq') }}
         </router-link>
         <router-link
-          :to="{ name: 'homepage', hash: '#agenda' }"
+          :to="{ name: 'homepage', params: { locale: routeLocale }, hash: '#agenda' }"
           class="block text-sm font-medium text-slate-700"
         >
           {{ t('nav_agent') }}
@@ -138,7 +138,7 @@ import { useLanguage } from '@/interface/presentation/composables/useLanguage'
 import type { Locale } from '@/interface/presentation/composables/useLanguage'
 
 // const authStore = useAuthStore() // descomentar al restaurar el botón de login
-const { locale, setLocale, t } = useLanguage()
+const { locale, routeLocale, setLocale, t } = useLanguage()
 const logoCompleto = '/assets/images/logo/logo-completo-332.png'
 const navbarRef = ref<HTMLElement | null>(null)
 const showMobileMenu = ref(false)

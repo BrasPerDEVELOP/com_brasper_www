@@ -16,6 +16,20 @@ const routes: RouteRecordRaw[] = [
     redirect: () => ({ name: 'homepage', params: { locale: getPreferredRouteLocale() } })
   },
   {
+    path: '/blog',
+    redirect: () => ({ name: 'blog-list', params: { locale: getPreferredRouteLocale() } })
+  },
+  {
+    path: '/blog/:slug',
+    redirect: (to) => ({
+      name: 'blog-detail',
+      params: {
+        locale: getPreferredRouteLocale(),
+        slug: to.params.slug
+      }
+    })
+  },
+  {
     path: '/:locale(es|en|pr)',
     name: 'homepage',
     component: () => import('@/modules/home/presentation/bodies/HomepageView.vue'),

@@ -30,7 +30,7 @@
         </template>
         <template v-else>
           <router-link
-            :to="{ name: 'auth' }"
+            :to="{ name: 'auth', params: { locale: routeLocale } }"
             class="block rounded-lg px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
           >
             Iniciar sesión
@@ -50,9 +50,11 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/modules/auth/presentation/controllers/useAuthStore'
+import { useLanguage } from '@/interface/presentation/composables/useLanguage'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { routeLocale } = useLanguage()
 
 const sidebarItems = [
   { to: { name: 'accounts' }, label: 'Mis cuentas' },
@@ -65,6 +67,6 @@ const sidebarItems = [
 
 const handleLogout = async () => {
   await authStore.logout()
-  router.push({ name: 'homepage' })
+  router.push({ name: 'homepage', params: { locale: routeLocale.value } })
 }
 </script>

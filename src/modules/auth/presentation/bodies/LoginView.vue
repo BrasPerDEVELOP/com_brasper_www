@@ -53,7 +53,7 @@
             </p>
             <p class="text-center text-sm text-on-surface/80">
               ¿No tienes cuenta?
-              <router-link :to="{ name: 'register' }" class="font-medium text-primary hover:underline">
+              <router-link :to="{ name: 'register', params: { locale: routeLocale } }" class="font-medium text-primary hover:underline">
                 {{ t(TR.createAccount) }}
               </router-link>
             </p>
@@ -71,11 +71,13 @@ import { useI18n } from 'vue-i18n'
 import { BaseButton, BaseInput } from '@/interface/widgets'
 import { TR } from '@/interface/domain/generated/tr'
 import { env } from '@/interface/config/env'
+import { useLanguage } from '@/interface/presentation/composables/useLanguage'
 import { useAuthStore } from '../controllers/useAuthStore'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const { t } = useI18n()
+const { routeLocale } = useLanguage()
 
 const username = ref(env.username)
 const password = ref(env.password)
