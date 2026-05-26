@@ -1,8 +1,8 @@
 import { apiClient } from '@/interface/api/client'
-import type { BlogRepository } from './BlogRepository'
+import type { BlogListParams, BlogRepository } from './BlogRepository'
 import type { Blog, BlogPage } from '../../domain/models'
 
-const BLOG_API_BASE_URL = 'https://pro.finzeler.com/api/v1'
+const BLOG_API_PATH = '/blog/'
 
 function stripHtml(value: string): string {
   return value.replace(/<[^>]*>/g, '').trim()
@@ -10,6 +10,14 @@ function stripHtml(value: string): string {
 
 function toSafeString(value: unknown): string {
   return typeof value === 'string' ? value : ''
+}
+
+function toReadTime(value: unknown, content: string): string {
+  if (typeof value === 'number' && Number.isFinite(value)) return `${value} min lectura`
+  if (typeof value === 'string' && value.trim()) {
+    return value.includes('min') ? value : `${value} min lectura`
+  }
+  return calculateReadTime(content)
 }
 
 function calculateReadTime(content: string): string {
@@ -33,8 +41,8 @@ function parseBlog(item: Record<string, unknown>): Blog {
     public_id: toSafeString(item.public_id),
     created_at: createdAt,
     updated_at: toSafeString(item.updated_at),
-    date: createdAt,
-    read_time: toSafeString(item.read_time) || calculateReadTime(content)
+    date: toSafeString(item.date) || createdAt,
+    read_time: toReadTime(item.read_time, content)
   }
 }
 
@@ -44,10 +52,14 @@ function parseBlogList(data: unknown): BlogPage {
   }
 
   const payload = data as Record<string, unknown>
-  const rawResults = Array.isArray(payload.results) ? payload.results : []
+  const rawResults = Array.isArray(payload.items)
+    ? payload.items
+    : Array.isArray(payload.results)
+      ? payload.results
+      : []
 
   return {
-    count: Number(payload.count ?? 0) || 0,
+    count: Number(payload.total ?? payload.count ?? 0) || 0,
     next: typeof payload.next === 'string' ? payload.next : null,
     previous: typeof payload.previous === 'string' ? payload.previous : null,
     results: rawResults
@@ -58,11 +70,15 @@ function parseBlogList(data: unknown): BlogPage {
 }
 
 export class BlogApiAdapter implements BlogRepository {
-  async getBlogs(params: { page: number; pageSize: number }): Promise<BlogPage> {
-    const response = await apiClient.get<unknown>(`${BLOG_API_BASE_URL}/blogs/`, {
+  async getBlogs(params: BlogListParams): Promise<BlogPage> {
+    const skip = Math.max(0, (params.page - 1) * params.pageSize)
+    const response = await apiClient.get<unknown>(BLOG_API_PATH, {
       params: {
-        page: params.page,
-        page_size: params.pageSize
+        skip,
+        limit: params.pageSize,
+        search: params.search?.trim() || undefined,
+        category: params.category?.trim() || undefined,
+        enable: params.enable
       }
     })
 
@@ -70,7 +86,7 @@ export class BlogApiAdapter implements BlogRepository {
   }
 
   async getBlogBySlug(slug: string): Promise<Blog | null> {
-    const response = await apiClient.get<unknown>(`${BLOG_API_BASE_URL}/blogs/${slug}/`)
+    const response = await apiClient.get<unknown>(`${BLOG_API_PATH}slug/${slug}`)
     if (response.data == null || typeof response.data !== 'object') return null
     return parseBlog(response.data as Record<string, unknown>)
   }

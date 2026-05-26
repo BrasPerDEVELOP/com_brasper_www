@@ -42,11 +42,7 @@ export const useBlogStore = defineStore('blog', {
     },
 
     filteredBlogs(state): Blog[] {
-      return state.blogs.filter((blog) => {
-        const byCategory = state.category === '' || blog.category === state.category
-        const bySearch = blog.title.toLowerCase().includes(state.searchTerm.toLowerCase())
-        return byCategory && bySearch
-      })
+      return state.blogs
     },
 
     totalPages(state): number {
@@ -70,7 +66,13 @@ export const useBlogStore = defineStore('blog', {
       try {
         const repo = getRepository()
         const useCase = new GetBlogsUseCase(repo)
-        const data = await useCase.execute({ page: targetPage, pageSize: this.pageSize })
+        const data = await useCase.execute({
+          page: targetPage,
+          pageSize: this.pageSize,
+          search: this.searchTerm,
+          category: this.category,
+          enable: true
+        })
         this.page = targetPage
         this.blogs = data.results
         this.totalCount = data.count
@@ -103,6 +105,12 @@ export const useBlogStore = defineStore('blog', {
 
     setCategory(value: string) {
       this.category = value
+      this.page = 1
+    },
+
+    clearFilters() {
+      this.searchTerm = ''
+      this.category = ''
       this.page = 1
     }
   }

@@ -279,3 +279,40 @@ watch(
   }
 )
 </script>
+
+<style scoped>
+#article-body :deep(ol),
+#article-body :deep(ul) {
+  margin: 1rem 0 1rem 1.5rem;
+  padding-left: 1.25rem;
+}
+
+#article-body :deep(ol) {
+  list-style-type: decimal;
+}
+
+#article-body :deep(ol ol) {
+  list-style-type: lower-alpha;
+}
+
+#article-body :deep(ol ol ol) {
+  list-style-type: lower-roman;
+}
+
+#article-body :deep(ul) {
+  list-style-type: disc;
+}
+
+#article-body :deep(ul ul) {
+  list-style-type: circle;
+}
+
+#article-body :deep(li) {
+  margin: 0.35rem 0;
+  padding-left: 0.25rem;
+}
+
+#article-body :deep(li > p) {
+  margin: 0.25rem 0;
+}
+</style>

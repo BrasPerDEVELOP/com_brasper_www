@@ -5,7 +5,7 @@
     <section class="mx-auto max-w-7xl px-4 pb-8 pt-6 sm:px-6 lg:px-8">
       <div class="overflow-hidden rounded-2xl bg-gradient-to-r from-blue-700 via-indigo-700 to-cyan-700 px-6 py-12 text-white">
         <h1 class="text-3xl font-bold md:text-4xl">Últimos artículos</h1>
-        <p class="mt-3 max-w-2xl text-sm text-white/90 md:text-base">
+        <p class="mt-3 max-w-2xl text-sm font-medium !text-white md:text-base">
           Mantente informado sobre transferencias internacionales, cambios de moneda y consejos financieros.
         </p>
       </div>
@@ -146,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onBeforeUnmount, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Navbar from '@/interface/layout/Navbar.vue'
@@ -173,6 +173,7 @@ const canNext = computed(() => blogStore.canNext)
 const searchTerm = computed(() => blogStore.searchTerm)
 const activeCategory = computed(() => blogStore.category)
 const routeLocale = computed(() => normalizeRouteLocale(route.params.locale))
+let searchTimer: number | undefined
 
 function getCloudinaryImage(publicId: string): string {
   return `https://res.cloudinary.com/dhkmdutec/image/upload/f_auto,q_auto,w_900/${publicId}`
@@ -192,10 +193,15 @@ function formatDate(dateValue: string): string {
 function onSearch(event: Event) {
   const target = event.target as HTMLInputElement
   blogStore.setSearchTerm(target.value)
+  if (searchTimer) window.clearTimeout(searchTimer)
+  searchTimer = window.setTimeout(() => {
+    void blogStore.loadBlogs(1)
+  }, 350)
 }
 
 function selectCategory(category: string) {
   blogStore.setCategory(category)
+  void blogStore.loadBlogs(1)
 }
 
 function goPrev() {
@@ -210,5 +216,9 @@ function goNext() {
 
 onMounted(() => {
   blogStore.loadBlogs(1)
+})
+
+onBeforeUnmount(() => {
+  if (searchTimer) window.clearTimeout(searchTimer)
 })
 </script>
