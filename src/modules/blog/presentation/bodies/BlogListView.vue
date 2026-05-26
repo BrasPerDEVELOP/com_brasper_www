@@ -157,7 +157,7 @@ import { useBlogStore } from '../controllers/useBlogStore'
 
 const blogStore = useBlogStore()
 const route = useRoute()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 useSeo({
   title: t('seo_blog_title'),
@@ -183,7 +183,9 @@ function formatDate(dateValue: string): string {
   if (!dateValue) return 'Sin fecha'
   const date = new Date(dateValue)
   if (Number.isNaN(date.getTime())) return 'Sin fecha'
-  return date.toLocaleDateString('es-PE', {
+  const loc =
+    locale.value === 'en' ? 'en-US' : locale.value === 'pt' ? 'pt-BR' : 'es-PE'
+  return date.toLocaleDateString(loc, {
     day: '2-digit',
     month: 'short',
     year: 'numeric'
