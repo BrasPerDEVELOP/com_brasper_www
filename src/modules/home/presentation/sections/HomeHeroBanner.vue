@@ -86,10 +86,17 @@ const { t, locale } = useI18n()
 
 const remoteBanner = ref<HomeBannerApiRow | null>(null)
 const remoteImageFailed = ref(false)
+const bannerCacheBuster = Date.now().toString()
+
+function withCacheBuster(url: string): string {
+  if (!url) return ''
+  const separator = url.includes('?') ? '&' : '?'
+  return `${url}${separator}v=${encodeURIComponent(bannerCacheBuster)}`
+}
 
 function localBannerSrc(): string {
   const file = locale.value === 'es' ? 'es' : locale.value === 'en' ? 'en' : 'pr'
-  return `/assets/images/banner/${file}.webp`
+  return withCacheBuster(`/assets/images/banner/${file}.webp`)
 }
 
 function parseHomeBannerRow(item: unknown): HomeBannerApiRow | null {
@@ -152,7 +159,7 @@ const bannerImageSrc = computed(() => {
     const path =
       locale.value === 'es' ? row.banner_es : locale.value === 'en' ? row.banner_en : row.banner_pr
     const url = path ? Domain.mediaUrl(path) : ''
-    if (url) return url
+    if (url) return withCacheBuster(url)
   }
 
   return localBannerSrc()
