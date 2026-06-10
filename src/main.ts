@@ -31,9 +31,9 @@ setAuthCallbacks(
 
 app.mount('#app')
 
-/* useAuthStore().restoreSession()
- */
-/* function loadExternalStylesheet(href: string) {
+useAuthStore().restoreSession()
+ 
+ function loadExternalStylesheet(href: string) {
   if (document.querySelector(`link[href="${href}"]`)) return
   const link = document.createElement('link')
   link.rel = 'stylesheet'
@@ -94,6 +94,6 @@ function scheduleChatWidgetLoad() {
   setTimeout(() => {
     void initialize()
   }, 1500)
-} */ 
-/* 
-scheduleChatWidgetLoad() */
+}
+
+scheduleChatWidgetLoad() 

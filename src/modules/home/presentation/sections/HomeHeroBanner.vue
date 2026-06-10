@@ -25,19 +25,20 @@
         </h1>
 
         <div class="mt-4 flex flex-wrap items-center justify-center gap-4 lg:justify-center">
-              <img
-                :src="bannerImageSrc"
-                :alt="t('landing_badge')"
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-                width="760"
-                height="366"
-                sizes="(max-width: 768px) 100vw, 380px"
-                class="h-full w-full object-cover"
-                @error="onBannerImageError"
-              />
-            
+          <div class="aspect-[760/366] w-full overflow-hidden">
+            <img
+              :src="displayedBannerImageSrc"
+              :alt="t('landing_badge')"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+              width="760"
+              height="366"
+              sizes="(max-width: 768px) 100vw, 380px"
+              class="h-full w-full object-cover"
+              @error="onDisplayedBannerImageError"
+            />
+          </div>
         </div>
       </div>
 
@@ -64,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
 import { apiClient } from '@/interface/api/client'
@@ -73,6 +74,7 @@ import { Domain } from '@/interface/infrastructure/services'
 import CalculatorView from '@/modules/calculator/presentation/bodies/CalculatorView.vue'
 
 const HOME_BANNER_LIST_PATH = '/home-banner/home-image/'
+const HOME_BANNER_STORAGE_KEY = 'brasper.homeBanner'
 
 type HomeBannerApiRow = {
   id: string
@@ -80,23 +82,45 @@ type HomeBannerApiRow = {
   banner_pr: string
   banner_en: string
   enable: boolean
+  updated_at?: string
 }
 
 const { t, locale } = useI18n()
 
-const remoteBanner = ref<HomeBannerApiRow | null>(null)
-const remoteImageFailed = ref(false)
-const bannerCacheBuster = Date.now().toString()
+const remoteBanner = shallowRef<HomeBannerApiRow | null>(readCachedHomeBanner())
+const displayedBannerImageSrc = shallowRef(localBannerSrc())
+const remoteImageFailed = shallowRef(false)
 
-function withCacheBuster(url: string): string {
+function withStableVersion(url: string, version?: string): string {
   if (!url) return ''
+  if (!version) return url
   const separator = url.includes('?') ? '&' : '?'
-  return `${url}${separator}v=${encodeURIComponent(bannerCacheBuster)}`
+  return `${url}${separator}v=${encodeURIComponent(version)}`
 }
 
 function localBannerSrc(): string {
   const file = locale.value === 'es' ? 'es' : locale.value === 'en' ? 'en' : 'pr'
-  return withCacheBuster(`/assets/images/banner/${file}.webp`)
+  return `/assets/images/banner/${file}.webp`
+}
+
+function readCachedHomeBanner(): HomeBannerApiRow | null {
+  if (typeof localStorage === 'undefined') return null
+
+  try {
+    return parseHomeBannerRow(JSON.parse(localStorage.getItem(HOME_BANNER_STORAGE_KEY) ?? 'null'))
+  } catch {
+    return null
+  }
+}
+
+function cacheHomeBanner(row: HomeBannerApiRow): void {
+  if (typeof localStorage === 'undefined') return
+
+  try {
+    localStorage.setItem(HOME_BANNER_STORAGE_KEY, JSON.stringify(row))
+  } catch {
+    // Cache best effort only. The local static banner remains the fallback.
+  }
 }
 
 function parseHomeBannerRow(item: unknown): HomeBannerApiRow | null {
@@ -109,7 +133,8 @@ function parseHomeBannerRow(item: unknown): HomeBannerApiRow | null {
     banner_es: typeof o.banner_es === 'string' ? o.banner_es : '',
     banner_pr: typeof o.banner_pr === 'string' ? o.banner_pr : '',
     banner_en: typeof o.banner_en === 'string' ? o.banner_en : '',
-    enable: o.enable !== false && o.enable !== 0
+    enable: o.enable !== false && o.enable !== 0,
+    updated_at: typeof o.updated_at === 'string' ? o.updated_at : undefined
   }
 }
 
@@ -128,6 +153,7 @@ async function fetchHomeBanner(): Promise<void> {
       if (row) {
         remoteBanner.value = row
         remoteImageFailed.value = false
+        cacheHomeBanner(row)
       }
       return
     }
@@ -143,9 +169,10 @@ async function fetchHomeBanner(): Promise<void> {
     if (active) {
       remoteBanner.value = active
       remoteImageFailed.value = false
+      cacheHomeBanner(active)
     }
   } catch {
-    remoteBanner.value = null
+    if (!remoteBanner.value) remoteBanner.value = null
   }
 }
 
@@ -159,17 +186,29 @@ const bannerImageSrc = computed(() => {
     const path =
       locale.value === 'es' ? row.banner_es : locale.value === 'en' ? row.banner_en : row.banner_pr
     const url = path ? Domain.mediaUrl(path) : ''
-    if (url) return withCacheBuster(url)
+    if (url) return withStableVersion(url, row.updated_at)
   }
 
   return localBannerSrc()
 })
 
-function onBannerImageError() {
+function onDisplayedBannerImageError() {
   if (remoteBanner.value && !remoteImageFailed.value) {
     remoteImageFailed.value = true
+    displayedBannerImageSrc.value = localBannerSrc()
   }
 }
+
+watch(bannerImageSrc, (nextSrc) => {
+  if (!nextSrc || nextSrc === displayedBannerImageSrc.value) return
+
+  const image = new Image()
+  image.onload = () => {
+    displayedBannerImageSrc.value = nextSrc
+  }
+  image.onerror = onDisplayedBannerImageError
+  image.src = nextSrc
+}, { immediate: true })
 
 watch(locale, () => {
   remoteImageFailed.value = false
