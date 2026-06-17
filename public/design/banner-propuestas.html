@@ -1,0 +1,1011 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BrasPer · Propuestas de banner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    /* ===== Paleta real de Brasper (tailwind.config.js) ===== */
+    --cyan:#01e8fc;
+    --blue:#066ac9;
+    --ios-blue:#007aff;
+    --secondary:#4a52d8;
+    --blue-medium:#4484f3;
+    --teal:#5ED6B3;
+    --lime:#e6ff00;
+    --purple:#A386FF;
+    --navy:#232b4d;
+    --navy-deep:#0F123E;
+    --navy-alt:#1c284c;
+    --ink:#1b1f2e;
+    --muted:#737683;
+    --grad-brand:linear-gradient(135deg,var(--cyan) 0%,var(--blue-medium) 45%,var(--secondary) 100%);
+    --grad-brand-soft:linear-gradient(135deg,#01e8fc33,#4a52d833);
+    --font-display:'Sora',system-ui,sans-serif;
+    --font-body:'Manrope',system-ui,sans-serif;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-body);
+    color:var(--ink);
+    background:#0a0c1f;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+
+  /* ====================== PAGE CHROME ====================== */
+  .page-top{
+    position:sticky;top:0;z-index:50;
+    display:flex;align-items:center;gap:18px;
+    padding:14px clamp(16px,4vw,48px);
+    background:rgba(10,12,31,.82);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid #ffffff14;
+  }
+  .page-top .brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+  .page-top .brand img{width:34px;height:34px}
+  .page-top .brand b{
+    font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:-.02em;
+    background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .page-top nav{display:flex;gap:8px;flex-wrap:wrap}
+  .page-top nav a{
+    font-size:12.5px;font-weight:600;color:#c8cce0;
+    padding:7px 13px;border-radius:999px;border:1px solid #ffffff1a;
+    transition:.25s;
+  }
+  .page-top nav a:hover{color:#fff;border-color:var(--cyan);background:#01e8fc14}
+
+  .intro{max-width:880px;margin:0 auto;padding:56px clamp(16px,4vw,48px) 8px;color:#e7e9f5}
+  .intro .eyebrow{
+    font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--cyan);margin-bottom:14px
+  }
+  .intro h1{font-family:var(--font-display);font-weight:800;font-size:clamp(28px,5vw,46px);line-height:1.05;letter-spacing:-.02em}
+  .intro h1 em{font-style:normal;background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .intro p{margin-top:16px;color:#aab0cc;font-size:16px;max-width:680px}
+
+  /* ====================== PROPOSAL SHELL ====================== */
+  .proposal{padding:40px clamp(16px,4vw,48px) 28px;max-width:1280px;margin:0 auto}
+  .proposal-head{display:flex;align-items:flex-end;gap:18px;margin-bottom:22px;flex-wrap:wrap}
+  .pill-num{
+    font-family:var(--font-display);font-weight:800;font-size:13px;letter-spacing:.04em;
+    color:#0a0c1f;background:var(--cyan);padding:6px 12px;border-radius:8px
+  }
+  .proposal-head h2{font-family:var(--font-display);color:#fff;font-weight:700;font-size:clamp(20px,3vw,28px);letter-spacing:-.01em}
+  .proposal-head .why{color:#9aa0be;font-size:14px;max-width:520px;margin-left:auto}
+  .tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .tag{font-size:11.5px;font-weight:600;color:#cfd3e8;border:1px solid #ffffff1f;border-radius:999px;padding:5px 11px}
+  .tag b{color:var(--cyan)}
+
+  .frame{
+    border-radius:26px;overflow:hidden;
+    border:1px solid #ffffff14;
+    box-shadow:0 40px 90px -40px #000a;
+  }
+
+  /* ========================================================= */
+  /* PROPOSAL A — AURORA (dark premium fintech + glass calc)    */
+  /* ========================================================= */
+  .pa{
+    position:relative;isolation:isolate;color:#fff;
+    background:
+      radial-gradient(1100px 600px at 78% -10%, #4a52d855, transparent 60%),
+      radial-gradient(900px 520px at 8% 110%, #01e8fc33, transparent 55%),
+      linear-gradient(160deg,#0c1030 0%,#0f123e 45%,#1c284c 100%);
+    padding:clamp(28px,4vw,56px);
+    display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,4vw,56px);align-items:center;
+    overflow:hidden;
+  }
+  .pa .aurora{position:absolute;inset:0;z-index:-1;overflow:hidden}
+  .pa .aurora span{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:drift 14s ease-in-out infinite}
+  .pa .aurora .a1{width:380px;height:380px;background:var(--cyan);top:-90px;right:18%}
+  .pa .aurora .a2{width:320px;height:320px;background:var(--secondary);bottom:-120px;right:6%;animation-delay:-5s}
+  .pa .aurora .a3{width:260px;height:260px;background:var(--teal);top:30%;left:-90px;animation-delay:-9s;opacity:.4}
+  .pa .grid-tex{position:absolute;inset:0;z-index:-1;opacity:.35;
+    background-image:linear-gradient(#ffffff0d 1px,transparent 1px),linear-gradient(90deg,#ffffff0d 1px,transparent 1px);
+    background-size:46px 46px;mask:radial-gradient(120% 90% at 30% 0%,#000 30%,transparent 75%)}
+
+  .pa .copy{min-width:0;animation:rise .8s .05s both}
+  .badge-wa{
+    display:inline-flex;align-items:center;gap:9px;
+    background:#0a0c1f80;border:1px solid #01e8fc44;border-radius:999px;
+    padding:8px 15px 8px 11px;backdrop-filter:blur(8px)
+  }
+  .badge-wa .dot{width:26px;height:26px;border-radius:50%;background:#25d366;display:grid;place-items:center;color:#06210f;font-size:15px;font-weight:800}
+  .badge-wa b{color:var(--lime);font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+  .badge-wa span{color:#cdd2ec;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+
+  .pa h3.head{font-family:var(--font-display);font-weight:800;letter-spacing:-.025em;line-height:1.04;
+    font-size:clamp(30px,4.4vw,52px);margin:22px 0 0}
+  .pa h3.head .g{background:linear-gradient(120deg,var(--cyan),#7fa9ff 60%,var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pa .sub{color:#b9bfdd;font-size:clamp(15px,1.4vw,17px);margin-top:16px;max-width:430px}
+
+  .trust{display:flex;gap:22px;margin-top:26px;flex-wrap:wrap}
+  .trust .t{display:flex;flex-direction:column}
+  .trust .t b{font-family:var(--font-display);font-size:22px;font-weight:800;color:#fff;line-height:1}
+  .trust .t span{font-size:11.5px;color:#9097ba;margin-top:5px;letter-spacing:.02em}
+  .trust .stars{color:var(--lime);font-size:14px;letter-spacing:2px}
+
+  .promo-float{position:relative;margin-top:30px;max-width:430px;animation:rise .8s .2s both}
+  .promo-float::before{content:"";position:absolute;inset:-18px;border-radius:30px;
+    background:radial-gradient(closest-side,#01e8fc55,transparent);filter:blur(18px);z-index:-1}
+  .promo-float img{width:100%;border-radius:18px;border:1px solid #ffffff1f;box-shadow:0 30px 60px -25px #000c}
+  .promo-float .off{
+    position:absolute;top:-14px;left:-14px;rotate:-8deg;
+    font-family:var(--font-display);font-weight:800;font-size:13px;color:#0a0c1f;
+    background:var(--lime);padding:8px 13px;border-radius:12px;box-shadow:0 10px 26px -8px #e6ff0066
+  }
+
+  /* glass calculator */
+  .calc{
+    --calc-radius:24px;
+    border-radius:var(--calc-radius);padding:clamp(20px,2vw,28px);position:relative;
+    animation:rise .8s .32s both;
+  }
+  .calc.glass{
+    background:linear-gradient(180deg,#ffffff1f,#ffffff0d);
+    border:1px solid #ffffff33;backdrop-filter:blur(22px);
+    box-shadow:0 30px 80px -30px #000c,inset 0 1px 0 #ffffff3d;
+    color:#fff;
+  }
+  .calc.glass::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;
+    background:linear-gradient(135deg,#01e8fc99,transparent 40%,#4a52d899);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+  .calc-title{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+  .calc-title img{width:30px;height:30px}
+  .calc-title b{font-family:var(--font-display);font-weight:700;font-size:17px}
+  .calc.glass .calc-title b{color:#fff}
+
+  .field{border-radius:16px;padding:12px 14px;margin-bottom:12px}
+  .calc.glass .field{background:#0a0c1f59;border:1px solid #ffffff26}
+  .field label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9097ba;margin-bottom:4px}
+  .field-row{display:flex;align-items:center;gap:10px}
+  .field-row input{flex:1;min-width:0;background:transparent;border:0;outline:0;font-family:var(--font-display);
+    font-size:26px;font-weight:700;color:inherit;letter-spacing:-.02em}
+  .cur{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;background:#ffffff1f;font-weight:700;font-size:14px;white-space:nowrap}
+  .calc.glass .cur{color:#fff}
+  .cur img{width:20px;height:20px;border-radius:50%;object-fit:cover}
+  .cur i{font-style:normal;opacity:.6;font-size:11px;margin-left:2px}
+
+  .swap{display:flex;justify-content:center;margin:-4px 0 8px}
+  .swap button{width:38px;height:38px;border-radius:50%;border:1px solid #ffffff33;background:var(--grad-brand);color:#fff;font-size:18px;cursor:pointer;display:grid;place-items:center;box-shadow:0 8px 20px -6px #01e8fc66;transition:.25s}
+  .swap button:hover{transform:rotate(180deg)}
+
+  .rows{margin:14px 2px 6px;display:grid;gap:9px}
+  .rows .r{display:flex;justify-content:space-between;font-size:13px}
+  .rows .r span:first-child{color:#9097ba}
+  .rows .r b{font-weight:700}
+  .rows .r .ok{color:var(--teal)}
+  .calc.glass .rows .r b{color:#eef0ff}
+
+  .cta{
+    width:100%;margin-top:16px;border:0;cursor:pointer;
+    font-family:var(--font-display);font-weight:700;font-size:16px;
+    padding:15px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:10px;
+    color:#06210f;background:linear-gradient(120deg,var(--lime),#bff000);
+    box-shadow:0 16px 34px -12px #e6ff0055;transition:.25s
+  }
+  .cta:hover{transform:translateY(-2px);filter:brightness(1.05)}
+  .cta .wa{width:22px;height:22px;border-radius:50%;background:#0a0c1f;color:#25d366;display:grid;place-items:center;font-size:13px;font-weight:800}
+  .terms{text-align:center;font-size:11px;color:#8a90b3;margin-top:12px}
+  .terms a{color:var(--cyan)}
+
+  /* ========================================================= */
+  /* PROPOSAL B — CORREDOR BRASIL→PERÚ (route storytelling)     */
+  /* ========================================================= */
+  .pb{
+    position:relative;isolation:isolate;color:#fff;overflow:hidden;
+    background:linear-gradient(120deg,#0f123e 0%,#23308c 48%,#0d8fb8 100%);
+    padding:clamp(28px,4vw,52px);
+    display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(26px,4vw,48px);align-items:center
+  }
+  .pb .mesh{position:absolute;inset:0;z-index:-1;opacity:.9;
+    background:
+      radial-gradient(700px 420px at 85% 15%,#01e8fc44,transparent 60%),
+      radial-gradient(640px 420px at 10% 95%,#4a52d855,transparent 60%)}
+  /* route map */
+  .route{position:relative;margin:26px 0 4px;height:128px}
+  .route svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .route .path{fill:none;stroke:#ffffff55;stroke-width:2;stroke-dasharray:7 9;stroke-linecap:round}
+  .route .path-lit{fill:none;stroke:var(--cyan);stroke-width:3;stroke-linecap:round;
+    stroke-dasharray:10 320;filter:drop-shadow(0 0 6px #01e8fc);animation:flow 3.4s linear infinite}
+  .route .node{position:absolute;top:50%;transform:translateY(-50%);text-align:center}
+  .route .node img{width:54px;height:54px;border-radius:50%;border:3px solid #ffffffcc;object-fit:cover;box-shadow:0 12px 30px -8px #0009;margin:0 auto}
+  .route .node small{display:block;margin-top:8px;font-weight:700;font-size:12px;letter-spacing:.06em;color:#dfe6ff}
+  .route .from{left:0}.route .to{right:0}
+  .route .bird{position:absolute;top:50%;left:0;width:36px;height:36px;transform:translate(-50%,-50%);animation:fly 3.4s linear infinite}
+  .route .bird img{width:100%;filter:drop-shadow(0 6px 10px #0007)}
+
+  .pb h3.head{font-family:var(--font-display);font-weight:800;line-height:1.05;letter-spacing:-.025em;font-size:clamp(28px,4vw,46px)}
+  .pb .kicker{display:inline-flex;align-items:center;gap:9px;background:#ffffff1f;border:1px solid #ffffff33;border-radius:999px;padding:7px 14px;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#eaf6ff}
+  .pb .kicker .live{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 0 #e6ff0099;animation:pulse 1.8s infinite}
+  .pb .sub{color:#d6deff;margin-top:16px;font-size:16px;max-width:440px}
+  .pb .medallion{display:flex;align-items:center;gap:16px;margin-top:24px}
+  .pb .medallion img{width:120px;border-radius:16px;border:2px solid #ffffff40;box-shadow:0 20px 40px -16px #000a}
+  .pb .medallion div b{display:block;font-family:var(--font-display);font-size:20px;color:var(--lime);font-weight:800}
+  .pb .medallion div span{font-size:13px;color:#cdd6ff}
+
+  /* white calculator on B */
+  .calc.light{background:#fff;color:var(--ink);box-shadow:0 40px 90px -30px #00000080}
+  .calc.light .calc-title b{color:var(--ink)}
+  .calc.light .field{background:#f4f6ff;border:1px solid #e4e7f5}
+  .calc.light .field label{color:#8a90b3}
+  .calc.light .cur{background:#eef0fb;color:var(--secondary)}
+  .calc.light .rows .r b{color:var(--ink)}
+  .calc.light .rows .r span:first-child{color:#737683}
+  .calc.light .cta{color:#fff;background:var(--grad-brand);box-shadow:0 16px 34px -12px #4a52d866}
+  .calc.light .cta .wa{background:#fff;color:#25d366}
+  .calc.light .terms{color:#9aa0be}
+
+  /* ========================================================= */
+  /* PROPOSAL C — EDITORIAL CLARO (light, conversion-first)     */
+  /* ========================================================= */
+  .pc{
+    position:relative;background:#f6f8ff;color:var(--ink);overflow:hidden;
+    padding:clamp(28px,4vw,56px);
+    display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(26px,4vw,48px);align-items:center
+  }
+  .pc .blob{position:absolute;border-radius:50%;filter:blur(60px);z-index:0}
+  .pc .b1{width:360px;height:360px;background:#01e8fc2e;top:-120px;right:-60px}
+  .pc .b2{width:300px;height:300px;background:#4a52d822;bottom:-120px;left:-80px}
+  .pc .stripe{position:absolute;top:0;bottom:0;right:0;width:46%;z-index:0;
+    background:var(--grad-brand);clip-path:polygon(28% 0,100% 0,100% 100%,0 100%);opacity:.07}
+  .pc>*{position:relative;z-index:1}
+  .pc .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:700;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--secondary)}
+  .pc .eyebrow .bar{width:28px;height:3px;border-radius:3px;background:var(--grad-brand)}
+  .pc h3.head{font-family:var(--font-display);font-weight:800;line-height:1.03;letter-spacing:-.03em;font-size:clamp(30px,4.6vw,52px);margin-top:16px;color:#10142e}
+  .pc h3.head em{font-style:normal;background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pc .sub{color:#5b6080;margin-top:16px;font-size:17px;max-width:430px}
+  .pc .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .pc .chip{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e4e7f5;border-radius:999px;padding:9px 15px;font-size:13px;font-weight:600;color:#3a3f5c;box-shadow:0 6px 18px -12px #4a52d840}
+  .pc .chip .ic{width:20px;height:20px;border-radius:50%;background:var(--grad-brand);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:800}
+  .pc .promo-card{margin-top:28px;position:relative;max-width:440px}
+  .pc .promo-card img{width:100%;border-radius:20px;box-shadow:0 30px 60px -24px #4a52d855;border:6px solid #fff}
+  .pc .promo-card .ribbon{position:absolute;bottom:-12px;left:24px;background:var(--grad-brand);color:#fff;font-family:var(--font-display);font-weight:700;font-size:13px;padding:9px 16px;border-radius:12px;box-shadow:0 14px 26px -10px #4a52d877}
+
+  /* ========================================================= */
+  /* NUEVAS PROPUESTAS (D–G) — claro, minimal, imagen + calc    */
+  /* ========================================================= */
+  .fresh-note{max-width:1280px;margin:44px auto 0;padding:0 clamp(16px,4vw,48px);color:#d9def5}
+  .fresh-note h2{font-family:var(--font-display);font-size:clamp(24px,4vw,38px);line-height:1.08;letter-spacing:-.025em;color:#fff;max-width:820px}
+  .fresh-note h2 em{font-style:normal;background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .fresh-note p{margin-top:12px;color:#aab0cc;max-width:740px}
+
+  /* shared light hero shell — minmax(0,…) so the right column never overflows */
+  .new-banner{
+    position:relative;isolation:isolate;overflow:hidden;color:#172033;
+    padding:clamp(24px,4vw,52px);
+    display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);
+    gap:clamp(28px,4vw,52px);align-items:center;background:#f8fbff;
+  }
+  .new-banner::before{content:"";position:absolute;inset:0;z-index:-2;
+    background:linear-gradient(120deg,#ffffff 0%,#f5fbff 55%,#eef5ff 100%)}
+  .new-banner::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.6;
+    background-image:linear-gradient(#066ac90d 1px,transparent 1px),linear-gradient(90deg,#066ac90d 1px,transparent 1px);
+    background-size:44px 44px;mask:radial-gradient(130% 120% at 100% 0%,#000 8%,transparent 62%)}
+
+  .new-copy{min-width:0}
+  .new-kicker{display:inline-flex;align-items:center;gap:9px;width:max-content;max-width:100%;
+    border:1px solid #dce8fb;background:#fff;border-radius:999px;padding:7px 13px;
+    color:#4a52d8;font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+    box-shadow:0 10px 24px -18px #066ac955}
+  .new-kicker .mini-dot{width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 5px #01e8fc1c}
+  .new-title{margin-top:18px;font-family:var(--font-display);font-size:clamp(28px,4.2vw,50px);
+    line-height:1.04;letter-spacing:-.035em;color:#101936;font-weight:800}
+  .new-title span{background:linear-gradient(120deg,var(--blue),var(--secondary));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .new-sub{margin-top:16px;color:#5e6680;font-size:clamp(15px,1.5vw,17px);max-width:480px}
+  .mini-proof{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .mini-proof span{display:inline-flex;align-items:center;gap:8px;border:1px solid #dfe8f7;background:#fff;
+    border-radius:999px;padding:8px 12px;font-size:12.5px;font-weight:700;color:#33405f;box-shadow:0 8px 22px -18px #066ac966}
+  .mini-proof i{font-style:normal;color:#066ac9}
+  .micro-rate{display:flex;align-items:center;gap:10px;width:max-content;max-width:100%;margin-top:24px;
+    background:#ecfff9;border:1px solid #bceedd;border-radius:14px;padding:10px 13px;color:#126247;font-size:13px;font-weight:800}
+  .micro-rate b{font-family:var(--font-display);color:#0c7b59}
+
+  /* IZQUIERDA = texto + imagen promo · DERECHA = calculadora (igual que el banner actual) */
+  .new-banner{grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr)}
+  .copy-side{min-width:0;display:flex;flex-direction:column;gap:20px}
+  .calc-side{min-width:0;align-self:center;display:flex;flex-direction:column;gap:14px}
+  .banner-image-card{position:relative;width:100%;max-width:540px;border-radius:20px;background:#fff;padding:8px;
+    border:1px solid #dfe8f7;box-shadow:0 24px 60px -34px #066ac966}
+  .banner-image-card img{border-radius:13px;width:100%;aspect-ratio:760/366;object-fit:cover}
+  .banner-image-card .caption{position:absolute;right:16px;bottom:-13px;background:#101936;color:#fff;
+    border-radius:11px;padding:7px 12px;font-size:11.5px;font-weight:800;box-shadow:0 14px 26px -16px #101936}
+  .calc.mini{width:100%;background:#fff;color:var(--ink);border:1px solid #dfe8f7;box-shadow:0 28px 70px -40px #066ac980}
+  .calc.mini .calc-title b{color:var(--ink)}
+  .calc.mini .field{background:#f7faff;border:1px solid #e2ebf8}
+  .calc.mini .field label{color:#8a90b3}
+  .calc.mini .field-row input{font-size:24px}
+  .calc.mini .cur{background:#eef5ff;color:var(--blue)}
+  .calc.mini .rows .r b{color:var(--ink)}
+  .calc.mini .rows .r span:first-child{color:#737683}
+  .calc.mini .cta{color:#fff;background:linear-gradient(120deg,var(--blue),var(--secondary));box-shadow:0 16px 34px -16px #066ac9}
+  .calc.mini .cta .wa{background:#fff;color:#25d366}
+  .calc.mini .terms{color:#8c94aa}
+
+  /* D — texto + imagen a la izquierda; calculadora a la derecha (lo más cercano al actual) */
+  .pd::before{background:linear-gradient(120deg,#ffffff 0%,#f5fbff 55%,#eef5ff 100%)}
+  .pd .banner-image-card{box-shadow:0 30px 70px -30px #066ac955}
+
+  /* E — texto + imagen + tira a la izquierda; calculadora protagonista a la derecha */
+  .pe{background:#fff}
+  .pe::before{background:linear-gradient(285deg,#eef6ff 0%,#ffffff 48%)}
+  .pe .strip{display:flex;align-items:center;gap:14px;width:100%;max-width:540px;border-radius:16px;background:#fff;
+    border:1px solid #dfe8f7;padding:8px;box-shadow:0 18px 44px -34px #066ac966}
+  .pe .strip img{width:120px;height:58px;object-fit:cover;border-radius:11px;flex:none}
+  .pe .strip b{font-family:var(--font-display);font-size:14px;color:#101936}
+  .pe .strip small{display:block;font-size:12px;color:#5e6680;font-weight:600;margin-top:2px}
+  .pe .strip .off{margin-left:auto;background:var(--cyan);color:#0f123e;font-weight:800;font-size:12px;padding:6px 11px;border-radius:9px;white-space:nowrap}
+
+  /* F — texto + imagen inclinada a la izquierda; calculadora inclinada a la derecha */
+  .pf::before{background:linear-gradient(140deg,#f1f6ff,#ffffff 50%,#f7fbff)}
+  .pf .banner-image-card{transform:rotate(-1.4deg)}
+  .pf .calc-side .calc.mini{transform:rotate(1deg)}
+  .pf .micro-rate{background:#f5f2ff;border-color:#dfd6ff;color:#4a3fa6}
+  .pf .micro-rate b{color:#4a52d8}
+
+  /* G — Mundial 2026: texto + marcador + imagen a la izquierda; calculadora a la derecha */
+  .pg{background:#fbfcff}
+  .pg::before{background:linear-gradient(120deg,#ffffff 0%,#f6fbff 55%,#eef9ff 100%)}
+  .pg::after{opacity:.5}
+  .pg .new-kicker{color:#0c7b59;border-color:#bceedd}
+  .pg .new-kicker .mini-dot{background:#10b981;box-shadow:0 0 0 5px #10b9811f}
+  .pg .mini-proof i{color:#0c7b59}
+  .pg .pitch{display:flex;align-items:center;gap:12px;margin-top:4px}
+  .pg .ball{width:34px;height:34px;flex:none;border-radius:50%;background:#fff;border:2px solid #101936;position:relative;box-shadow:0 8px 18px -12px #101936}
+  .pg .ball::before{content:"";position:absolute;inset:0;margin:auto;width:12px;height:12px;background:#101936;
+    clip-path:polygon(50% 0,100% 38%,82% 100%,18% 100%,0 38%)}
+  .pg .pitch p{font-size:13px;font-weight:700;color:#59627a}
+  .pg .rate-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:540px}
+  .pg .rate-bar span{background:#fff;border:1px solid #dfe8f7;border-radius:12px;padding:10px 6px;text-align:center;font-size:11.5px;font-weight:800;color:#33405f}
+  .pg .rate-bar b{display:block;font-size:16px;font-family:var(--font-display);color:#066ac9}
+  .pg .rate-bar .mid b{color:#0c7b59}
+
+  /* H — Tasa en vivo (live-rate): texto + píldora de tasa + imagen a la izq; calc a la der */
+  .ph .live-rate{display:flex;align-items:center;gap:12px;width:max-content;max-width:100%;
+    border:1px solid #dce8fb;background:#fff;border-radius:14px;padding:10px 14px;
+    box-shadow:0 12px 30px -22px #066ac955}
+  .ph .live-rate .live-dot{position:relative;width:9px;height:9px;flex:none;border-radius:50%;background:var(--cyan)}
+  .ph .live-rate .live-dot::after{content:"";position:absolute;inset:0;border-radius:50%;
+    background:var(--cyan);animation:ph-breathe 2.4s ease-out infinite}
+  .ph .live-rate .lr-val{font-family:var(--font-display);font-weight:800;font-size:14px;
+    color:var(--ink);letter-spacing:-.01em;white-space:nowrap}
+  .ph .live-rate .lr-val small{font-weight:600;color:#5e6680;letter-spacing:.04em}
+  .ph .live-rate .lr-spark{width:64px;height:20px;flex:none;display:block}
+  .ph .live-rate .lr-spark .lr-line{fill:none;stroke:url(#phSpark);stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 2px #01e8fc55);
+    stroke-dasharray:120 120;animation:ph-redraw 6s ease-in-out infinite}
+  .ph .live-rate .lr-stamp{display:inline-flex;align-items:center;gap:6px;padding-left:12px;
+    border-left:1px solid #e4e7f5;font-size:11px;font-weight:600;color:#5e6680;white-space:nowrap}
+  .ph .live-rate .lr-stamp i{font-style:normal;width:5px;height:5px;border-radius:50%;background:var(--teal);flex:none}
+  .ph .calc.mini .rows .r .rate-live{display:inline-flex;align-items:center;gap:6px}
+  .ph .calc.mini .rows .r .rate-live::before{content:"";width:6px;height:6px;border-radius:50%;
+    background:var(--cyan);box-shadow:0 0 0 4px #01e8fc1c;flex:none}
+  @keyframes ph-breathe{0%{transform:scale(1);opacity:.5}80%,100%{transform:scale(1.6);opacity:0}}
+  @keyframes ph-redraw{0%{stroke-dashoffset:120}45%,100%{stroke-dashoffset:0}}
+  @media (max-width:520px){
+    .ph .live-rate{flex-wrap:wrap;gap:8px 12px;padding:10px 12px}
+    .ph .live-rate .lr-stamp{padding-left:0;border-left:0;width:100%}
+  }
+
+  /* footer */
+  .foot{max-width:1100px;margin:30px auto 0;padding:48px clamp(16px,4vw,48px) 80px;color:#cfd3e8}
+  .foot h4{font-family:var(--font-display);color:#fff;font-size:20px;font-weight:700;margin-bottom:18px}
+  .swatches{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:34px}
+  .sw{border-radius:14px;overflow:hidden;border:1px solid #ffffff14;min-width:120px}
+  .sw .chip{height:54px}
+  .sw .lab{padding:8px 11px;background:#11142e;font-size:11px}
+  .sw .lab b{display:block;color:#fff;font-weight:600}
+  .sw .lab span{color:#8a90b3}
+  .routes{display:grid;gap:10px}
+  .routes div{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;color:#aab0cc;background:#11142e;border:1px solid #ffffff12;border-radius:12px;padding:12px 15px}
+  .routes code{font-family:'Sora',monospace;color:var(--cyan);font-size:12.5px;font-weight:600}
+  .routes b{color:#fff;font-weight:600}
+
+  /* ====================== ANIMATIONS ====================== */
+  @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-26px,30px) scale(1.08)}}
+  @keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+  @keyframes flow{to{stroke-dashoffset:-330}}
+  @keyframes fly{0%{offset-distance:0%}100%{offset-distance:100%}}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 #e6ff0099}70%{box-shadow:0 0 0 9px #e6ff0000}100%{box-shadow:0 0 0 0 #e6ff0000}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
+  /* ====================== RESPONSIVE ====================== */
+  @media (max-width:860px){
+    .pa,.pb,.pc,.new-banner{grid-template-columns:1fr;gap:30px}
+    .proposal-head .why{margin-left:0}
+    .pa .copy{order:1}.pa .calc{order:2}
+    .pb h3.head,.pc h3.head{font-size:30px}
+    .calc-side{align-self:stretch}
+    .pf .banner-image-card,.pf .calc-side .calc.mini{transform:none}
+  }
+  @media (max-width:620px){
+    .page-top{flex-wrap:wrap;gap:10px}
+    .page-top .brand{margin-right:0;width:100%}
+    .page-top nav{width:100%}
+  }
+  @media (max-width:520px){
+    .new-banner{padding:22px}
+    .new-title{font-size:27px}
+    .media-stack{margin-top:22px}
+    .banner-image-card .caption{right:14px;font-size:11px}
+    .calc.mini .field-row{gap:8px}
+    .calc.mini .field-row input{font-size:22px;min-width:0}
+    .mini-proof span,.micro-rate{max-width:100%;white-space:normal}
+    .pe .strip{flex-wrap:wrap}
+    .pe .strip .off{margin-left:0}
+    .pg .rate-bar{grid-template-columns:1fr 1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+  <header class="page-top">
+    <div class="brand">
+      <img src="/assets/images/logo/logo-80.png" alt="Brasper" />
+      <b>BrasPer · Banner</b>
+    </div>
+    <nav>
+      <a href="#a">A · Aurora</a>
+      <a href="#b">B · Corredor</a>
+      <a href="#c">C · Editorial</a>
+      <a href="#d">D · Claro</a>
+      <a href="#e">E · Split</a>
+      <a href="#f">F · Tarjetas</a>
+      <a href="#g">G · Mundial</a>
+      <a href="#h">H · Live</a>
+      <a href="#rutas">Rutas</a>
+    </nav>
+  </header>
+
+  <section class="intro">
+    <p class="eyebrow">Propuestas de mejora · Hero banner</p>
+    <h1>Tres direcciones de diseño para el banner, con los <em>colores reales de Brasper</em>.</h1>
+    <p>Cada plantilla reutiliza la imagen promocional, la calculadora y la paleta de marca (cian <code style="color:var(--cyan)">#01e8fc</code> → violeta <code style="color:var(--purple)">#4a52d8</code>). Mismos componentes, tres atmósferas. Elige una y la implemento en <code style="color:var(--cyan)">HomeHeroBanner.vue</code>.</p>
+  </section>
+
+  <!-- ================= PROPUESTA A ================= -->
+  <main id="a" class="proposal">
+    <div class="proposal-head">
+      <span class="pill-num">A</span>
+      <h2>Aurora — fintech premium</h2>
+      <p class="why">Fondo navy de marca con auroras cian, calculadora en vidrio (glassmorphism) y CTA lima. Transmite confianza y modernidad; el plan recomendado para destacar de la competencia.</p>
+    </div>
+    <div class="frame">
+      <section class="pa">
+        <div class="aurora"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+        <div class="grid-tex"></div>
+
+        <div class="copy">
+          <div class="badge-wa">
+            <span class="dot">✆</span>
+            <b>Atención inmediata</b><span>· por WhatsApp</span>
+          </div>
+          <h3 class="head">Envía de Brasil a Perú<br><span class="g">en minutos, sin sustos.</span></h3>
+          <p class="sub">Reales a soles o dólares al mejor tipo de cambio. Tu destinatario recibe directo en su cuenta.</p>
+
+          <div class="trust">
+            <div class="t"><span class="stars">★★★★★</span><span>4.9 · cientos de reseñas</span></div>
+            <div class="t"><b>+10 000</b><span>envíos realizados</span></div>
+            <div class="t"><b>15 min</b><span>tiempo promedio</span></div>
+          </div>
+
+          <div class="promo-float">
+            <span class="off">Semana del Real</span>
+            <img src="/assets/images/banner/es.webp" alt="Promoción Semana del Real 15% OFF" />
+          </div>
+        </div>
+
+        <div class="calc glass">
+          <div class="calc-title"><img src="/assets/images/logo/logo-80.png" alt="" /><b>Calcula tu envío</b></div>
+          <div class="field">
+            <label>Envías</label>
+            <div class="field-row">
+              <input value="300.00" inputmode="decimal" aria-label="Monto a enviar" />
+              <span class="cur"><img src="/assets/flags/bra.svg" alt="" />BRL</span>
+            </div>
+          </div>
+          <div class="swap"><button aria-label="Invertir monedas">⇅</button></div>
+          <div class="field">
+            <label>Tu destinatario recibe</label>
+            <div class="field-row">
+              <input value="426.00" inputmode="decimal" aria-label="Monto a recibir" />
+              <span class="cur"><img src="/assets/flags/peru.svg" alt="" />PEN</span>
+            </div>
+          </div>
+          <div class="rows">
+            <div class="r"><span>Comisión de envío</span><b class="ok">3.00 BRL</b></div>
+            <div class="r"><span>Total a enviar</span><b class="ok">303.00 BRL</b></div>
+            <div class="r"><span>Tipo de cambio</span><b>1 BRL = 1.42 PEN</b></div>
+          </div>
+          <button class="cta"><span class="wa">✆</span> Enviar dinero</button>
+          <p class="terms">Aceptas los <a href="#">términos y condiciones</a></p>
+        </div>
+      </section>
+    </div>
+    <div class="tag-row">
+      <span class="tag">Tema <b>oscuro</b></span>
+      <span class="tag">Calculadora <b>glass</b></span>
+      <span class="tag">CTA color <b>lima #e6ff00</b></span>
+      <span class="tag">Prueba social</span>
+    </div>
+  </main>
+
+  <!-- ================= PROPUESTA B ================= -->
+  <section id="b" class="proposal">
+    <div class="proposal-head">
+      <span class="pill-num">B</span>
+      <h2>Corredor Brasil → Perú</h2>
+      <p class="why">El banner cuenta la "ruta": bandera de Brasil → el colibrí vuela una trayectoria animada → bandera de Perú. Comunica de un vistazo qué hace Brasper. Ideal para reforzar el storytelling de la remesa.</p>
+    </div>
+    <div class="frame">
+      <section class="pb">
+        <div class="mesh"></div>
+        <div class="copy">
+          <span class="kicker"><span class="live"></span> Corredor BRL → PEN / USD</span>
+          <h3 class="head">Tu dinero viaja la ruta<br>Brasil → Perú.</h3>
+          <p class="sub">Lo enviamos por la vía más rápida y segura. Tú lo calculas, nosotros lo movemos.</p>
+
+          <div class="route">
+            <svg viewBox="0 0 600 128" preserveAspectRatio="none" aria-hidden="true">
+              <path class="path" d="M40,64 C200,-10 400,140 560,64" />
+              <path class="path-lit" id="rp" d="M40,64 C200,-10 400,140 560,64" />
+            </svg>
+            <div class="node from">
+              <img src="/assets/flags/bra.svg" alt="Brasil" />
+              <small>BRASIL</small>
+            </div>
+            <div class="node to">
+              <img src="/assets/flags/peru.svg" alt="Perú" />
+              <small>PERÚ</small>
+            </div>
+            <div class="bird" style="offset-path:path('M40,64 C200,-10 400,140 560,64')">
+              <img src="/assets/images/logo/logo-80.png" alt="" />
+            </div>
+          </div>
+
+          <div class="medallion">
+            <img src="/assets/images/banner/es.webp" alt="Semana del Real 15% OFF" />
+            <div>
+              <b>15% OFF</b>
+              <span>en envíos de reales a soles / dólares · por tiempo limitado</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc light">
+          <div class="calc-title"><img src="/assets/images/logo/logo-80.png" alt="" /><b>Cotiza tu envío</b></div>
+          <div class="field">
+            <label>Envías</label>
+            <div class="field-row">
+              <input value="300.00" inputmode="decimal" aria-label="Monto a enviar" />
+              <span class="cur"><img src="/assets/flags/bra.svg" alt="" />BRL</span>
+            </div>
+          </div>
+          <div class="swap"><button aria-label="Invertir monedas">⇅</button></div>
+          <div class="field">
+            <label>Tu destinatario recibe</label>
+            <div class="field-row">
+              <input value="426.00" inputmode="decimal" aria-label="Monto a recibir" />
+              <span class="cur"><img src="/assets/flags/peru.svg" alt="" />PEN</span>
+            </div>
+          </div>
+          <div class="rows">
+            <div class="r"><span>Comisión de envío</span><b class="ok">3.00 BRL</b></div>
+            <div class="r"><span>Total a enviar</span><b class="ok">303.00 BRL</b></div>
+            <div class="r"><span>Tipo de cambio</span><b>1 BRL = 1.42 PEN</b></div>
+          </div>
+          <button class="cta"><span class="wa">✆</span> Enviar dinero</button>
+          <p class="terms">Aceptas los <a href="#">términos y condiciones</a></p>
+        </div>
+      </section>
+    </div>
+    <div class="tag-row">
+      <span class="tag">Ruta <b>animada</b></span>
+      <span class="tag">Colibrí en <b>vuelo</b></span>
+      <span class="tag">Gradiente de marca</span>
+      <span class="tag">Calculadora blanca</span>
+    </div>
+  </section>
+
+  <!-- ================= PROPUESTA C ================= -->
+  <section id="c" class="proposal">
+    <div class="proposal-head">
+      <span class="pill-num">C</span>
+      <h2>Editorial claro</h2>
+      <p class="why">Fondo claro, limpio y de máxima legibilidad. Titular grande con gradiente de marca, chips de confianza y la promo como tarjeta. Mayor conversión y accesibilidad (AA), más cercano al estilo actual pero pulido.</p>
+    </div>
+    <div class="frame">
+      <section class="pc">
+        <span class="blob b1"></span><span class="blob b2"></span><span class="stripe"></span>
+        <div class="copy">
+          <span class="eyebrow"><span class="bar"></span> Brasper Transferencias</span>
+          <h3 class="head">Envía reales y recibe <em>soles o dólares</em> al instante.</h3>
+          <p class="sub">El cambio más justo de Brasil a Perú, con soporte real por WhatsApp en cada envío.</p>
+          <div class="chips">
+            <span class="chip"><span class="ic">✓</span> Sin comisiones ocultas</span>
+            <span class="chip"><span class="ic">★</span> 4.9 / 5 valoración</span>
+            <span class="chip"><span class="ic">⚡</span> Acreditación en minutos</span>
+          </div>
+          <div class="promo-card">
+            <img src="/assets/images/banner/es.webp" alt="Semana del Real 15% OFF" />
+            <span class="ribbon">Semana del Real · 15% OFF</span>
+          </div>
+        </div>
+
+        <div class="calc light">
+          <div class="calc-title"><img src="/assets/images/logo/logo-80.png" alt="" /><b>Calcula tu envío</b></div>
+          <div class="field">
+            <label>Envías</label>
+            <div class="field-row">
+              <input value="300.00" inputmode="decimal" aria-label="Monto a enviar" />
+              <span class="cur"><img src="/assets/flags/bra.svg" alt="" />BRL</span>
+            </div>
+          </div>
+          <div class="swap"><button aria-label="Invertir monedas">⇅</button></div>
+          <div class="field">
+            <label>Tu destinatario recibe</label>
+            <div class="field-row">
+              <input value="426.00" inputmode="decimal" aria-label="Monto a recibir" />
+              <span class="cur"><img src="/assets/flags/peru.svg" alt="" />PEN</span>
+            </div>
+          </div>
+          <div class="rows">
+            <div class="r"><span>Comisión de envío</span><b class="ok">3.00 BRL</b></div>
+            <div class="r"><span>Total a enviar</span><b class="ok">303.00 BRL</b></div>
+            <div class="r"><span>Tipo de cambio</span><b>1 BRL = 1.42 PEN</b></div>
+          </div>
+          <button class="cta"><span class="wa">✆</span> Enviar dinero</button>
+          <p class="terms">Aceptas los <a href="#">términos y condiciones</a></p>
+        </div>
+      </section>
+    </div>
+    <div class="tag-row">
+      <span class="tag">Tema <b>claro</b></span>
+      <span class="tag">Máxima <b>legibilidad</b></span>
+      <span class="tag">Cercano al actual</span>
+      <span class="tag">Mejor conversión</span>
+    </div>
+  </section>
+
+  <section class="fresh-note">
+    <h2>Cuatro opciones nuevas, <em>con la estructura del banner actual</em>.</h2>
+    <p>Todas mantienen el modo claro y la misma disposición que hoy: <b>texto + imagen promocional a la izquierda y la calculadora a la derecha</b>. Lo que cambia es el acabado — tipografía, color de marca, espaciado y detalles — para una lectura más limpia y mayor conversión.</p>
+  </section>
+
+  <!-- ================= PROPUESTA D ================= -->
+  <section id="d" class="proposal">
+    <div class="proposal-head">
+      <span class="pill-num">D</span>
+      <h2>Claro actual — imagen protagonista</h2>
+      <p class="why">La evolución más directa del banner actual: misma estructura (texto + imagen a la izquierda, calculadora a la derecha), pero con tipografía, color de marca y aire mejorados. Minimalista y lista para producción.</p>
+    </div>
+    <div class="frame">
+      <section class="new-banner pd">
+        <div class="copy-side">
+          <div class="new-copy">
+            <span class="new-kicker"><span class="mini-dot"></span> Brasper Transferencias</span>
+            <h3 class="new-title">Envía desde Brasil con una tasa <span>clara antes de pagar.</span></h3>
+            <p class="new-sub">Calcula reales a soles o dólares y confirma por WhatsApp con soporte cercano.</p>
+            <div class="mini-proof">
+              <span><i>✓</i> Sin sorpresas</span>
+              <span><i>BR</i> Brasil a Perú</span>
+              <span><i>15</i> Minutos promedio</span>
+            </div>
+          </div>
+          <div class="banner-image-card">
+            <img src="/assets/images/banner/es.webp" alt="Promoción Brasper Semana del Real" />
+            <span class="caption">Promo activa</span>
+          </div>
+        </div>
+        <div class="calc-side">
+          <div class="calc mini">
+            <div class="calc-title"><img src="/assets/images/logo/logo-80.png" alt="" /><b>Calcula tu envío</b></div>
+            <div class="field">
+              <label>Envías</label>
+              <div class="field-row">
+                <input value="300.00" inputmode="decimal" aria-label="Monto a enviar" />
+                <span class="cur"><img src="/assets/flags/bra.svg" alt="" />BRL</span>
+              </div>
+            </div>
+            <div class="swap"><button aria-label="Invertir monedas">⇅</button></div>
+            <div class="field">
+              <label>Tu destinatario recibe</label>
+              <div class="field-row">
+                <input value="426.00" inputmode="decimal" aria-label="Monto a recibir" />
+                <span class="cur"><img src="/assets/flags/peru.svg" alt="" />PEN</span>
+              </div>
+            </div>
+            <div class="rows">
+              <div class="r"><span>Comisión</span><b class="ok">3.00 BRL</b></div>
+              <div class="r"><span>Tipo de cambio</span><b>1 BRL = 1.42 PEN</b></div>
+            </div>
+            <button class="cta"><span class="wa">✆</span> Enviar dinero</button>
+            <p class="terms">Aceptas los <a href="#">términos y condiciones</a></p>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="tag-row">
+      <span class="tag">Nuevo <b>modo claro</b></span>
+      <span class="tag">Texto + imagen <b>izquierda</b></span>
+      <span class="tag">Calculadora <b>derecha</b></span>
+      <span class="tag">Cercano al actual</span>
+    </div>
+  </section>
+
+  <!-- ================= PROPUESTA E ================= -->
+  <section id="e" class="proposal">
+    <div class="proposal-head">
+      <span class="pill-num">E</span>
+      <h2>Split limpio — cotiza primero</h2>
+      <p class="why">Una distribución muy ordenada: el mensaje vende claridad, la calculadora ocupa el foco de acción y la imagen promocional funciona como respaldo visual. Ideal para móvil y performance.</p>
+    </div>
+    <div class="frame">
+      <section class="new-banner pe">
+        <div class="copy-side">
+          <div class="new-copy">
+            <span class="new-kicker"><span class="mini-dot"></span> Tipo de cambio visible</span>
+            <h3 class="new-title">Primero cotizas. Luego envías con <span>confianza.</span></h3>
+            <p class="new-sub">Menos decoración, más foco en el monto, la moneda y el botón de acción.</p>
+          </div>
+          <div class="banner-image-card">
+            <img src="/assets/images/banner/es.webp" alt="Promoción Brasper Semana del Real" />
+            <span class="caption">15% OFF</span>
+          </div>
+          <div class="strip">
+            <img src="/assets/images/banner/es.webp" alt="" aria-hidden="true" />
+            <div>
+              <b>Semana del Real</b>
+              <small>Reales a soles / dólares</small>
+            </div>
+            <span class="off">Activa</span>
+          </div>
+        </div>
+        <div class="calc-side">
+          <div class="calc mini">
+            <div class="calc-title"><img src="/assets/images/logo/logo-80.png" alt="" /><b>Cotiza ahora</b></div>
+            <div class="field">
+              <label>Envías</label>
+              <div class="field-row">
+                <input value="300.00" inputmode="decimal" aria-label="Monto a enviar" />
+                <span class="cur"><img src="/assets/flags/bra.svg" alt="" />BRL</span>
+              </div>
+            </div>
+            <div class="swap"><button aria-label="Invertir monedas">⇅</button></div>
+            <div class="field">
+              <label>Reciben</label>
+              <div class="field-row">
+                <input value="426.00" inputmode="decimal" aria-label="Monto a recibir" />
+                <span class="cur"><img src="/assets/flags/peru.svg" alt="" />PEN</span>
+              </div>
+            </div>
+            <div class="rows">
+              <div class="r"><span>Total estimado</span><b class="ok">303.00 BRL</b></div>
+              <div class="r"><span>Tipo de cambio</span><b>1 BRL = 1.42 PEN</b></div>
+            </div>
+            <button class="cta"><span class="wa">✆</span> Enviar dinero</button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="tag-row">
+      <span class="tag">Nuevo <b>split</b></span>
+      <span class="tag">CTA primero</span>
+      <span class="tag">Minimalista</span>
+      <span class="tag">Responsive simple</span>
+    </div>
+  </section>
+
+  <!-- ================= PROPUESTA F ================= -->
+  <section id="f" class="proposal">
+    <div class="proposal-head">
+      <span class="pill-num">F</span>
+      <h2>Tarjetas gemelas — promo + confianza</h2>
+      <p class="why">Mantiene el look claro, pero con un layout más memorable: la promo y la calculadora son dos tarjetas levemente escalonadas, ambas siempre visibles. Campaña y utilidad lado a lado.</p>
+    </div>
+    <div class="frame">
+      <section class="new-banner pf">
+        <div class="copy-side">
+          <div class="new-copy">
+            <span class="new-kicker"><span class="mini-dot"></span> Promoción + calculadora</span>
+            <h3 class="new-title">Una promo visible, una acción clara y <span>menos distracción.</span></h3>
+            <p class="new-sub">La oferta a la vista y la cotización al alcance: campaña y utilidad, lado a lado.</p>
+            <div class="micro-rate"><b>Enfoque:</b> promoción sin saturar el hero</div>
+          </div>
+          <div class="banner-image-card">
+            <img src="/assets/images/banner/es.webp" alt="Promoción Brasper Semana del Real" />
+            <span class="caption">Semana del Real</span>
+          </div>
+        </div>
+        <div class="calc-side">
+          <div class="calc mini">
+            <div class="calc-title"><img src="/assets/images/logo/logo-80.png" alt="" /><b>Vista rápida</b></div>
+            <div class="field">
+              <label>Envías</label>
+              <div class="field-row">
+                <input value="300.00" inputmode="decimal" aria-label="Monto a enviar" />
+                <span class="cur"><img src="/assets/flags/bra.svg" alt="" />BRL</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>Reciben</label>
+              <div class="field-row">
+                <input value="426.00" inputmode="decimal" aria-label="Monto a recibir" />
+                <span class="cur"><img src="/assets/flags/peru.svg" alt="" />PEN</span>
+              </div>
+            </div>
+            <button class="cta"><span class="wa">✆</span> Enviar dinero</button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="tag-row">
+      <span class="tag">Nuevo <b>tarjetas gemelas</b></span>
+      <span class="tag">Promo fuerte</span>
+      <span class="tag">Calculadora compacta</span>
+      <span class="tag">Campaña reusable</span>
+    </div>
+  </section>
+
+  <!-- ================= PROPUESTA G ================= -->
+  <section id="g" class="proposal">
+    <div class="proposal-head">
+      <span class="pill-num">G</span>
+      <h2>Mundial — campaña sobria</h2>
+      <p class="why">Una versión temática para campaña del Mundial sin despegarse de Brasper: tonos claros, señales deportivas discretas y el mensaje financiero intacto.</p>
+    </div>
+    <div class="frame">
+      <section class="new-banner pg">
+        <div class="copy-side">
+          <div class="new-copy">
+            <span class="new-kicker"><span class="mini-dot"></span> Edición Mundial 2026</span>
+            <h3 class="new-title">Que tu apoyo llegue a casa <span>antes del partido.</span></h3>
+            <p class="new-sub">Campaña estacional que conecta emoción y utilidad, sin recargar el banner.</p>
+            <div class="pitch"><span class="ball"></span><p>La marca al frente, no la decoración.</p></div>
+          </div>
+          <div class="rate-bar">
+            <span><b>BRL</b>envías</span>
+            <span class="mid"><b>1.42</b>tasa de hoy</span>
+            <span><b>PEN</b>reciben</span>
+          </div>
+          <div class="banner-image-card">
+            <img src="/assets/images/banner/es.webp" alt="Promoción Brasper Semana del Real" />
+            <span class="caption">Juega la tasa</span>
+          </div>
+        </div>
+        <div class="calc-side">
+          <div class="calc mini">
+            <div class="calc-title"><img src="/assets/images/logo/logo-80.png" alt="" /><b>Calcula antes del partido</b></div>
+            <div class="field">
+              <label>Envías</label>
+              <div class="field-row">
+                <input value="300.00" inputmode="decimal" aria-label="Monto a enviar" />
+                <span class="cur"><img src="/assets/flags/bra.svg" alt="" />BRL</span>
+              </div>
+            </div>
+            <div class="swap"><button aria-label="Invertir monedas">⇅</button></div>
+            <div class="field">
+              <label>Reciben</label>
+              <div class="field-row">
+                <input value="426.00" inputmode="decimal" aria-label="Monto a recibir" />
+                <span class="cur"><img src="/assets/flags/peru.svg" alt="" />PEN</span>
+              </div>
+            </div>
+            <button class="cta"><span class="wa">✆</span> Enviar dinero</button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="tag-row">
+      <span class="tag">Nuevo <b>Mundial</b></span>
+      <span class="tag">Campaña temporal</span>
+      <span class="tag">Sobrio</span>
+      <span class="tag">Modo claro</span>
+    </div>
+  </section>
+
+  <!-- ================= PROPUESTA H ================= -->
+  <section id="h" class="proposal">
+    <div class="proposal-head">
+      <span class="pill-num">H</span>
+      <h2>Tasa en vivo — confianza de mercado</h2>
+      <p class="why">Sobre el banner actual (texto + imagen a la izquierda, calculadora a la derecha), una píldora de "tasa en vivo" entre el texto y la promo: punto cian que respira, el valor 1 BRL = 1.42 PEN, una sparkline estable que se redibuja y un sello honesto "actualizada hoy". Responde la duda clave —¿la tasa es justa ahora?— sin tapar la promo ni la calculadora, que sigue siendo la única acción.</p>
+    </div>
+    <div class="frame">
+      <section class="new-banner ph">
+        <div class="copy-side">
+          <div class="new-copy">
+            <span class="new-kicker"><span class="mini-dot"></span> Tipo de cambio en vivo</span>
+            <h3 class="new-title">Tu tasa de Brasil a Perú, <span>fresca cada minuto.</span></h3>
+            <p class="new-sub">El cambio que ves es el que pagas: tasa de mercado, sin letra chica. Confirma por WhatsApp en minutos.</p>
+            <div class="live-rate" role="img" aria-label="Tasa en vivo: 1 real brasileño equivale a 1.42 soles, actualizada hoy">
+              <span class="live-dot" aria-hidden="true"></span>
+              <span class="lr-val">1 BRL = 1.42 PEN <small>en vivo</small></span>
+              <svg class="lr-spark" viewBox="0 0 64 20" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="phSpark" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#01e8fc" />
+                    <stop offset="1" stop-color="#4a52d8" />
+                  </linearGradient>
+                </defs>
+                <polyline class="lr-line" points="2,13 11,11 20,12 29,9 38,11 47,8 56,10 62,9" />
+              </svg>
+              <span class="lr-stamp"><i aria-hidden="true"></i> actualizada hoy</span>
+            </div>
+          </div>
+          <div class="banner-image-card">
+            <img src="/assets/images/banner/es.webp" alt="Promoción Brasper Semana del Real" />
+            <span class="caption">Promo activa</span>
+          </div>
+        </div>
+        <div class="calc-side">
+          <div class="calc mini">
+            <div class="calc-title"><img src="/assets/images/logo/logo-80.png" alt="" /><b>Cotiza con la tasa de hoy</b></div>
+            <div class="field">
+              <label>Envías</label>
+              <div class="field-row">
+                <input value="300.00" inputmode="decimal" aria-label="Monto a enviar" />
+                <span class="cur"><img src="/assets/flags/bra.svg" alt="" />BRL</span>
+              </div>
+            </div>
+            <div class="swap"><button aria-label="Invertir monedas">⇅</button></div>
+            <div class="field">
+              <label>Tu destinatario recibe</label>
+              <div class="field-row">
+                <input value="426.00" inputmode="decimal" aria-label="Monto a recibir" />
+                <span class="cur"><img src="/assets/flags/peru.svg" alt="" />PEN</span>
+              </div>
+            </div>
+            <div class="rows">
+              <div class="r"><span>Comisión</span><b class="ok">3.00 BRL</b></div>
+              <div class="r"><span>Tipo de cambio</span><b><span class="rate-live">1 BRL = 1.42 PEN</span></b></div>
+            </div>
+            <button class="cta"><span class="wa">✆</span> Enviar dinero</button>
+            <p class="terms">Aceptas los <a href="#">términos y condiciones</a></p>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="tag-row">
+      <span class="tag">Tasa <b>en vivo</b></span>
+      <span class="tag">Sparkline <b>estable</b></span>
+      <span class="tag">Sin letra chica</span>
+      <span class="tag">Cian → violeta</span>
+    </div>
+  </section>
+
+  <!-- ================= RUTAS / IMPLEMENTACIÓN ================= -->
+  <footer id="rutas" class="foot">
+    <h4>Paleta de marca aplicada</h4>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#01e8fc"></div><div class="lab"><b>primary</b><span>#01e8fc</span></div></div>
+      <div class="sw"><div class="chip" style="background:#4484f3"></div><div class="lab"><b>blue-medium</b><span>#4484f3</span></div></div>
+      <div class="sw"><div class="chip" style="background:#4a52d8"></div><div class="lab"><b>secondary</b><span>#4a52d8</span></div></div>
+      <div class="sw"><div class="chip" style="background:#A386FF"></div><div class="lab"><b>purple</b><span>#A386FF</span></div></div>
+      <div class="sw"><div class="chip" style="background:#0F123E"></div><div class="lab"><b>dark-bg-alt</b><span>#0F123E</span></div></div>
+      <div class="sw"><div class="chip" style="background:#5ED6B3"></div><div class="lab"><b>success-teal</b><span>#5ED6B3</span></div></div>
+      <div class="sw"><div class="chip" style="background:#e6ff00"></div><div class="lab"><b>lime</b><span>#e6ff00</span></div></div>
+    </div>
+
+    <h4>Rutas y archivos de implementación</h4>
+    <div class="routes">
+      <div><code>src/modules/home/presentation/sections/HomeHeroBanner.vue</code><span>— <b>Banner principal.</b> Aquí se aplica la plantilla elegida (estructura + clases).</span></div>
+      <div><code>src/modules/calculator/presentation/bodies/CalculatorView.vue</code><span>— <b>Calculadora.</b> Se reutiliza con <code>variant="banner"</code>; solo se ajusta el estilo del contenedor.</span></div>
+      <div><code>tailwind.config.js</code><span>— <b>Tokens.</b> Ya define primary / secondary / lime; el banner debe consumirlos en vez de <code>blue-600</code>.</span></div>
+      <div><code>/:locale(es|en|pr)</code> → <code>HomepageView.vue</code><span>— <b>Ruta home</b> donde vive el banner (router/index.ts).</span></div>
+      <div><code>/assets/images/banner/{es,en,pr}.webp</code><span>— <b>Imagen promo</b> por idioma (ya cargada dinámicamente).</span></div>
+    </div>
+  </footer>
+
+</body>
+</html>

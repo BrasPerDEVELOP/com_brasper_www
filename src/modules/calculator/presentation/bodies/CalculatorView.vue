@@ -269,19 +269,19 @@ const whatsappCopy: Record<SupportedLocale, WhatsAppCopy> = {
   es: {
     emptyCalculation: 'Completa el cálculo antes de enviar el mensaje por WhatsApp.',
     template:
-      'Perfecto, los detalles de tu envío de Brasper hoy son los siguientes:\n *Monto a Enviar:* {amountSend} {currencyFrom}\n Tipo de Cambio: {rate}\n *Comisión de envío:* {commission} {currencyFrom}\n Neto a convertir: {totalToSend} {currencyFrom}\n *Total a Recibir:* {amountReceive} {currencyTo}\n{couponLine}\n\nResumen: Para su envío de {amountSend} {currencyFrom}, recibirá directo en su cuenta de destino {amountReceive} {currencyTo}',
+      'Perfecto, los detalles de tu envío de Brasper hoy son los siguientes:\n *Monto a Enviar: {amountSend} {currencyFrom}*\n Tipo de Cambio: {rate}\n *Comisión de envío: {commission} {currencyFrom}*\n Neto a convertir: {totalToSend} {currencyFrom}\n *Total a Recibir: {amountReceive} {currencyTo}*\n{couponLine}\n\n*Resumen: Para su envío de {amountSend} {currencyFrom}, recibirá directo en su cuenta de destino {amountReceive} {currencyTo}*',
     couponLine: '*CUPÓN APLICADO: {couponCode}*'
   },
   en: {
     emptyCalculation: 'Complete the calculator before sending the WhatsApp message.',
     template:
-      'Great! Here are the details of your Brasper transfer today\n *Amount to Send:* {amountSend} {currencyFrom}\n Exchange Rate: {rate}\n *Shipping Commission:* {commission} {currencyFrom}\n Net to Convert: {totalToSend} {currencyFrom}\n *Total to Receive:* {amountReceive} {currencyTo}\n{couponLine}\n\nSummary: For your transfer of {amountSend} {currencyFrom}, you will receive directly in your destination account {amountReceive} {currencyTo}',
+      'Great! Here are the details of your Brasper transfer today\n *Amount to Send: {amountSend} {currencyFrom}*\n Exchange Rate: {rate}\n *Shipping Commission: {commission} {currencyFrom}*\n Net to Convert: {totalToSend} {currencyFrom}\n *Total to Receive: {amountReceive} {currencyTo}*\n{couponLine}\n\n*Summary: For your transfer of {amountSend} {currencyFrom}, you will receive directly in your destination account {amountReceive} {currencyTo}*',
     couponLine: '*COUPON APPLIED: {couponCode}*'
   },
   pt: {
     emptyCalculation: 'Preencha a calculadora antes de enviar a mensagem pelo WhatsApp.',
     template:
-      'Perfeito, os detalhes para seu envio Brasper de hoje é o seguinte:\n *Valor a Enviar:* {amountSend} {currencyFrom}\n Taxa de Câmbio: {rate}\n *Custo de envio:* {commission} {currencyFrom}\n Neto por converter: {totalToSend} {currencyFrom}\n *Total a Receber:* {amountReceive} {currencyTo}\n{couponLine}\n\nResumo: Para seu envio de {amountSend} {currencyFrom}, chegará direto na sua conta de destino {amountReceive} {currencyTo}',
+      'Perfeito, os detalhes para seu envio Brasper de hoje é o seguinte:\n *Valor a Enviar: {amountSend} {currencyFrom}*\n Taxa de Câmbio: {rate}\n *Custo de envio: {commission} {currencyFrom}*\n Neto por converter: {totalToSend} {currencyFrom}\n *Total a Receber: {amountReceive} {currencyTo}*\n{couponLine}\n\n*Resumo: Para seu envio de {amountSend} {currencyFrom}, chegará direto na sua conta de destino {amountReceive} {currencyTo}*',
     couponLine: '*CUPOM APLICADO: {couponCode}*'
   }
 }

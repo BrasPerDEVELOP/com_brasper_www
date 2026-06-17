@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="es" data-variant="a">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BrasPer · Landing — 2 opciones (A·Live / B·Corredor)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js" defer></script>
+<style>
+  :root{
+    --cyan:#01e8fc; --blue:#066ac9; --blue-med:#4484f3; --violet:#4a52d8; --purple:#A386FF;
+    --teal:#5ED6B3; --lime:#e6ff00; --navy:#0F123E; --navy2:#1c284c;
+    --ink:#101936; --body:#5e6680; --muted:#6b7299; --line:#e6ecf8; --surface:#f5f9ff; --white:#fff;
+    --grad:linear-gradient(120deg,var(--blue),var(--violet));
+    --grad-bright:linear-gradient(120deg,var(--cyan) 0%,var(--blue-med) 50%,var(--violet) 100%);
+    --shadow:0 28px 70px -40px #066ac980;
+    --fd:'Sora',system-ui,sans-serif; --fb:'Manrope',system-ui,sans-serif;
+    --maxw:1180px; --r:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--fb);color:var(--ink);background:var(--white);-webkit-font-smoothing:antialiased;line-height:1.6}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  :focus-visible{outline:3px solid var(--violet);outline-offset:2px;border-radius:6px}
+  .switch-bar :focus-visible,footer :focus-visible{outline-color:#fff}
+  [data-variant="b"] .hero :focus-visible{outline-color:#fff}
+  iconify-icon{display:inline-flex;align-items:center;vertical-align:-0.125em}
+  .hero-chips iconify-icon{color:var(--blue);font-size:16px}
+  .corridor li i iconify-icon{font-size:14px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+  h1,h2,h3,h4{font-family:var(--fd);letter-spacing:-.025em;line-height:1.08;color:var(--ink)}
+  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* ---------- switcher (chrome) ---------- */
+  .switch-bar{position:sticky;top:0;z-index:120;display:flex;align-items:center;gap:14px;
+    padding:10px clamp(16px,4vw,40px);background:rgba(9,11,28,.9);backdrop-filter:blur(14px);border-bottom:1px solid #ffffff1a}
+  .switch-bar .lbl{color:#aeb4d6;font-size:12px;font-weight:600;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .switch-bar .lbl img{width:26px;height:26px}
+  .seg{display:flex;background:#ffffff14;border:1px solid #ffffff24;border-radius:999px;padding:4px}
+  .seg button{border:0;cursor:pointer;background:transparent;color:#c9cef0;font-family:var(--fd);font-weight:700;
+    font-size:12.5px;padding:8px 16px;border-radius:999px;transition:.2s;white-space:nowrap}
+  .seg button.on{background:var(--grad-bright);color:#06122b}
+  .hint{color:#7e84a8;font-size:11.5px;white-space:nowrap}
+  @media(max-width:640px){.hint{display:none}}
+
+  /* ---------- site nav ---------- */
+  .nav{position:sticky;top:50px;z-index:100;background:#ffffffe6;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav .row{display:flex;align-items:center;gap:20px;height:68px}
+  .nav .brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+  .nav .brand img{height:34px;width:auto}
+  .nav .brand b{font-family:var(--fd);font-weight:800;font-size:19px}
+  .nav .brand b span{color:var(--violet)}
+  .nav .links{display:flex;gap:24px}
+  .nav .links a{font-size:14px;font-weight:600;color:#414a68;transition:.2s}
+  .nav .links a:hover{color:var(--violet)}
+  .nav .act{display:flex;align-items:center;gap:12px}
+  .nav .login{font-size:14px;font-weight:700;color:var(--violet)}
+  @media(max-width:880px){.nav .links{display:none}}
+
+  /* ---------- buttons ---------- */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;border:0;
+    font-family:var(--fd);font-weight:700;font-size:15px;padding:13px 22px;border-radius:13px;
+    color:#fff;background:var(--grad);box-shadow:0 16px 32px -16px #4a52d8aa;transition:.25s}
+  .btn:hover{transform:translateY(-2px);filter:brightness(1.04)}
+  .btn .wa{width:21px;height:21px;border-radius:50%;background:#25d366;display:grid;place-items:center}
+  .wa{background:#25d366;display:grid;place-items:center}
+  .wa iconify-icon{color:#fff;font-size:14px}
+  .btn-sm{padding:10px 18px;font-size:14px}
+  .btn-ghost{background:transparent;color:var(--violet);border:1.5px solid #d8def2;box-shadow:none}
+  .btn-ghost:hover{border-color:var(--violet);transform:none}
+
+  /* ---------- section rhythm ---------- */
+  section{position:relative}
+  .band{padding:clamp(56px,8vw,104px) 0}
+  .band--soft{background:var(--surface)}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--fd);font-weight:800;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--violet)}
+  .eyebrow .bar{width:26px;height:3px;border-radius:3px;background:var(--grad)}
+  .h-sec{font-size:clamp(26px,3.6vw,42px);margin-top:14px}
+  .sub-sec{color:var(--body);font-size:17px;max-width:620px;margin-top:14px}
+  .center{text-align:center}
+  .center .sub-sec{margin-left:auto;margin-right:auto}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;overflow:hidden;background:linear-gradient(120deg,#ffffff 0%,#f4fbff 55%,#eef4ff 100%)}
+  .hero::after{content:"";position:absolute;inset:0;z-index:0;opacity:.5;pointer-events:none;
+    background-image:linear-gradient(#066ac90d 1px,transparent 1px),linear-gradient(90deg,#066ac90d 1px,transparent 1px);
+    background-size:46px 46px;mask:radial-gradient(130% 120% at 100% 0%,#000 8%,transparent 62%)}
+  .hero .grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+    gap:clamp(28px,4vw,56px);align-items:center;padding:clamp(40px,6vw,72px) 0}
+  .badge{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid #dce8fb;border-radius:999px;
+    padding:7px 14px;font-size:11.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--violet);box-shadow:0 10px 24px -18px #066ac955}
+  .badge .wa{width:24px;height:24px;border-radius:50%;background:#25d366;color:#06210f;display:grid;place-items:center;font-size:13px}
+  .hero h1{font-size:clamp(32px,5vw,56px);margin-top:18px;max-width:14ch}
+  .hero .lead{color:var(--body);font-size:clamp(16px,1.5vw,18px);margin-top:18px;max-width:46ch}
+  .hero-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .hero-chips span{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;padding:8px 13px;font-size:12.5px;font-weight:700;color:#33405f;box-shadow:0 8px 22px -18px #066ac966}
+  .hero-chips i{font-style:normal;color:var(--blue)}
+
+  /* live-rate pill (variant A) */
+  .live-rate{display:flex;align-items:center;gap:12px;width:max-content;max-width:100%;margin-top:22px;
+    border:1px solid #dce8fb;background:#fff;border-radius:14px;padding:10px 14px;box-shadow:0 12px 30px -22px #066ac955}
+  .live-rate .dot{position:relative;width:9px;height:9px;flex:none;border-radius:50%;background:var(--cyan)}
+  .live-rate .dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--cyan);animation:breathe 2.4s ease-out infinite}
+  .live-rate .val{font-family:var(--fd);font-weight:800;font-size:14px;white-space:nowrap}
+  .live-rate .val small{font-weight:600;color:var(--body)}
+  .live-rate svg{width:64px;height:20px;flex:none}
+  .live-rate .ln{fill:none;stroke:url(#sp);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+    filter:drop-shadow(0 1px 2px #01e8fc55);stroke-dasharray:120 120;animation:redraw 6s ease-in-out infinite}
+  .live-rate .stamp{display:inline-flex;align-items:center;gap:6px;padding-left:12px;border-left:1px solid var(--line);
+    font-size:11px;font-weight:600;color:var(--body);white-space:nowrap}
+  .live-rate .stamp i{font-style:normal;width:5px;height:5px;border-radius:50%;background:var(--teal)}
+
+  /* corredor route (variant B hero) */
+  .hero-route{display:none;position:relative;height:96px;margin-top:24px;max-width:440px}
+  .hero-route svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .hero-route .pa{fill:none;stroke:#ffffff66;stroke-width:2;stroke-dasharray:6 8;stroke-linecap:round}
+  .hero-route .pl{fill:none;stroke:var(--cyan);stroke-width:3;stroke-linecap:round;stroke-dasharray:10 300;
+    filter:drop-shadow(0 0 6px #01e8fc);animation:flow 3.4s linear infinite}
+  .hero-route .nd{position:absolute;top:50%;transform:translateY(-50%);text-align:center}
+  .hero-route .nd img{width:46px;height:46px;border-radius:50%;border:3px solid #ffffffcc;object-fit:cover;margin:0 auto}
+  .hero-route .nd small{display:block;margin-top:6px;font-size:11px;font-weight:800;letter-spacing:.08em;color:#dbe6ff}
+  .hero-route .from{left:0}.hero-route .to{right:0}
+  .hero-route .bird{position:absolute;top:50%;left:0;width:30px;transform:translate(-50%,-50%);animation:fly 3.4s linear infinite}
+
+  /* calculator card */
+  .calc{background:#fff;border:1px solid var(--line);border-radius:24px;padding:clamp(20px,2.4vw,28px);box-shadow:var(--shadow);position:relative}
+  .calc::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;
+    background:linear-gradient(135deg,#01e8fc66,transparent 45%,#4a52d866);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+  .calc .ttl{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+  .calc .ttl img{width:30px;height:30px}
+  .calc .ttl b{font-family:var(--fd);font-weight:700;font-size:17px}
+  .field{background:#f7faff;border:1px solid #e2ebf8;border-radius:16px;padding:12px 14px;margin-bottom:12px}
+  .field label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .field .r{display:flex;align-items:center;gap:10px}
+  .field input{flex:1;min-width:0;background:transparent;border:0;outline:0;font-family:var(--fd);font-weight:700;font-size:24px;color:var(--ink);letter-spacing:-.02em}
+  .field:focus-within{border-color:var(--violet);box-shadow:0 0 0 3px #4a52d833}
+  .cur{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;background:#eef5ff;color:var(--blue);font-weight:700;font-size:14px;white-space:nowrap}
+  .cur img{width:20px;height:20px;border-radius:50%;object-fit:cover}
+  .swap{display:flex;justify-content:center;margin:-4px 0 8px}
+  .swap button{width:38px;height:38px;border-radius:50%;border:0;cursor:pointer;background:var(--grad);color:#fff;font-size:18px;display:grid;place-items:center;box-shadow:0 10px 22px -8px #4a52d8aa;transition:.25s}
+  .swap button:hover{transform:rotate(180deg)}
+  .rows{margin:14px 2px 8px;display:grid;gap:9px}
+  .rows .ln{display:flex;justify-content:space-between;font-size:13px}
+  .rows .ln span:first-child{color:var(--body)}
+  .rows .ln b{font-weight:700}
+  .rows .ln .ok{color:#0c7b59}
+  .rows .ln .rl{display:inline-flex;align-items:center;gap:6px}
+  .rows .ln .rl::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px #01e8fc1c}
+  .calc .terms{text-align:center;font-size:11px;color:var(--muted);margin-top:12px}
+  .calc .terms a{color:var(--blue)}
+
+  /* promo strip */
+  .promo{display:flex;align-items:center;gap:22px;background:#fff;border:1px solid var(--line);border-radius:22px;
+    padding:14px;box-shadow:0 24px 60px -42px #066ac9aa}
+  .promo img{width:min(46%,360px);border-radius:14px;aspect-ratio:760/366;object-fit:cover;flex:none}
+  .promo .txt b{font-family:var(--fd);font-size:clamp(18px,2vw,24px);display:block}
+  .promo .txt p{color:var(--body);margin-top:6px;font-size:14.5px}
+  .promo .tag{display:inline-flex;margin-top:12px;background:var(--lime);color:#1c2400;font-family:var(--fd);font-weight:800;font-size:13px;padding:7px 13px;border-radius:10px}
+  @media(max-width:680px){.promo{flex-direction:column;text-align:center}.promo img{width:100%}}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .stat .n{font-family:var(--fd);font-weight:800;font-size:clamp(26px,3.4vw,40px);background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat .l{font-weight:700;font-size:14px;margin-top:4px}
+  .stat .d{color:var(--body);font-size:13px;margin-top:6px}
+  @media(max-width:760px){.stats{grid-template-columns:1fr 1fr;gap:24px 18px}}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px;position:relative}
+  .steps::before{content:"";position:absolute;top:34px;left:12%;right:12%;height:2px;
+    background:repeating-linear-gradient(90deg,#cfdcfa 0 10px,transparent 10px 20px)}
+  .step{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px 22px;text-align:center;box-shadow:0 20px 50px -40px #066ac9aa}
+  .step .num{width:56px;height:56px;margin:0 auto 16px;border-radius:50%;background:var(--grad);color:#fff;
+    font-family:var(--fd);font-weight:800;font-size:18px;display:grid;place-items:center;box-shadow:0 12px 26px -10px #4a52d8aa;border:4px solid #fff}
+  .step h4{font-size:18px}
+  .step p{color:var(--body);font-size:14px;margin-top:8px}
+  @media(max-width:760px){.steps{grid-template-columns:1fr}.steps::before{display:none}}
+
+  /* features */
+  .features{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px}
+  .feature{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:0 20px 50px -42px #066ac9aa;transition:.25s}
+  .feature:hover{transform:translateY(-4px);border-color:#cdd8f5}
+  .feature .ic{width:46px;height:46px;border-radius:13px;background:var(--surface);display:grid;place-items:center;color:var(--blue);font-size:22px;border:1px solid var(--line)}
+  .feature .k{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);margin-top:16px}
+  .feature h4{font-size:17px;margin-top:6px}
+  .feature p{color:var(--body);font-size:14px;margin-top:8px}
+  @media(max-width:880px){.features{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.features{grid-template-columns:1fr}}
+
+  /* corredor section */
+  .corridor{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,4vw,56px);align-items:center}
+  .corridor .map{position:relative;height:230px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+  .corridor .map svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .corridor .map .pa{fill:none;stroke:#c4d3f2;stroke-width:2;stroke-dasharray:6 8}
+  .corridor .map .pl{fill:none;stroke:url(#sp);stroke-width:3;stroke-linecap:round;stroke-dasharray:12 320;animation:flow 3.6s linear infinite}
+  .corridor .map .nd{position:absolute;top:50%;transform:translateY(-50%);text-align:center}
+  .corridor .map .nd img{width:60px;height:60px;border-radius:50%;border:3px solid #fff;object-fit:cover;box-shadow:0 12px 30px -10px #0003;margin:0 auto}
+  .corridor .map .nd small{display:block;margin-top:8px;font-weight:800;font-size:12px;color:var(--ink)}
+  .corridor .map .from{left:18px}.corridor .map .to{right:18px}
+  .corridor .map .bird{position:absolute;top:50%;left:0;width:34px;transform:translate(-50%,-50%);animation:fly 3.6s linear infinite}
+  .corridor ul{list-style:none;margin-top:18px;display:grid;gap:12px}
+  .corridor li{display:flex;gap:12px;align-items:flex-start;font-size:15px}
+  .corridor li i{font-style:normal;width:24px;height:24px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--blue);display:grid;place-items:center;font-size:13px;font-weight:800;flex:none;margin-top:2px}
+  @media(max-width:820px){.corridor{grid-template-columns:1fr}}
+
+  /* banks */
+  .banks{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:44px}
+  .bank{height:90px;background:#fff;border:1px solid var(--line);border-radius:14px;display:grid;place-items:center;padding:16px;transition:.25s}
+  .bank:hover{transform:translateY(-3px);box-shadow:0 18px 40px -28px #066ac9aa;border-color:#cdd8f5}
+  .bank img{max-height:42px;max-width:120px;width:auto;object-fit:contain;filter:grayscale(1);opacity:.7;transition:.25s}
+  .bank:hover img{filter:none;opacity:1}
+  .partner{display:flex;align-items:center;gap:18px;margin-top:30px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 24px}
+  .partner .p-ic{width:54px;height:54px;border-radius:14px;background:var(--grad);color:#fff;display:grid;place-items:center;font-size:24px;flex:none}
+  .partner b{font-family:var(--fd);font-size:16px}
+  .partner span{color:var(--body);font-size:13.5px}
+  @media(max-width:900px){.banks{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:520px){.banks{grid-template-columns:1fr 1fr}}
+
+  /* vision & mission */
+  .vm{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:44px}
+  .vm-card{position:relative;background:#fff;border:1px solid var(--line);border-radius:22px;padding:34px;overflow:hidden;box-shadow:0 24px 60px -46px #066ac9aa}
+  .vm-card::before{content:"";position:absolute;top:0;left:0;width:6px;height:100%;background:var(--grad)}
+  .vm-card .ic{width:52px;height:52px;border-radius:14px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;font-size:24px;color:var(--violet)}
+  .vm-card h3{font-size:22px;margin-top:18px}
+  .vm-card p{color:var(--body);font-size:15px;margin-top:12px}
+  @media(max-width:760px){.vm{grid-template-columns:1fr}}
+
+  /* testimonials */
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+  .quote{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px;box-shadow:0 20px 50px -42px #066ac9aa}
+  .quote .stars{color:#b06f00;display:flex;gap:2px;font-size:16px}
+  .quote p{font-size:15px;margin-top:12px}
+  .quote .who{display:flex;align-items:center;gap:12px;margin-top:18px}
+  .quote .av{width:40px;height:40px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-family:var(--fd);font-weight:800;font-size:14px}
+  .quote .who b{font-size:14px}.quote .who span{display:block;color:var(--body);font-size:12.5px}
+  @media(max-width:820px){.quotes{grid-template-columns:1fr}}
+
+  /* faq */
+  .faq{max-width:780px;margin:40px auto 0;display:grid;gap:12px}
+  .faq details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 20px;transition:.2s}
+  .faq summary{list-style:none;cursor:pointer;padding:18px 0;font-family:var(--fd);font-weight:700;font-size:16px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";color:var(--violet);font-size:22px;font-weight:700;transition:.2s}
+  .faq details[open] summary::after{transform:rotate(45deg)}
+  .faq p{color:var(--body);font-size:14.5px;padding:0 0 20px}
+
+  /* final cta */
+  .cta-final{position:relative;overflow:hidden;border-radius:28px;padding:clamp(40px,6vw,72px);text-align:center;
+    background:var(--grad-bright);color:#fff}
+  .cta-final::after{content:"";position:absolute;inset:0;opacity:.5;background:radial-gradient(600px 300px at 80% 0,#ffffff44,transparent 60%)}
+  .cta-final>*{position:relative;z-index:1}
+  .cta-final h2{color:#fff;font-size:clamp(28px,4vw,44px)}
+  .cta-final p{color:#eaf3ff;font-size:17px;margin:14px auto 26px;max-width:52ch}
+  .cta-final .btn{background:#fff;color:var(--violet);box-shadow:0 18px 40px -14px #00000055}
+  .cta-final .btn .wa{background:#25d366;color:#fff}
+
+  /* footer */
+  footer{background:linear-gradient(180deg,#0c1030,#0F123E);color:#c9cfe8;padding:64px 0 0}
+  .f-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:36px;padding-bottom:44px}
+  .f-brand{display:flex;align-items:center;gap:10px}
+  .f-brand img{width:38px;height:38px}
+  .f-brand b{font-family:var(--fd);font-weight:800;font-size:20px;color:#fff}
+  .f-brand b span{color:var(--cyan)}
+  footer .f-desc{color:#9aa2c8;font-size:14px;margin-top:16px;max-width:42ch}
+  .f-soc{display:flex;gap:10px;margin-top:20px}
+  .f-soc a{width:40px;height:40px;border-radius:11px;background:#ffffff12;border:1px solid #ffffff1f;display:grid;place-items:center;color:#cfd5f0;font-size:17px;transition:.2s}
+  .f-soc a:hover{background:var(--grad);color:#fff;border-color:transparent}
+  footer h5{font-family:var(--fd);color:#fff;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+  footer .col a,footer .col p{display:block;color:#9aa2c8;font-size:14px;margin-bottom:11px;transition:.2s}
+  footer .col a:hover{color:var(--cyan)}
+  .f-bottom{border-top:1px solid #ffffff1a;padding:22px 0;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#7e85ad;font-size:12.5px}
+  .f-bottom a{color:#9aa2c8}
+  @media(max-width:880px){.f-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.f-grid{grid-template-columns:1fr}}
+
+  /* ============ VARIANT B — Corredor inmersivo ============ */
+  [data-variant="b"] .hero{background:linear-gradient(135deg,#0c1030 0%,#23308c 52%,#0a5e8a 100%)}
+  [data-variant="b"] .hero::after{background-image:linear-gradient(#ffffff14 1px,transparent 1px),linear-gradient(90deg,#ffffff14 1px,transparent 1px);opacity:.5}
+  [data-variant="b"] .hero h1,[data-variant="b"] .hero .grad-text{color:#fff;-webkit-text-fill-color:#fff}
+  [data-variant="b"] .hero .lead{color:#cdd6f5}
+  [data-variant="b"] .badge{background:#ffffff14;border-color:#ffffff33;color:#eaf6ff}
+  [data-variant="b"] .hero-chips span{background:#ffffff12;border-color:#ffffff26;color:#dfe6ff;box-shadow:none}
+  [data-variant="b"] .hero-chips i{color:var(--cyan)}
+  [data-variant="b"] .live-rate{display:none}
+  [data-variant="b"] .hero-route{display:block}
+  [data-variant="b"] .corridor .map{background:linear-gradient(135deg,#0f123e,#23308c);border-color:#ffffff1f}
+  [data-variant="b"] .corridor .map .pa{stroke:#ffffff44}
+  [data-variant="b"] .corridor .map .nd small{color:#eaf2ff}
+  [data-variant="b"] #corredor{background:linear-gradient(160deg,#0c1030,#101a4d)}
+  [data-variant="b"] #corredor .eyebrow{color:var(--cyan)}
+  [data-variant="b"] #corredor .h-sec,[data-variant="b"] #corredor h2{color:#fff}
+  [data-variant="b"] #corredor .sub-sec,[data-variant="b"] #corredor li{color:#c7cff0}
+  [data-variant="b"] #corredor li i{background:#ffffff14;border-color:#ffffff2b;color:var(--cyan)}
+  [data-variant="b"] #stats{background:linear-gradient(160deg,#0f123e,#1c284c)}
+  [data-variant="b"] #stats .eyebrow{color:var(--cyan)}
+  [data-variant="b"] #stats .h-sec{color:#fff}
+  [data-variant="b"] #stats .sub-sec{color:#c7cff0}
+  [data-variant="b"] #stats .stat .n{background:var(--grad-bright);-webkit-background-clip:text;background-clip:text;color:transparent}
+  [data-variant="b"] #stats .stat .l{color:#fff}
+  [data-variant="b"] #stats .stat .d{color:#9aa2c8}
+  [data-variant="b"] .seg-note-a{display:none}
+  [data-variant="a"] .seg-note-b{display:none}
+
+  /* keyframes */
+  @keyframes breathe{0%{transform:scale(1);opacity:.5}80%,100%{transform:scale(1.7);opacity:0}}
+  @keyframes redraw{0%{stroke-dashoffset:120}45%,100%{stroke-dashoffset:0}}
+  @keyframes flow{to{stroke-dashoffset:-330}}
+  @keyframes fly{0%{offset-distance:0%}100%{offset-distance:100%}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
+  @media(max-width:820px){
+    .hero .grid{grid-template-columns:minmax(0,1fr);gap:32px}
+    .calc,.hero-route,.hero-copy{min-width:0;max-width:100%}
+    .hero-route{width:100%}
+  }
+</style>
+</head>
+<body>
+<!-- shared svg gradient for sparkline / routes -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="sp" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#01e8fc"/><stop offset="1" stop-color="#4a52d8"/></linearGradient>
+</defs></svg>
+
+<!-- ============ SWITCHER ============ -->
+<div class="switch-bar">
+  <span class="lbl"><img src="/assets/images/logo/logo-80.png" alt="" /> BrasPer · Landing — 2 propuestas</span>
+  <div class="seg" role="tablist" aria-label="Elegir opción de diseño">
+    <button class="on" data-v="a" role="tab" aria-selected="true">A · Claro / Live</button>
+    <button data-v="b" role="tab" aria-selected="false">B · Corredor</button>
+  </div>
+  <span class="hint seg-note-a">Basada en H · tasa en vivo, modo claro</span>
+  <span class="hint seg-note-b">Basada en B · corredor BR↔PE inmersivo</span>
+</div>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="wrap row">
+    <a class="brand" href="#"><img src="/assets/images/logo/logo-80.png" alt="Brasper" /><b>Bras<span>Per</span></b></a>
+    <nav class="links">
+      <a href="#como">Cómo funciona</a>
+      <a href="#ventajas">Ventajas</a>
+      <a href="#bancos">Bancos</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="act">
+      <a class="login" href="#">Iniciar sesión</a>
+      <a class="btn btn-sm" href="https://wa.me/51966991933?text=Hola%2C%20quiero%20cotizar%20un%20env%C3%ADo" target="_blank" rel="noopener"><span class="wa" aria-hidden="true"><iconify-icon icon="mdi:whatsapp"></iconify-icon></span> Enviar dinero</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap grid">
+    <div class="hero-copy">
+      <span class="badge"><span class="wa" aria-hidden="true"><iconify-icon icon="mdi:whatsapp"></iconify-icon></span> Sin demoras ni complicaciones</span>
+      <h1>Envía <span class="grad-text">reales, soles y dólares</span> entre Brasil y Perú.</h1>
+      <p class="lead">El mejor tipo de cambio, transferencias seguras y soporte humano por WhatsApp en cada envío.</p>
+
+      <div class="live-rate" role="img" aria-label="Tasa en vivo: 1 real brasileño equivale a 1.42 soles, actualizada hoy">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="val">1 BRL = 1.42 PEN <small>en vivo</small></span>
+        <svg viewBox="0 0 64 20" preserveAspectRatio="none" aria-hidden="true"><polyline class="ln" points="2,13 11,11 20,12 29,9 38,11 47,8 56,10 62,9"/></svg>
+        <span class="stamp"><i aria-hidden="true"></i> actualizada hoy</span>
+      </div>
+
+      <div class="hero-route" aria-hidden="true">
+        <svg viewBox="0 0 440 96" preserveAspectRatio="none"><path class="pa" d="M30,48 C150,-8 290,104 410,48"/><path class="pl" d="M30,48 C150,-8 290,104 410,48"/></svg>
+        <div class="nd from"><img src="/assets/flags/bra.svg" alt="" /><small>BRASIL</small></div>
+        <div class="nd to"><img src="/assets/flags/peru.svg" alt="" /><small>PERÚ</small></div>
+        <div class="bird" style="offset-path:path('M30,48 C150,-8 290,104 410,48')"><img src="/assets/images/logo/logo-80.png" alt="" /></div>
+      </div>
+
+      <div class="hero-chips">
+        <span><iconify-icon icon="ic:round-verified" aria-hidden="true"></iconify-icon> Sin costos ocultos</span>
+        <span><iconify-icon icon="ic:round-star" aria-hidden="true"></iconify-icon> +3,5 mil usuarios</span>
+        <span><iconify-icon icon="ic:round-bolt" aria-hidden="true"></iconify-icon> Acreditación en minutos</span>
+      </div>
+    </div>
+
+    <!-- calculator -->
+    <div class="calc">
+      <div class="ttl"><img src="/assets/images/logo/logo-80.png" alt="" /><b>Calcula tu envío</b></div>
+      <div class="field"><label>Envías</label><div class="r"><input value="300.00" inputmode="decimal" aria-label="Monto a enviar" /><span class="cur"><img src="/assets/flags/bra.svg" alt="" />BRL</span></div></div>
+      <div class="swap"><button aria-label="Invertir monedas"><iconify-icon icon="ic:round-swap-vert" aria-hidden="true"></iconify-icon></button></div>
+      <div class="field"><label>Tu destinatario recibe</label><div class="r"><input value="426.00" inputmode="decimal" aria-label="Monto a recibir" /><span class="cur"><img src="/assets/flags/peru.svg" alt="" />PEN</span></div></div>
+      <div class="rows">
+        <div class="ln"><span>Monto a cambiar</span><b>300.00 BRL</b></div>
+        <div class="ln"><span>Comisión de envío</span><b class="ok">3.00 BRL</b></div>
+        <div class="ln"><span>Total a pagar</span><b>303.00 BRL</b></div>
+        <div class="ln"><span>Tipo de cambio</span><b><span class="rl">1 BRL = 1.42 PEN</span></b></div>
+      </div>
+      <a class="btn" href="https://wa.me/51966991933?text=Hola%2C%20quiero%20cotizar%20un%20env%C3%ADo%20de%20300%20BRL" target="_blank" rel="noopener" style="width:100%;margin-top:16px"><span class="wa" aria-hidden="true"><iconify-icon icon="mdi:whatsapp"></iconify-icon></span> Enviar dinero</a>
+      <p class="terms">Aceptas los <a href="#">términos y condiciones</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROMO STRIP ============ -->
+<section class="band--soft" style="padding:34px 0">
+  <div class="wrap">
+    <div class="promo">
+      <img src="/assets/images/banner/es.webp" alt="Promoción Brasper Semana del Real 15% OFF" />
+      <div class="txt">
+        <b>Semana del Real · 15% OFF</b>
+        <p>Aprovecha un descuento especial en tus envíos de reales a soles y dólares, por tiempo limitado.</p>
+        <a class="tag" href="https://wa.me/51966991933?text=Hola%2C%20quiero%20aprovechar%20la%20promo%20Semana%20del%20Real%2015%25%20OFF" target="_blank" rel="noopener">Aprovechar 15% OFF →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section id="stats" class="band center">
+  <div class="wrap">
+    <span class="eyebrow"><span class="bar"></span> Impacto</span>
+    <h2 class="h-sec">Nuestra trayectoria y logros</h2>
+    <p class="sub-sec">Cuatro años moviendo remesas entre Brasil y Perú con seguridad y procesos claros.</p>
+    <div class="stats" style="margin-top:48px">
+      <div class="stat"><div class="n">+45 mil</div><div class="l">Operaciones</div><div class="d">Transacciones procesadas con latencia mínima.</div></div>
+      <div class="stat"><div class="n">+3,5 mil</div><div class="l">Usuarios atendidos</div><div class="d">Una comunidad creciente que confía en Brasper.</div></div>
+      <div class="stat"><div class="n">+50 M</div><div class="l">Soles cambiados</div><div class="d">Liquidez para operaciones de todo volumen.</div></div>
+      <div class="stat"><div class="n">+4 años</div><div class="l">De experiencia</div><div class="d">Impulsando el cambio del sector con confianza.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CÓMO FUNCIONA ============ -->
+<section id="como" class="band band--soft center">
+  <div class="wrap">
+    <span class="eyebrow"><span class="bar"></span> Proceso</span>
+    <h2 class="h-sec">Envía en 3 pasos</h2>
+    <p class="sub-sec">Cotizar, confirmar y recibir nunca fue tan simple.</p>
+    <div class="steps" style="text-align:left">
+      <div class="step"><div class="num">01</div><h4>Obtén tu cotización</h4><p>Ingresa el monto y revisa el tipo de cambio y la comisión antes de pagar.</p></div>
+      <div class="step"><div class="num">02</div><h4>Confirma y transfiere</h4><p>Realiza la transferencia a Brasper y envíanos el comprobante por WhatsApp.</p></div>
+      <div class="step"><div class="num">03</div><h4>Recibe tu dinero</h4><p>Depositamos el cambio directo en la cuenta de destino, en minutos.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VENTAJAS ============ -->
+<section id="ventajas" class="band center">
+  <div class="wrap">
+    <span class="eyebrow"><span class="bar"></span> Ventajas Brasper</span>
+    <h2 class="h-sec">Todo lo que necesitas para transferir</h2>
+    <p class="sub-sec">Rapidez, transparencia, seguridad y acompañamiento — en una sola plataforma.</p>
+    <div class="features" style="text-align:left">
+      <div class="feature"><div class="ic"><iconify-icon icon="ic:round-bolt" aria-hidden="true"></iconify-icon></div><div class="k">Velocidad</div><h4>Cotización y envío en minutos</h4><p>Consulta la tasa y ejecuta tu operación sin procesos largos ni pantallas confusas.</p></div>
+      <div class="feature"><div class="ic"><iconify-icon icon="ic:round-price-check" aria-hidden="true"></iconify-icon></div><div class="k">Transparencia</div><h4>Sin costos ocultos</h4><p>Antes de confirmar ves comisión, tasa aplicada y el monto exacto que recibirá tu contacto.</p></div>
+      <div class="feature"><div class="ic"><iconify-icon icon="ic:round-verified-user" aria-hidden="true"></iconify-icon></div><div class="k">Seguridad</div><h4>Datos protegidos</h4><p>Aplicamos buenas prácticas de seguridad para proteger tu cuenta y cada transferencia.</p></div>
+      <div class="feature"><div class="ic"><iconify-icon icon="ic:round-support-agent" aria-hidden="true"></iconify-icon></div><div class="k">Soporte</div><h4>Acompañamiento humano</h4><p>Nuestro equipo te guía por WhatsApp y canales digitales para resolver dudas al instante.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CORREDOR BR↔PE ============ -->
+<section id="corredor" class="band band--soft">
+  <div class="wrap corridor">
+    <div class="map">
+      <svg viewBox="0 0 560 230" preserveAspectRatio="none"><path class="pa" d="M70,150 C220,30 360,30 490,150"/><path class="pl" d="M70,150 C220,30 360,30 490,150"/></svg>
+      <div class="nd from"><img src="/assets/flags/bra.svg" alt="Brasil" /><small>Brasil</small></div>
+      <div class="nd to"><img src="/assets/flags/peru.svg" alt="Perú" /><small>Perú</small></div>
+      <div class="bird" style="offset-path:path('M70,150 C220,30 360,30 490,150')"><img src="/assets/images/logo/logo-80.png" alt="" /></div>
+    </div>
+    <div>
+      <span class="eyebrow"><span class="bar"></span> Corredor BRL ↔ PEN / USD</span>
+      <h2 class="h-sec">Enviamos en ambos sentidos</h2>
+      <p class="sub-sec">De Brasil a Perú y de Perú a Brasil, con la mejor tasa y acreditación directa en la cuenta de destino.</p>
+      <ul>
+        <li><i><iconify-icon icon="ic:round-swap-horiz" aria-hidden="true"></iconify-icon></i> Reales a soles y dólares, y a la inversa.</li>
+        <li><i><iconify-icon icon="ic:round-bolt" aria-hidden="true"></iconify-icon></i> Acreditación en minutos a la cuenta de tu contacto.</li>
+        <li><i><iconify-icon icon="ic:round-check" aria-hidden="true"></iconify-icon></i> Tasa de mercado clara, sin sorpresas al confirmar.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BANCOS ============ -->
+<section id="bancos" class="band center">
+  <div class="wrap">
+    <span class="eyebrow"><span class="bar"></span> Cobertura</span>
+    <h2 class="h-sec">Bancos con los que trabajamos</h2>
+    <p class="sub-sec">Operamos con las principales instituciones de Brasil y Perú para que recibas donde quieras.</p>
+    <div class="banks">
+      <div class="bank"><img src="/assets/images/bancos/bcp.png" alt="BCP" /></div>
+      <div class="bank"><img src="/assets/images/bancos/interbank.png" alt="Interbank" /></div>
+      <div class="bank"><img src="/assets/images/bancos/bbva.png" alt="BBVA" /></div>
+      <div class="bank"><img src="/assets/images/bancos/izipay.jpeg" alt="Izipay" /></div>
+      <div class="bank"><img src="/assets/images/bancos/yapeplin.png" alt="Yape / Plin" /></div>
+      <div class="bank"><img src="/assets/images/bancos/banco-do-brasil.png" alt="Banco do Brasil" /></div>
+      <div class="bank"><img src="/assets/images/bancos/nubank.png" alt="Nubank" /></div>
+      <div class="bank"><img src="/assets/images/bancos/c6.png" alt="C6 Bank" /></div>
+      <div class="bank"><img src="/assets/images/bancos/santander.png" alt="Santander" /></div>
+      <div class="bank"><img src="/assets/images/bancos/inter.png" alt="Inter" /></div>
+    </div>
+    <div class="partner">
+      <div class="p-ic"><iconify-icon icon="ic:round-account-balance" aria-hidden="true"></iconify-icon></div>
+      <div><b>Asociados a la CCL</b><br><span>Cámara de Comercio de Lima — compromiso con la transparencia y el cumplimiento de estándares comerciales.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VISIÓN & MISIÓN ============ -->
+<section id="nosotros" class="band band--soft center">
+  <div class="wrap">
+    <span class="eyebrow"><span class="bar"></span> Sobre la compañía</span>
+    <h2 class="h-sec">Visión y Misión</h2>
+    <div class="vm" style="text-align:left">
+      <div class="vm-card">
+        <div class="ic"><iconify-icon icon="ic:round-rocket-launch" aria-hidden="true"></iconify-icon></div>
+        <h3>Misión</h3>
+        <p>Ofrecer remesas en línea entre Brasil y Perú con la mayor rapidez, confiabilidad, seguridad y la mejor tasa de cambio, garantizando la calidad del servicio y excelentes relaciones con nuestros clientes locales y regionales.</p>
+      </div>
+      <div class="vm-card">
+        <div class="ic"><iconify-icon icon="ic:round-visibility" aria-hidden="true"></iconify-icon></div>
+        <h3>Visión</h3>
+        <p>Ser una organización con ventaja competitiva en transferencias de remesas regionales que trascienden el tiempo, a través del desarrollo ético de su equipo y un enfoque sostenible.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIOS ============ -->
+<section class="band center">
+  <div class="wrap">
+    <span class="eyebrow"><span class="bar"></span> Testimonios</span>
+    <h2 class="h-sec">Personas que ya envían con Brasper</h2>
+    <div class="quotes" style="text-align:left">
+      <div class="quote"><div class="stars" role="img" aria-label="Calificación 5 de 5"><iconify-icon icon="ic:round-star"></iconify-icon><iconify-icon icon="ic:round-star"></iconify-icon><iconify-icon icon="ic:round-star"></iconify-icon><iconify-icon icon="ic:round-star"></iconify-icon><iconify-icon icon="ic:round-star"></iconify-icon></div><p>"Llegó en minutos y sin sustos. La tasa fue exactamente la que vi al cotizar."</p><div class="who"><span class="av">MS</span><div><b>Marina S.</b><span>São Paulo → Lima</span></div></div></div>
+      <div class="quote"><div class="stars" role="img" aria-label="Calificación 5 de 5"><iconify-icon icon="ic:round-star"></iconify-icon><iconify-icon icon="ic:round-star"></iconify-icon><iconify-icon icon="ic:round-star"></iconify-icon><iconify-icon icon="ic:round-star"></iconify-icon><iconify-icon icon="ic:round-star"></iconify-icon></div><p>"Me escribieron por WhatsApp en cada paso. Por fin un cambio claro y confiable."</p><div class="who"><span class="av">JR</span><div><b>Jorge R.</b><span>Lima → Curitiba</span></div></div></div>
+      <div class="quote"><div class="stars" role="img" aria-label="Calificación 5 de 5"><iconify-icon icon="ic:round-star"></iconify-icon><iconify-icon icon="ic:round-star"></iconify-icon><iconify-icon icon="ic:round-star"></iconify-icon><iconify-icon icon="ic:round-star"></iconify-icon><iconify-icon icon="ic:round-star"></iconify-icon></div><p>"Sin comisiones escondidas. Calculé, confirmé y mi familia recibió el mismo día."</p><div class="who"><span class="av">DL</span><div><b>Daniela L.</b><span>Río de Janeiro → Arequipa</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" class="band band--soft center">
+  <div class="wrap">
+    <span class="eyebrow"><span class="bar"></span> Preguntas frecuentes</span>
+    <h2 class="h-sec">Resolvemos tus dudas</h2>
+    <div class="faq" style="text-align:left">
+      <details open><summary>¿Cuánto demora una transferencia?</summary><p>La mayoría de los envíos se acreditan en minutos una vez que recibimos tu comprobante; depende del banco de destino y el horario.</p></details>
+      <details><summary>¿Qué monedas puedo enviar?</summary><p>Cambiamos reales (BRL) a soles (PEN) y dólares (USD), y también en sentido inverso de Perú a Brasil.</p></details>
+      <details><summary>¿Hay comisiones ocultas?</summary><p>No. Antes de confirmar ves la comisión, la tasa aplicada y el monto exacto que recibirá tu contacto.</p></details>
+      <details><summary>¿Cómo confirmo mi operación?</summary><p>Cotizas, realizas la transferencia a Brasper y nos envías el comprobante por WhatsApp. Nuestro equipo te acompaña en cada paso.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA FINAL ============ -->
+<section class="band">
+  <div class="wrap">
+    <div class="cta-final">
+      <h2>¿Listo para enviar al mejor tipo de cambio?</h2>
+      <p>Cotiza en segundos y confirma por WhatsApp. Tu dinero llega directo a la cuenta de destino.</p>
+      <a class="btn" href="https://wa.me/51966991933?text=Hola%2C%20quiero%20cotizar%20un%20env%C3%ADo" target="_blank" rel="noopener"><span class="wa" aria-hidden="true"><iconify-icon icon="mdi:whatsapp"></iconify-icon></span> Enviar dinero ahora</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <div class="f-brand"><img src="/assets/images/logo/logo-80.png" alt="" /><b>Bras<span>Per</span> Transferencias</b></div>
+        <p class="f-desc">Empresa especializada en cambio de divisas, enfocada en la conversión de reales brasileños a soles peruanos y viceversa, así como el intercambio de dólares.</p>
+        <div class="f-soc">
+          <a href="https://www.facebook.com/share/r/1ARL1Z9f3G/" aria-label="Facebook"><iconify-icon icon="mdi:facebook" aria-hidden="true"></iconify-icon></a>
+          <a href="https://www.instagram.com/" aria-label="Instagram"><iconify-icon icon="mdi:instagram" aria-hidden="true"></iconify-icon></a>
+          <a href="https://www.youtube.com/@BrasperTransferencias" aria-label="YouTube"><iconify-icon icon="mdi:youtube" aria-hidden="true"></iconify-icon></a>
+          <a href="https://wa.me/51966991933" aria-label="WhatsApp"><iconify-icon icon="mdi:whatsapp" aria-hidden="true"></iconify-icon></a>
+        </div>
+      </div>
+      <div class="col">
+        <h5>Servicios</h5>
+        <a href="#bancos">Bancos</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#ventajas">Ventajas</a>
+        <a href="#como">Cómo funciona</a>
+      </div>
+      <div class="col">
+        <h5>Nosotros</h5>
+        <a href="#nosotros">Visión y Misión</a>
+        <a href="#como">Cómo funciona</a>
+        <a href="#faq">Preguntas frecuentes</a>
+      </div>
+      <div class="col">
+        <h5>Contáctanos</h5>
+        <a href="mailto:info@braspertransferencias.com">info@braspertransferencias.com</a>
+        <a href="https://wa.me/51966991933">+51 966 991 933</a>
+        <a href="#">Términos y condiciones</a>
+        <a href="#">Libro de reclamaciones</a>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 BrasPer Transferencias. Todos los derechos reservados.</span>
+      <span>Hecho con tasa justa entre 🇧🇷 Brasil y 🇵🇪 Perú</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var root=document.documentElement, btns=document.querySelectorAll('.seg button');
+    btns.forEach(function(b){
+      b.addEventListener('click',function(){
+        root.setAttribute('data-variant', b.dataset.v);
+        btns.forEach(function(x){x.classList.toggle('on', x===b); x.setAttribute('aria-selected', x===b);});
+        window.scrollTo({top:0,behavior:'smooth'});
+      });
+    });
+  })();
+</script>
+</body>
+</html>
