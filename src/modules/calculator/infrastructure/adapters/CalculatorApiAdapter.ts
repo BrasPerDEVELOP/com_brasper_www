@@ -57,23 +57,45 @@ function parseCommissions(data: unknown): CommissionRange[] {
     .filter((c) => c.id && c.percentage > 0)
 }
 
+/**
+ * Mapea `exchange_rate_scope` (p. ej. "BRL_PEN") a su par de monedas.
+ * Scope "ALL" o ausente → sin restricción (par vacío = aplica a cualquier par).
+ */
+function currenciesFromScope(scope: string): { origin: string; destination: string } {
+  const normalized = scope.trim().toUpperCase()
+  if (!normalized || normalized === 'ALL') return { origin: '', destination: '' }
+  const [origin, destination] = normalized.split('_')
+  return {
+    origin: (origin ?? '').toLowerCase(),
+    destination: (destination ?? '').toLowerCase()
+  }
+}
+
 function parseCoupons(data: unknown): Coupon[] {
   if (!Array.isArray(data)) return []
   return data
     .filter((item): item is Record<string, unknown> => item != null && typeof item === 'object')
-    .map((item) => ({
-      id: String(item.id ?? ''),
-      code: String(item.code ?? ''),
-      discount: Number(item.discount_percentage ?? item.discount ?? 0),
-      type: (item.type === 'fixed' ? 'fixed' : 'percent') as Coupon['type'],
-      isAutomatic: Boolean(item.isAutomatic ?? item.is_automatic ?? true),
-      maxUses: Number(item.max_uses ?? 0),
-      originCurrency: String(item.origin_currency ?? '').toLowerCase(),
-      destinationCurrency: String(item.destination_currency ?? '').toLowerCase(),
-      startDate: String(item.start_date ?? ''),
-      endDate: String(item.end_date ?? ''),
-      isActive: Boolean(item.is_active ?? true)
-    }))
+    .map((item) => {
+      // Monedas explícitas si vienen; si no, se derivan de exchange_rate_scope
+      // (cupones de partido del Mundial). scope ALL/ausente => aplica a todos los pares.
+      const scope = currenciesFromScope(String(item.exchange_rate_scope ?? ''))
+      const originCurrency = String(item.origin_currency ?? scope.origin).toLowerCase()
+      const destinationCurrency = String(item.destination_currency ?? scope.destination).toLowerCase()
+
+      return {
+        id: String(item.id ?? ''),
+        code: String(item.code ?? ''),
+        discount: Number(item.discount_percentage ?? item.discount ?? 0),
+        type: (item.type === 'fixed' ? 'fixed' : 'percent') as Coupon['type'],
+        isAutomatic: Boolean(item.isAutomatic ?? item.is_automatic ?? true),
+        maxUses: Number(item.max_uses ?? 0),
+        originCurrency,
+        destinationCurrency,
+        startDate: String(item.start_date ?? ''),
+        endDate: String(item.end_date ?? ''),
+        isActive: Boolean(item.is_active ?? true)
+      }
+    })
     .filter((c) => c.id && c.code)
 }
 

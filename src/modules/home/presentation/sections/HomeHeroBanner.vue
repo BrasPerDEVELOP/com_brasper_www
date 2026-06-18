@@ -1,220 +1,88 @@
-<template>
-  <section id="banner" class="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-400 text-white">
-    <div class="absolute inset-0 -z-10">
-      <div
-        class="absolute left-1/2 top-0 h-[520px] w-[720px] -translate-x-1/2 rounded-full bg-cyan-300/40 blur-3xl"
-      />
-      <div class="absolute right-0 top-28 h-80 w-80 rounded-full bg-blue-300/30 blur-3xl" />
-      <div class="absolute left-0 top-64 h-80 w-80 rounded-full bg-emerald-200/40 blur-3xl" />
-    </div>
-
-    <div
-      class="relative z-10 mx-auto flex max-w-7xl flex-col items-stretch justify-center gap-8 px-4 py-12 sm:px-6 md:flex-row md:items-start md:gap-6 lg:gap-12 lg:px-12 lg:py-20"
-    >
-      <div class="min-w-0 w-full flex-1 text-center md:text-left">
-        <div class="flex items-center gap-2 font-bold">
-          <Icon icon="ic:round-whatsapp" width="32" height="32" class="shrink-0" />
-          <span class="inline-flex rounded-full px-3 py-1.5 text-xs uppercase tracking-widest text-white">
-            <p class="text-yellow-400">{{ t('landing_badge_title') }}</p>
-            {{ t('landing_badge') }}
-          </span>
-        </div>
-
-        <h1 class="text-xl font-bold leading-snug sm:text-lg md:text-xl lg:text-3xl xl:text-4xl">
-          {{ t('landing_title') }}
-        </h1>
-
-        <div class="mt-4 flex flex-wrap items-center justify-center gap-4 lg:justify-center">
-          <div class="aspect-[760/366] w-full overflow-hidden">
-            <img
-              :src="displayedBannerImageSrc"
-              :alt="t('landing_badge')"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-              width="760"
-              height="366"
-              sizes="(max-width: 768px) 100vw, 380px"
-              class="h-full w-full object-cover"
-              @error="onDisplayedBannerImageError"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="mx-auto w-full sm:w-lg">
-        <div class="relative w-full min-w-[min(100%,280px)]">
-          <div
-            class="absolute -inset-3 -z-10 rounded-[30px] bg-gradient-to-r from-cyan-300/60 via-blue-300/40 to-cyan-300/60 blur-2xl"
-          />
-          <CalculatorView
-            variant="banner"
-            :initial-amount="300"
-            :show-button="true"
-            :show-terms="true"
-            :show-reductions="true"
-            :button-text="t('send_money')"
-            :title="t('calculatorTitle')"
-            :subtitle="t('calculator_description')"
-            custom-classes="!max-w-full !rounded-[30px] !p-6 sm:!p-8"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
-</template>
-
 <script setup lang="ts">
 import { computed, onMounted, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
-import { apiClient } from '@/interface/api/client'
-import { env } from '@/interface/config/env'
 import { Domain } from '@/interface/infrastructure/services'
 import CalculatorView from '@/modules/calculator/presentation/bodies/CalculatorView.vue'
-
-const HOME_BANNER_LIST_PATH = '/home-banner/home-image/'
-const HOME_BANNER_STORAGE_KEY = 'brasper.homeBanner'
-
-type HomeBannerApiRow = {
-  id: string
-  banner_es: string
-  banner_pr: string
-  banner_en: string
-  enable: boolean
-  updated_at?: string
-}
+import TransferCorridorIllustration from '../components/TransferCorridorIllustration.vue'
+import { useHomeBootstrap } from '../composables/useHomeBootstrap'
+import type { HomeLocale } from '../../domain/models/HomeBootstrap'
 
 const { t, locale } = useI18n()
-
-const remoteBanner = shallowRef<HomeBannerApiRow | null>(readCachedHomeBanner())
-const displayedBannerImageSrc = shallowRef(localBannerSrc())
+const bootstrap = useHomeBootstrap()
 const remoteImageFailed = shallowRef(false)
-
-function withStableVersion(url: string, version?: string): string {
-  if (!url) return ''
-  if (!version) return url
-  const separator = url.includes('?') ? '&' : '?'
-  return `${url}${separator}v=${encodeURIComponent(version)}`
-}
-
-function localBannerSrc(): string {
-  const file = locale.value === 'es' ? 'es' : locale.value === 'en' ? 'en' : 'pr'
-  return `/assets/images/banner/${file}.webp`
-}
-
-function readCachedHomeBanner(): HomeBannerApiRow | null {
-  if (typeof localStorage === 'undefined') return null
-
-  try {
-    return parseHomeBannerRow(JSON.parse(localStorage.getItem(HOME_BANNER_STORAGE_KEY) ?? 'null'))
-  } catch {
-    return null
-  }
-}
-
-function cacheHomeBanner(row: HomeBannerApiRow): void {
-  if (typeof localStorage === 'undefined') return
-
-  try {
-    localStorage.setItem(HOME_BANNER_STORAGE_KEY, JSON.stringify(row))
-  } catch {
-    // Cache best effort only. The local static banner remains the fallback.
-  }
-}
-
-function parseHomeBannerRow(item: unknown): HomeBannerApiRow | null {
-  if (item == null || typeof item !== 'object') return null
-  const o = item as Record<string, unknown>
-  const id = o.id != null ? String(o.id) : ''
-  if (!id) return null
+const config = computed(() => bootstrap.data.value?.banner ?? null)
+const contentLocale = computed<HomeLocale>(() => locale.value === 'en' ? 'en' : locale.value === 'pt' ? 'pr' : 'es')
+const localizedContent = computed(() => config.value?.content?.[contentLocale.value])
+const imageSrc = computed(() => {
+  if (remoteImageFailed.value || !config.value?.enable) return ''
+  const path = contentLocale.value === 'es' ? config.value.banner_es : contentLocale.value === 'en' ? config.value.banner_en : config.value.banner_pr
+  if (!path) return ''
+  const url = Domain.mediaUrl(path)
+  return config.value.updated_at ? `${url}${url.includes('?') ? '&' : '?'}v=${encodeURIComponent(config.value.updated_at)}` : url
+})
+const displayedImage = shallowRef('')
+const bannerColors = computed(() => {
+  const appearance = config.value?.appearance
   return {
-    id,
-    banner_es: typeof o.banner_es === 'string' ? o.banner_es : '',
-    banner_pr: typeof o.banner_pr === 'string' ? o.banner_pr : '',
-    banner_en: typeof o.banner_en === 'string' ? o.banner_en : '',
-    enable: o.enable !== false && o.enable !== 0,
-    updated_at: typeof o.updated_at === 'string' ? o.updated_at : undefined
+    type: appearance?.type === 'solid' ? 'solid' as const : 'gradient' as const,
+    primary: validColor(appearance?.primary) ? appearance.primary : '#2563eb',
+    secondary: validColor(appearance?.secondary) ? appearance.secondary : '#38bdf8'
   }
-}
-
-function homeBannerDetailPath(id: string): string {
-  const safe = encodeURIComponent(id.trim())
-  return `${HOME_BANNER_LIST_PATH}${safe}/`
-}
-
-async function fetchHomeBanner(): Promise<void> {
-  try {
-    const fixedId = env.homeBannerId.trim()
-
-    if (fixedId) {
-      const { data } = await apiClient.get<unknown>(homeBannerDetailPath(fixedId))
-      const row = parseHomeBannerRow(data)
-      if (row) {
-        remoteBanner.value = row
-        remoteImageFailed.value = false
-        cacheHomeBanner(row)
-      }
-      return
-    }
-
-    const { data } = await apiClient.get<unknown>(HOME_BANNER_LIST_PATH)
-    if (!Array.isArray(data) || data.length === 0) return
-
-    const rows = data
-      .map(parseHomeBannerRow)
-      .filter((row): row is HomeBannerApiRow => row != null)
-
-    const active = rows.find((row) => row.enable) ?? rows[0] ?? null
-    if (active) {
-      remoteBanner.value = active
-      remoteImageFailed.value = false
-      cacheHomeBanner(active)
-    }
-  } catch {
-    if (!remoteBanner.value) remoteBanner.value = null
-  }
-}
-
-const bannerImageSrc = computed(() => {
-  if (remoteImageFailed.value) {
-    return localBannerSrc()
-  }
-
-  const row = remoteBanner.value
-  if (row?.enable) {
-    const path =
-      locale.value === 'es' ? row.banner_es : locale.value === 'en' ? row.banner_en : row.banner_pr
-    const url = path ? Domain.mediaUrl(path) : ''
-    if (url) return withStableVersion(url, row.updated_at)
-  }
-
-  return localBannerSrc()
 })
+const sectionStyle = computed(() => {
+  const colors = bannerColors.value
+  return { background: colors.type === 'solid' ? colors.primary : `linear-gradient(110deg, ${colors.primary}, ${colors.secondary})` }
+})
+const corridorTone = computed<'light' | 'dark'>(() => {
+  const colors = bannerColors.value
+  const luminance = colors.type === 'solid'
+    ? relativeLuminance(colors.primary)
+    : (relativeLuminance(colors.primary) + relativeLuminance(colors.secondary)) / 2
+  return luminance < 0.48 ? 'light' : 'dark'
+})
+const visibleIndicators = computed(() => config.value?.show_indicators ? (config.value.indicators ?? []).filter((item) => item.enabled).slice(0, 3) : [])
 
-function onDisplayedBannerImageError() {
-  if (remoteBanner.value && !remoteImageFailed.value) {
-    remoteImageFailed.value = true
-    displayedBannerImageSrc.value = localBannerSrc()
-  }
+function validColor(value?: string): value is string { return Boolean(value && /^#[0-9a-f]{6}$/i.test(value)) }
+function relativeLuminance(hex: string): number {
+  const channels = [1, 3, 5].map((index) => {
+    const value = Number.parseInt(hex.slice(index, index + 2), 16) / 255
+    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4
+  })
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
 }
-
-watch(bannerImageSrc, (nextSrc) => {
-  if (!nextSrc || nextSrc === displayedBannerImageSrc.value) return
-
+function handleImageError() { remoteImageFailed.value = true; displayedImage.value = '' }
+watch(imageSrc, (source) => {
+  displayedImage.value = ''
+  if (!source) return
   const image = new Image()
-  image.onload = () => {
-    displayedBannerImageSrc.value = nextSrc
-  }
-  image.onerror = onDisplayedBannerImageError
-  image.src = nextSrc
+  image.onload = () => { displayedImage.value = source }
+  image.onerror = handleImageError
+  image.src = source
 }, { immediate: true })
-
-watch(locale, () => {
-  remoteImageFailed.value = false
-})
-
-onMounted(() => {
-  void fetchHomeBanner()
-})
+watch(locale, () => { remoteImageFailed.value = false })
+onMounted(bootstrap.load)
 </script>
+
+<template>
+  <section id="banner" class="relative min-h-[680px] overflow-hidden text-white md:min-h-[620px]" :style="sectionStyle">
+    <div v-if="config?.appearance.blur" class="pointer-events-none absolute inset-0" aria-hidden="true"><div class="absolute -top-32 left-1/3 h-96 w-96 rounded-full bg-cyan-200/30 blur-3xl" /><div class="absolute -bottom-28 right-0 h-96 w-96 rounded-full bg-blue-900/25 blur-3xl" /></div>
+    <div class="relative z-10 mx-auto flex max-w-7xl flex-col items-stretch gap-8 px-4 py-12 sm:px-6 md:flex-row md:items-start lg:gap-12 lg:px-12 lg:py-20">
+      <div class="min-w-0 flex-1 text-center md:text-left">
+        <div class="flex items-center justify-center gap-2 md:justify-start"><Icon icon="mdi:whatsapp" width="32" height="32" /><p class="text-xs font-bold uppercase tracking-[.18em] text-yellow-300">{{ localizedContent?.eyebrow || `${t('landing_badge_title')} ${t('landing_badge')}` }}</p></div>
+        <h1 class="mt-3 text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">{{ localizedContent?.title || t('landing_title') }}</h1>
+        <p v-if="localizedContent?.subtitle" class="mt-4 max-w-2xl text-base leading-relaxed text-white/85">{{ localizedContent.subtitle }}</p>
+        <div v-if="visibleIndicators.length" class="mt-6 grid gap-3 sm:grid-cols-3">
+          <div v-for="item in visibleIndicators" :key="item.icon" class="flex min-h-16 items-center gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-left backdrop-blur-sm"><Icon :icon="item.icon" width="26" height="26" class="shrink-0" /><span class="text-sm font-semibold">{{ item.text[contentLocale] }}</span></div>
+        </div>
+        <div v-if="config?.show_image !== false" class="mt-6 w-full">
+          <div v-if="displayedImage" class="aspect-[760/366] overflow-hidden rounded-3xl shadow-2xl shadow-blue-950/25">
+            <img :src="displayedImage" :alt="localizedContent?.image_alt || t('landing_badge')" loading="eager" fetchpriority="high" decoding="async" width="760" height="366" class="h-full w-full object-cover" @error="handleImageError" />
+          </div>
+          <TransferCorridorIllustration v-else :tone="corridorTone" />
+        </div>
+      </div>
+      <div class="mx-auto w-full sm:w-lg"><div class="relative w-full min-w-[min(100%,280px)]"><div class="absolute -inset-3 -z-10 rounded-[30px] bg-white/20 blur-2xl" /><CalculatorView variant="banner" :initial-amount="300" :show-button="true" :show-terms="true" :show-reductions="true" :button-text="t('send_money')" :title="t('calculatorTitle')" :subtitle="t('calculator_description')" custom-classes="!max-w-full !rounded-[30px] !p-6 sm:!p-8" /></div></div>
+    </div>
+  </section>
+</template>

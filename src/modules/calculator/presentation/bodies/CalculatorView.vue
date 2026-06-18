@@ -128,8 +128,44 @@
       >
         <div class="flex items-center justify-between gap-3">
           <div class="flex min-w-0 flex-1 gap-3">
+            <!-- Cupón de la campaña del Mundial: microescena de gol -->
+            <span
+              v-if="isWorldCupCoupon && !calculatorStore.skipAutomaticCoupon"
+              class="gol-scene relative block h-11 w-16 shrink-0 self-center"
+              aria-hidden="true"
+            >
+              <span class="gol-flash"></span>
+              <svg class="gol-net" viewBox="0 0 26 30" fill="none" preserveAspectRatio="xMidYMid meet">
+                <g stroke="rgba(74,82,216,.32)" stroke-width="0.7">
+                  <line x1="6" y1="5" x2="6" y2="26" />
+                  <line x1="12" y1="5" x2="12" y2="26" />
+                  <line x1="18" y1="5" x2="18" y2="26" />
+                  <line x1="24" y1="5" x2="24" y2="26" />
+                  <line x1="6" y1="10" x2="24" y2="10" />
+                  <line x1="6" y1="16" x2="24" y2="16" />
+                  <line x1="6" y1="22" x2="24" y2="22" />
+                </g>
+                <path d="M6 27 V5 H24 V27" fill="none" stroke="#4a52d8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="gol-ball">
+                <svg viewBox="0 0 40 40" fill="none">
+                  <circle cx="20" cy="20" r="16" fill="#ffffff" />
+                  <polygon points="20,15 24.76,18.45 22.94,24.05 17.06,24.05 15.24,18.45" fill="#0b1220" />
+                  <g stroke="#0b1220" stroke-width="1.4" stroke-linecap="round">
+                    <line x1="20" y1="15" x2="20" y2="4.2" />
+                    <line x1="24.76" y1="18.45" x2="34.8" y2="15.4" />
+                    <line x1="22.94" y1="24.05" x2="29.1" y2="32.4" />
+                    <line x1="17.06" y1="24.05" x2="10.9" y2="32.4" />
+                    <line x1="15.24" y1="18.45" x2="5.2" y2="15.4" />
+                  </g>
+                  <circle cx="20" cy="20" r="16" fill="none" stroke="#0b1220" stroke-width="1.8" />
+                </svg>
+              </span>
+              <span class="gol-label">¡GOL!</span>
+            </span>
+            <!-- Otros cupones automáticos: check -->
             <div
-              v-if="!calculatorStore.skipAutomaticCoupon"
+              v-else-if="!calculatorStore.skipAutomaticCoupon"
               class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-teal-500 text-teal-500"
             >
               <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -322,6 +358,11 @@ const automaticCouponDetail = computed(() => {
     savings: formatNumber(savings)
   }
 })
+
+/** Cupón de la campaña del Mundial: su código sigue la plantilla MUNDIAL-{HOME}-{AWAY}. */
+const isWorldCupCoupon = computed(() =>
+  /^MUNDIAL/i.test(calculatorStore.currentAutomaticCoupon?.code ?? '')
+)
 
 function toTwoDecimals(n: number): number {
   return Number((n || 0).toFixed(2))
@@ -678,3 +719,105 @@ onMounted(async () => {
   syncCalculatedFields()
 })
 </script>
+
+<style scoped>
+/* Microescena: la pelota describe un arco y entra al arco = ¡GOL! */
+.gol-scene { overflow: visible; }
+
+.gol-net {
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  height: 30px;
+  width: 26px;
+  transform: translateY(-50%);
+  animation: gol-net-shake 3.2s ease-in-out infinite;
+}
+.gol-flash {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  height: 30px;
+  width: 30px;
+  margin-top: -15px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(1, 232, 252, 0.85) 0%, rgba(94, 214, 179, 0.45) 45%, rgba(1, 232, 252, 0) 72%);
+  opacity: 0;
+  transform: scale(0.4);
+  pointer-events: none;
+  animation: gol-flash 3.2s ease-out infinite;
+}
+.gol-ball {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 16px;
+  width: 16px;
+  margin-top: -8px;
+  will-change: transform;
+  animation: gol-ball 3.2s cubic-bezier(0.45, 0.05, 0.35, 1) infinite;
+}
+.gol-ball :deep(svg) {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.gol-label {
+  position: absolute;
+  top: -7px;
+  right: 0;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #4a52d8;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(2px) scale(0.6);
+  pointer-events: none;
+  animation: gol-pop 3.2s ease-out infinite;
+}
+
+@keyframes gol-ball {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  10%  { transform: translate(9px, -9px) rotate(150deg); opacity: 1; }
+  22%  { transform: translate(24px, -10px) rotate(330deg); }
+  30%  { transform: translate(38px, 6px) rotate(470deg); }   /* entra a la red */
+  35%  { transform: translate(35px, 1px) rotate(478deg); }   /* rebote */
+  40%  { transform: translate(38px, 5px) rotate(482deg); }
+  80%  { transform: translate(38px, 5px) rotate(482deg); opacity: 1; }
+  86%  { transform: translate(38px, 5px) rotate(482deg); opacity: 0; }
+  87%  { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  97%  { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  100% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+}
+@keyframes gol-flash {
+  0%, 27% { opacity: 0; transform: scale(0.4); }
+  31%     { opacity: 0.9; transform: scale(1.25); }
+  46%     { opacity: 0; transform: scale(1.6); }
+  100%    { opacity: 0; transform: scale(0.4); }
+}
+@keyframes gol-net-shake {
+  0%, 28%   { transform: translateY(-50%) translateX(0); }
+  31%       { transform: translateY(-50%) translateX(1.6px); }
+  34%       { transform: translateY(-50%) translateX(-1.1px); }
+  37%       { transform: translateY(-50%) translateX(0.6px); }
+  40%, 100% { transform: translateY(-50%) translateX(0); }
+}
+@keyframes gol-pop {
+  0%, 28% { opacity: 0; transform: translateY(2px) scale(0.6); }
+  34%     { opacity: 1; transform: translateY(-3px) scale(1.08); }
+  40%     { opacity: 1; transform: translateY(-3px) scale(1); }
+  64%     { opacity: 1; }
+  76%     { opacity: 0; transform: translateY(-6px) scale(1); }
+  100%    { opacity: 0; }
+}
+
+/* Sin movimiento: pelota en reposo frente al arco. */
+@media (prefers-reduced-motion: reduce) {
+  .gol-net { animation: none; transform: translateY(-50%); }
+  .gol-flash,
+  .gol-label { animation: none; opacity: 0; }
+  .gol-ball { animation: none; transform: translate(30px, 2px); }
+}
+</style>

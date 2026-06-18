@@ -292,5 +292,13 @@
   "seo_blog_title": "Brasper Blog | Transfer news and guides",
   "seo_blog_description": "Articles and guides about remittances, exchange rates, and practical tips for operating with Brasper.",
   "seo_blog_detail_title": "Blog article | Brasper",
-  "seo_blog_detail_description": "Read Brasper content about international transfers, exchange rates, and operating best practices."
+  "seo_blog_detail_description": "Read Brasper content about international transfers, exchange rates, and operating best practices.",
+  "worldcup_live": "LIVE",
+  "worldcup_next_match": "Next match",
+  "worldcup_vs": "vs",
+  "worldcup_no_commission": "No commission!",
+  "worldcup_commission_off": "Commission -{percent}%",
+  "worldcup_ends_in": "Ends in",
+  "worldcup_starts_at": "Starts",
+  "worldcup_cta": "Calculate my transfer"
 }

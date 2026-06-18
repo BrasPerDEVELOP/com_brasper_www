@@ -2,6 +2,8 @@
   <div class="min-h-screen bg-slate-50 text-slate-800">
     <Navbar />
 
+    <HomeBootstrapLoader :visible="bootstrap.showLoader.value" />
+
     <HomeHeroBanner />
 
     <BancosSlider />
@@ -30,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Navbar from '@/interface/layout/Navbar.vue'
 import Footer from '@/interface/layout/Footer.vue'
@@ -40,8 +42,12 @@ import ScheduleTransferForm from '../widgets/ScheduleTransferForm.vue'
 import SocialHelpWidget from '../widgets/SocialHelpWidget.vue'
 import HomeHeroBanner from '../sections/HomeHeroBanner.vue'
 import LandingAttentionSection from '../sections/LandingAttentionSection.vue' 
+import HomeBootstrapLoader from '../components/HomeBootstrapLoader.vue'
+import { useHomeBootstrap } from '../composables/useHomeBootstrap'
 
 const { t } = useI18n()
+const bootstrap = useHomeBootstrap()
+onMounted(bootstrap.load)
 
 useSeo({
   title: t('seo_home_title'),

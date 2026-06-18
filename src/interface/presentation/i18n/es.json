@@ -290,5 +290,13 @@
   "seo_blog_title": "Blog de Brasper | Noticias y guías de transferencias",
   "seo_blog_description": "Artículos y guías sobre remesas, cambio de divisas y consejos para operar con Brasper.",
   "seo_blog_detail_title": "Artículo del blog | Brasper",
-  "seo_blog_detail_description": "Lee los contenidos de Brasper sobre transferencias internacionales, tasas y recomendaciones operativas."
+  "seo_blog_detail_description": "Lee los contenidos de Brasper sobre transferencias internacionales, tasas y recomendaciones operativas.",
+  "worldcup_live": "EN VIVO",
+  "worldcup_next_match": "Próximo partido",
+  "worldcup_vs": "vs",
+  "worldcup_no_commission": "¡Sin comisión!",
+  "worldcup_commission_off": "Comisión -{percent}%",
+  "worldcup_ends_in": "Termina en",
+  "worldcup_starts_at": "Empieza",
+  "worldcup_cta": "Calcular mi envío"
 }
