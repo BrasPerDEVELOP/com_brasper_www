@@ -82,7 +82,6 @@ type HomeBannerApiRow = {
 const { t, locale } = useI18n()
 const remoteBanner = shallowRef<HomeBannerApiRow | null>(readCachedHomeBanner())
 const displayedBannerImageSrc = shallowRef(localBannerSrc())
-const remoteImageFailed = shallowRef(false)
 
 function withStableVersion(url: string, version?: string): string {
   if (!url || !version) return url
@@ -139,7 +138,6 @@ async function fetchHomeBanner(): Promise<void> {
       const row = parseHomeBannerRow(data)
       if (row) {
         remoteBanner.value = row
-        remoteImageFailed.value = false
         cacheHomeBanner(row)
       }
       return
@@ -151,7 +149,6 @@ async function fetchHomeBanner(): Promise<void> {
     const active = rows.find((row) => row.enable) ?? rows[0] ?? null
     if (active) {
       remoteBanner.value = active
-      remoteImageFailed.value = false
       cacheHomeBanner(active)
     }
   } catch {
@@ -160,7 +157,6 @@ async function fetchHomeBanner(): Promise<void> {
 }
 
 const bannerImageSrc = computed(() => {
-  if (remoteImageFailed.value) return localBannerSrc()
   const row = remoteBanner.value
   if (row?.enable) {
     const path = locale.value === 'es' ? row.banner_es : locale.value === 'en' ? row.banner_en : row.banner_pr
@@ -171,20 +167,29 @@ const bannerImageSrc = computed(() => {
 })
 
 function onDisplayedBannerImageError(): void {
-  if (remoteBanner.value && !remoteImageFailed.value) {
-    remoteImageFailed.value = true
-    displayedBannerImageSrc.value = localBannerSrc()
-  }
+  displayedBannerImageSrc.value = localBannerSrc()
 }
 
-watch(bannerImageSrc, (nextSrc) => {
+watch(bannerImageSrc, (nextSrc, _previousSrc, onCleanup) => {
   if (!nextSrc || nextSrc === displayedBannerImageSrc.value) return
+
+  const fallbackSrc = localBannerSrc()
+  let cancelled = false
   const image = new Image()
-  image.onload = () => { displayedBannerImageSrc.value = nextSrc }
-  image.onerror = onDisplayedBannerImageError
+  image.onload = () => {
+    if (!cancelled) displayedBannerImageSrc.value = nextSrc
+  }
+  image.onerror = () => {
+    if (!cancelled) displayedBannerImageSrc.value = fallbackSrc
+  }
   image.src = nextSrc
+
+  onCleanup(() => {
+    cancelled = true
+    image.onload = null
+    image.onerror = null
+  })
 }, { immediate: true })
 
-watch(locale, () => { remoteImageFailed.value = false })
 onMounted(() => { void fetchHomeBanner() })
 </script>
