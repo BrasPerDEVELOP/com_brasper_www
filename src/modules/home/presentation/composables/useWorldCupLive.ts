@@ -9,7 +9,7 @@ import type {
 const ENDPOINT = 'world-cup/public/live'
 const POLL_INTERVAL_MS = 60_000
 
-// Estado compartido (singleton) — igual patrón resiliente que useHomeBootstrap.
+// Estado compartido (singleton) para reutilizar la información entre componentes.
 const live = shallowRef<WorldCupMatch[]>([])
 const next = shallowRef<WorldCupMatch | null>(null)
 const loading = shallowRef(false)
