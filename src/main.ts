@@ -18,21 +18,13 @@ app.use(i18n)
 setAuthCallbacks(
   () => useAuthStore().token ?? (typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null),
   () => {
-    const authStore = useAuthStore()
-    // Token inválido/expirado: limpiar en local sin POST /logout (evita otro 401 en bucle).
-    if (!authStore.token && !localStorage.getItem('token')) return
-    authStore.clearSession()
-
-    // Solo forzar login en rutas protegidas. La home y demás públicas deben seguir accesibles.
-    const current = router.currentRoute.value
-    const requiresAuth = current.matched.some((r) => r.meta.requiresAuth === true)
-    if (!requiresAuth) return
-
+    useAuthStore().logout()
+    const redirect = router.currentRoute.value.fullPath
     const locale = i18n.global.locale.value as 'es' | 'en' | 'pt'
     router.push({
       name: 'auth',
       params: { locale: appLocaleToRouteLocale(locale) },
-      query: current.fullPath ? { redirect: current.fullPath } : undefined
+      query: redirect ? { redirect } : undefined
     })
   }
 )
