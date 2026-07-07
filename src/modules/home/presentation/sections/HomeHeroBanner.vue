@@ -1,27 +1,50 @@
 <template>
-  <section id="banner" class="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-400 text-white">
+  <section id="banner" class="relative overflow-hidden text-slate-800">
+    <div class="absolute inset-0 -z-10 bg-gradient-to-br from-[#e8f2ff] via-[#edf4ff] to-[#dce9ff]" />
     <div class="absolute inset-0 -z-10">
-      <div class="absolute left-1/2 top-0 h-[520px] w-[720px] -translate-x-1/2 rounded-full bg-cyan-300/40 blur-3xl" />
-      <div class="absolute right-0 top-28 h-80 w-80 rounded-full bg-blue-300/30 blur-3xl" />
-      <div class="absolute left-0 top-64 h-80 w-80 rounded-full bg-emerald-200/40 blur-3xl" />
+      <div class="absolute left-1/2 top-0 h-[520px] w-[720px] -translate-x-1/2 rounded-full bg-blue-300/25 blur-3xl" />
+      <div class="absolute right-0 top-20 h-80 w-80 rounded-full bg-cyan-300/20 blur-3xl" />
+      <div class="absolute -left-16 bottom-0 h-72 w-72 rounded-full bg-blue-400/15 blur-3xl" />
     </div>
 
-    <div class="relative z-10 mx-auto flex max-w-7xl flex-col items-stretch justify-center gap-8 px-4 py-12 sm:px-6 md:flex-row md:items-start md:gap-6 lg:gap-12 lg:px-12 lg:py-20">
-      <div class="min-w-0 w-full flex-1 text-center md:text-left">
-        <div class="flex items-center gap-2 font-bold">
-          <Icon icon="ic:round-whatsapp" width="32" height="32" class="shrink-0" />
-          <span class="inline-flex rounded-full px-3 py-1.5 text-xs uppercase tracking-widest text-white">
-            <p class="text-yellow-400">{{ t('landing_badge_title') }}</p>
-            {{ t('landing_badge') }}
-          </span>
+    <div
+      class="relative z-10 mx-auto flex max-w-7xl flex-col items-stretch justify-center gap-8 px-4 py-10 sm:px-6 md:flex-row md:items-start md:gap-10 lg:gap-14 lg:px-12 lg:py-16"
+    >
+      <div class="order-2 flex min-w-0 w-full flex-1 flex-col items-center text-center md:order-1">
+        <div class="flex items-center justify-center gap-4">
+          <img
+            src="/assets/flags/peru.svg"
+            :alt="t('landing_section_peru')"
+            width="56"
+            height="56"
+            class="h-12 w-12 rounded-full object-cover sm:h-14 sm:w-14"
+          />
+          <img
+            src="/assets/flags/banderabrasil.png"
+            :alt="t('landing_section_brazil')"
+            width="56"
+            height="56"
+            class="h-12 w-12 rounded-full object-cover sm:h-14 sm:w-14"
+          />
         </div>
 
-        <h1 class="text-xl font-bold leading-snug sm:text-lg md:text-xl lg:text-3xl xl:text-4xl">
-          {{ t('landing_title') }}
-        </h1>
+        <div class="mt-5 inline-flex max-w-xl items-start justify-center gap-3">
+          <span class="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#25D366]/15 text-[#25D366]" aria-hidden="true">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+            </svg>
+          </span>
+          <h1 class="text-left text-3xl font-extrabold leading-tight text-[#0F123E] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15]">
+            {{ t('landing_title') }}
+          </h1>
+        </div>
 
-        <div class="mt-4 flex flex-wrap items-center justify-center gap-4 lg:justify-center">
-          <div class="aspect-[760/366] w-full overflow-hidden">
+        <p class="mt-3 max-w-lg text-center text-lg font-semibold leading-relaxed text-secondary sm:text-xl">
+          {{ t('landing_description') }}
+        </p>
+
+        <div class="mt-6 flex w-full flex-wrap items-center justify-center gap-4">
+          <div class="aspect-[760/366] w-full max-w-[560px] overflow-hidden">
             <img
               :src="displayedBannerImageSrc"
               :alt="t('landing_badge')"
@@ -30,17 +53,17 @@
               decoding="async"
               width="760"
               height="366"
-              sizes="(max-width: 768px) 100vw, 380px"
-              class="h-full w-full object-cover"
+              sizes="(max-width: 768px) 100vw, 560px"
+              class="h-full w-full object-contain"
               @error="onDisplayedBannerImageError"
             />
           </div>
         </div>
       </div>
 
-      <div class="mx-auto w-full sm:w-lg">
-        <div class="relative w-full min-w-[min(100%,280px)]">
-          <div class="absolute -inset-3 -z-10 rounded-[30px] bg-gradient-to-r from-cyan-300/60 via-blue-300/40 to-cyan-300/60 blur-2xl" />
+      <div class="order-1 flex w-full justify-center md:order-2 md:block md:w-lg md:justify-normal">
+        <div class="relative w-full max-w-[500px] min-w-[min(100%,280px)] md:max-w-none">
+          <div class="absolute -inset-4 -z-10 rounded-[30px] bg-black/10 blur-2xl" />
           <CalculatorView
             variant="banner"
             :initial-amount="300"
@@ -50,7 +73,7 @@
             :button-text="t('send_money')"
             :title="t('calculatorTitle')"
             :subtitle="t('calculator_description')"
-            custom-classes="!max-w-full !rounded-[30px] !p-6 sm:!p-8"
+            custom-classes="!mx-auto !w-full !max-w-[500px] !rounded-[24px] !border !border-white/70 !bg-white !p-6 !shadow-[0_18px_50px_rgba(0,0,0,0.18)] sm:!p-8"
           />
         </div>
       </div>
@@ -61,7 +84,6 @@
 <script setup lang="ts">
 import { computed, onMounted, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Icon } from '@iconify/vue'
 import { apiClient } from '@/interface/api/client'
 import { env } from '@/interface/config/env'
 import { Domain } from '@/interface/infrastructure/services'
