@@ -16,17 +16,17 @@
 
       <div class="w-full lg:w-1/2">
         <div class="mb-10">
-          <span class="mb-2 block font-semibold text-indigo-600">
+          <span class="mb-2 block font-semibold text-azure-600">
             {{ t('landing_section_advantages') }}
           </span>
-          <h2 class="text-3xl font-bold text-gray-900 lg:text-4xl">
+          <h2 class="text-3xl font-bold text-slate-900 lg:text-4xl">
             {{ t('landing_section_advantages_title') }}
           </h2>
         </div>
 
         <div class="grid gap-6 md:grid-cols-2">
-          <div class="rounded-xl bg-gray-100 p-6 shadow-sm">
-            <div class="mb-4 flex items-center gap-2 text-2xl text-indigo-500">
+          <div class="rounded-xl bg-slate-100 p-6 shadow-sm">
+            <div class="mb-4 flex items-center gap-2 text-2xl text-azure-500">
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   stroke-linecap="round"
@@ -37,11 +37,11 @@
               </svg>
               <h4 class="text-lg font-semibold">{{ t('landing_mission_title') }}</h4>
             </div>
-            <p class="text-sm text-gray-700">{{ t('landing_mission_description') }}</p>
+            <p class="text-sm text-slate-700">{{ t('landing_mission_description') }}</p>
           </div>
 
-          <div class="rounded-xl bg-gray-100 p-6 shadow-sm">
-            <div class="mb-4 flex items-center gap-2 text-2xl text-indigo-500">
+          <div class="rounded-xl bg-slate-100 p-6 shadow-sm">
+            <div class="mb-4 flex items-center gap-2 text-2xl text-azure-500">
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   stroke-linecap="round"
@@ -58,7 +58,7 @@
               </svg>
               <h4 class="text-lg font-semibold">{{ t('landing_vision_title') }}</h4>
             </div>
-            <p class="text-sm text-gray-700">{{ t('landing_vision_description') }}</p>
+            <p class="text-sm text-slate-700">{{ t('landing_vision_description') }}</p>
           </div>
         </div>
       </div>

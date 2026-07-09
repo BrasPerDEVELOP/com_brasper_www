@@ -158,6 +158,10 @@ const router = createRouter({
 
 const TOKEN_KEY = 'token'
 
+function isPublicLandingPath(path: string): boolean {
+  return path === '/' || /^\/(es|en|pr)\/?$/.test(path)
+}
+
 // Guard: rutas públicas (/, /auth, /register) libres; todo lo bajo /dashboard requiere auth.
 router.beforeEach(async (to, _from, next) => {
   const targetLocale = isRouteLocale(to.params.locale)
@@ -185,6 +189,18 @@ router.beforeEach(async (to, _from, next) => {
     document.documentElement.lang = appLocale === 'pt' ? 'pt-BR' : appLocale === 'en' ? 'en-US' : 'es-PE'
   }
 
+  if (to.name === 'auth') {
+    const redirect = typeof to.query.redirect === 'string' ? to.query.redirect : ''
+    if (isPublicLandingPath(redirect)) {
+      next({
+        name: 'homepage',
+        params: { locale: targetLocale ?? getPreferredRouteLocale() },
+        replace: true
+      })
+      return
+    }
+  }
+
   const requiresAuth = to.matched.some((r) => r.meta.requiresAuth)
   const isPublic = to.meta.public === true
 
@@ -209,6 +225,7 @@ router.beforeEach(async (to, _from, next) => {
     if (!authStore.user) {
       authStore.restoreUser()
     }
+    await authStore.restoreSession()
   } catch {
     // Si Pinia no está listo, seguir
   }

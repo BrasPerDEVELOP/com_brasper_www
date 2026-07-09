@@ -3,11 +3,11 @@
     id="faq"
     class="relative overflow-hidden bg-gradient-to-b from-slate-50 via-cyan-50/40 to-white px-4 py-20 sm:px-6 lg:px-8"
   >
-    <div class="absolute inset-x-0 top-0 -z-10 h-64 bg-gradient-to-r from-blue-600/10 via-cyan-400/10 to-blue-500/10 blur-3xl"></div>
+    <div class="absolute inset-x-0 top-0 -z-10 h-64 bg-gradient-to-r from-azure-600/10 via-cyan-400/10 to-azure-500/10 blur-3xl"></div>
     <div class="mx-auto max-w-6xl">
       <div class="mb-10 text-center">
         <p class="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-700">{{ t('faq') }}</p>
-        <h2 class="text-3xl font-bold text-[#0c1b3a] sm:text-4xl">{{ t('landing_section_faq_title') }}</h2>
+        <h2 class="text-3xl font-bold text-[#1b1f2e] sm:text-4xl">{{ t('landing_section_faq_title') }}</h2>
         <p class="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
           Resuelve tus dudas sobre transferencias, tiempos, monedas y condiciones con una guia clara y directa.
         </p>
@@ -15,7 +15,7 @@
 
       <div class="flex flex-col gap-6 md:flex-row">
         <aside class="w-full md:w-72">
-          <div class="rounded-[28px] bg-[#0F123E] p-4 shadow-[0_20px_60px_rgba(15,18,62,0.18)]">
+          <div class="rounded-[28px] bg-[#1b1f2e] p-4 shadow-[0_20px_60px_rgba(15,18,62,0.18)]">
             <div class="mb-4 rounded-2xl border border-white/10 bg-white/5 p-4">
               <p class="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Brasper Help</p>
               <p class="mt-2 text-sm leading-relaxed text-white/80">
@@ -28,7 +28,7 @@
                 class="w-full rounded-2xl px-4 py-3 text-left font-semibold transition-all"
                 :class="
                   activeFaqTab === 'faq'
-                    ? 'bg-cyan-400 text-[#0F123E] shadow-lg'
+                    ? 'bg-cyan-400 text-[#1b1f2e] shadow-lg'
                     : 'bg-white/8 text-white hover:bg-white/14'
                 "
                 @click="activeFaqTab = 'faq'"
@@ -40,7 +40,7 @@
                 class="w-full rounded-2xl px-4 py-3 text-left font-semibold transition-all"
                 :class="
                   activeFaqTab === 'terms'
-                    ? 'bg-[#d3ff00] text-[#0F123E] shadow-lg'
+                    ? 'bg-cyan-400 text-[#1b1f2e] shadow-lg'
                     : 'bg-white/8 text-white hover:bg-white/14'
                 "
                 @click="activeFaqTab = 'terms'"
@@ -55,7 +55,7 @@
           <div v-if="activeFaqTab === 'faq'" class="space-y-4">
             <div class="mb-6 flex items-center justify-between gap-4 border-b border-slate-100 pb-5">
               <div>
-                <h3 class="text-2xl font-bold text-[#0c1b3a]">
+                <h3 class="text-2xl font-bold text-[#1b1f2e]">
                   {{ t('faq') }}
                 </h3>
                 <p class="mt-2 text-sm text-slate-500">
@@ -64,7 +64,7 @@
               </div>
               <div class="hidden rounded-2xl bg-cyan-50 px-4 py-3 text-right sm:block">
                 <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-700">FAQ</p>
-                <p class="mt-1 text-2xl font-bold text-[#0F123E]">{{ faqs.length }}</p>
+                <p class="mt-1 text-2xl font-bold text-[#1b1f2e]">{{ faqs.length }}</p>
               </div>
             </div>
 
@@ -74,15 +74,15 @@
               class="faq-item group overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:border-cyan-300 hover:shadow-md"
             >
               <summary class="flex cursor-pointer list-none items-center gap-4 px-5 py-4">
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-cyan-400 text-sm font-bold text-white">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-azure-600 to-cyan-400 text-sm font-bold text-white">
                   {{ String(index + 1).padStart(2, '0') }}
                 </div>
                 <div class="flex-1">
-                  <span class="block text-base font-semibold text-[#0c1b3a]">
+                  <span class="block text-base font-semibold text-[#1b1f2e]">
                     {{ item.question }}
                   </span>
                 </div>
-                <span class="faq-icon flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[#0F123E] transition-transform">
+                <span class="faq-icon flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[#1b1f2e] transition-transform">
                   +
                 </span>
               </summary>
@@ -93,7 +93,7 @@
           </div>
 
           <div v-else class="space-y-5">
-            <div class="rounded-[26px] bg-gradient-to-r from-[#0F123E] via-blue-700 to-cyan-500 p-6 text-white shadow-lg">
+            <div class="rounded-[26px] bg-gradient-to-r from-[#1b1f2e] via-azure-700 to-cyan-500 p-6 text-white shadow-lg">
               <p class="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Legal</p>
               <h3 class="mt-2 text-2xl font-bold">
                 {{ termsTabLabel }}
@@ -111,7 +111,7 @@
                 href="https://drive.google.com/file/d/1ACrx6qdwvws_pSuUrlL2w4AgNydPMlW6/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="mt-5 inline-flex rounded-xl bg-[#0F123E] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                class="mt-5 inline-flex rounded-xl bg-[#1b1f2e] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-azure-700"
               >
                 {{ termsButtonLabel }}
               </a>

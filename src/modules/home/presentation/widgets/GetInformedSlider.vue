@@ -1,8 +1,8 @@
 <template>
-  <section class="bg-gradient-to-b from-white via-blue-50 to-slate-100 px-4 py-16 sm:px-6 lg:px-8">
+  <section class="bg-gradient-to-b from-white via-azure-50 to-slate-100 px-4 py-16 sm:px-6 lg:px-8">
     <div class="mx-auto w-full max-w-5xl">
       <div class="mb-10 text-center">
-        <span class="block text-sm font-semibold text-indigo-600">
+        <span class="block text-sm font-semibold text-azure-600">
           {{ t('landing_get_informed_title') }}
         </span>
         <h2 class="mt-2 text-3xl font-bold text-slate-900 lg:text-4xl">
@@ -40,7 +40,7 @@
             </picture>
             <div class="absolute inset-0 bg-slate-900/20 transition group-hover:bg-slate-900/30" />
             <div
-              class="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-2xl text-indigo-600 shadow-lg transition group-hover:scale-105"
+              class="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-2xl text-azure-600 shadow-lg transition group-hover:scale-105"
             >
               ▶
             </div>
@@ -59,7 +59,7 @@
                 :key="item"
                 class="flex items-center justify-center gap-2 text-slate-700 md:justify-start"
               >
-                <span class="text-blue-600">✔</span>
+                <span class="text-azure-600">✔</span>
                 <span>{{ item }}</span>
               </li>
             </ul>
@@ -67,7 +67,7 @@
               :href="slide.channelUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700 sm:text-white"
+              class="inline-flex items-center justify-center rounded-md bg-azure-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-azure-700 sm:text-white"
             >
               {{ slide.buttonLabel }}
             </a>
@@ -97,7 +97,7 @@
             :key="`informed-dot-${itemIndex}`"
             type="button"
             class="h-3 rounded-full transition-all duration-300"
-            :class="itemIndex === currentIndex ? 'w-8 bg-indigo-600' : 'w-3 bg-slate-300 hover:bg-slate-400'"
+            :class="itemIndex === currentIndex ? 'w-8 bg-azure-600' : 'w-3 bg-slate-300 hover:bg-slate-400'"
             :aria-label="`${t('landing_get_informed_go_to')} ${itemIndex + 1}`"
             @click="goTo(itemIndex)"
           />
@@ -107,10 +107,10 @@
 
     <div
       v-if="activeVideoSrc"
-      class="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/80 px-4 py-6"
+      class="fixed inset-0 z-[80] flex items-center justify-center bg-[#1b1f2e]/80 px-4 py-6"
       @click.self="closeVideo"
     >
-      <div class="relative w-full max-w-5xl rounded-2xl bg-slate-950 p-2 shadow-2xl">
+      <div class="relative w-full max-w-5xl rounded-2xl bg-[#1b1f2e] p-2 shadow-2xl">
         <button
           type="button"
           :aria-label="t('close')"

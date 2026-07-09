@@ -5,7 +5,7 @@
     aria-labelledby="landing-attention-heading"
   >
     <div class="pointer-events-none absolute -right-24 top-0 h-72 w-72 rounded-full bg-cyan-200/40 blur-3xl" />
-    <div class="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-blue-200/30 blur-3xl" />
+    <div class="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-azure-200/30 blur-3xl" />
 
     <div class="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-12">
       <div class="space-y-8 lg:col-span-7">
@@ -23,13 +23,13 @@
             class="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl lg:leading-[1.1]"
           >
             {{ t('landing_attention_title_prefix') }}
-            <span class="bg-gradient-to-r from-blue-600 to-cyan-400 bg-clip-text text-transparent">{{ t('landing_attention_title_highlight') }}</span>
+            <span class="bg-gradient-to-r from-azure-600 to-cyan-400 bg-clip-text text-transparent">{{ t('landing_attention_title_highlight') }}</span>
           </h2>
          
         </div>
 
         <div class="max-w-2xl rounded-2xl border border-slate-100 bg-white p-6 shadow-sm sm:p-7">
-          <h3 class="text-xl font-bold tracking-tight text-blue-600 sm:text-2xl">
+          <h3 class="text-xl font-bold tracking-tight text-azure-600 sm:text-2xl">
             {{ t('landing_attention_hours_title') }}
           </h3>
 
@@ -39,12 +39,12 @@
           <ul class="mt-3 space-y-4" role="list">
             <li v-for="row in attentionRegularRows" :key="row.hoursKey" class="flex gap-3">
               <span
-                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm"
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-azure-600 text-white shadow-sm"
                 aria-hidden="true"
               >
                 <Icon icon="mdi:clock-outline" class="h-4 w-4" />
               </span>
-              <p class="pt-0.5 font-semibold leading-snug text-blue-600">
+              <p class="pt-0.5 font-semibold leading-snug text-azure-600">
                 {{ t(row.labelKey) }}:
                 <span class="font-bold"> {{ t(row.hoursKey) }}</span>
               </p>
@@ -57,12 +57,12 @@
           <ul class="mt-3 space-y-4" role="list">
             <li v-for="row in attentionExtendedRows" :key="row.hoursKey" class="flex gap-3">
               <span
-                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm"
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-azure-600 text-white shadow-sm"
                 aria-hidden="true"
               >
                 <Icon icon="mdi:clock-outline" class="h-4 w-4" />
               </span>
-              <p class="pt-0.5 font-semibold leading-snug text-blue-600">
+              <p class="pt-0.5 font-semibold leading-snug text-azure-600">
                 {{ t(row.labelKey) }}:
                 <span class="font-bold"> {{ t(row.hoursKey) }}</span>
               </p>
@@ -75,12 +75,12 @@
           <ul class="mt-3 space-y-4" role="list">
             <li v-for="row in attentionHolidayRows" :key="row.hoursKey" class="flex gap-3">
               <span
-                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm"
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-azure-600 text-white shadow-sm"
                 aria-hidden="true"
               >
                 <Icon icon="mdi:clock-outline" class="h-4 w-4" />
               </span>
-              <p class="pt-0.5  font-semibold leading-snug text-blue-600">
+              <p class="pt-0.5  font-semibold leading-snug text-azure-600">
                 {{ t(row.labelKey) }}:
                 <span class="font-bold"> {{ t(row.hoursKey) }}</span>
               </p>
@@ -97,7 +97,7 @@
         <div class="pt-2">
           <a
             href="#banner"
-            class="group inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 px-8 py-4  font-bold text-white shadow-lg ring-1 ring-white/10 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-600/25 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 active:translate-y-0 active:scale-[0.98] active:shadow-lg"
+            class="group inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-cyan-600 to-azure-600 px-8 py-4  font-bold text-white shadow-lg ring-1 ring-white/10 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-600/25 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 active:translate-y-0 active:scale-[0.98] active:shadow-lg"
           >
             {{ t('landing_attention_cta') }}
             <svg

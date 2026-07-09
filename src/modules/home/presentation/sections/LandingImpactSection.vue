@@ -7,7 +7,7 @@
     <div class="pointer-events-none absolute inset-0 z-0">
       <div class="absolute left-1/4 top-1/4 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-cyan-400/10 blur-[120px]" />
       <div
-        class="absolute bottom-1/4 right-1/4 h-[600px] w-[600px] translate-x-1/3 rounded-full bg-blue-600/10 blur-[150px]"
+        class="absolute bottom-1/4 right-1/4 h-[600px] w-[600px] translate-x-1/3 rounded-full bg-azure-600/10 blur-[150px]"
       />
     </div>
 
@@ -16,7 +16,7 @@
         <div class="max-w-2xl">
           <div class="mb-6 flex items-center gap-3">
             <span class="h-0.5 w-12 shrink-0 bg-cyan-400" aria-hidden="true" />
-            <span class="text-xs font-extrabold uppercase tracking-widest text-blue-600">
+            <span class="text-xs font-extrabold uppercase tracking-widest text-azure-600">
               {{ t('landing_impact_kicker') }}
             </span>
           </div>
@@ -25,7 +25,7 @@
             class="text-4xl font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-7xl"
           >
             {{ t('landing_impact_title_line1') }}
-            <span class="bg-gradient-to-r from-blue-600 to-cyan-400 bg-clip-text text-transparent">{{
+            <span class="bg-gradient-to-r from-azure-600 to-cyan-400 bg-clip-text text-transparent">{{
               t('landing_impact_title_highlight')
             }}</span>
             {{ t('landing_impact_title_line2') }}
@@ -47,7 +47,7 @@
             :class="item.glowOrbClass"
             aria-hidden="true"
           />
-          <Icon :icon="item.icon" class="mb-6 text-3xl text-blue-600" aria-hidden="true" />
+          <Icon :icon="item.icon" class="mb-6 text-3xl text-azure-600" aria-hidden="true" />
           <div
             class="text-4xl font-extrabold tracking-tighter text-slate-900"
             :class="item.valueNoteKey ? 'mb-1' : 'mb-2'"
@@ -57,7 +57,7 @@
           <p v-if="item.valueNoteKey" class="mb-2 text-xs font-medium text-slate-500">
             {{ t(item.valueNoteKey) }}
           </p>
-          <div class="mb-4 text-xs font-bold uppercase tracking-widest text-blue-600">
+          <div class="mb-4 text-xs font-bold uppercase tracking-widest text-azure-600">
             {{ t(item.labelKey) }}
           </div>
           <p class="text-sm leading-relaxed text-slate-600">
@@ -101,7 +101,7 @@ const impactStatItems = computed<ImpactStatItem[]>(() => [
     labelKey: 'landing_impact_stat_1_label',
     descKey: 'landing_impact_stat_1_description',
     barWidthClass: 'w-3/4',
-    barClass: 'bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.35)]',
+    barClass: 'bg-azure-600 shadow-[0_0_8px_rgba(37,99,235,0.35)]',
     glowOrbClass: 'bg-cyan-400/10 group-hover:bg-cyan-400/15'
   },
   {
@@ -110,8 +110,8 @@ const impactStatItems = computed<ImpactStatItem[]>(() => [
     labelKey: 'landing_impact_stat_2_label',
     descKey: 'landing_impact_stat_2_description',
     barWidthClass: 'w-1/2',
-    barClass: 'bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.35)]',
-    glowOrbClass: 'bg-blue-600/10 group-hover:bg-blue-600/15'
+    barClass: 'bg-azure-600 shadow-[0_0_8px_rgba(37,99,235,0.35)]',
+    glowOrbClass: 'bg-azure-600/10 group-hover:bg-azure-600/15'
   },
   {
     icon: 'mdi:currency-usd',
@@ -129,7 +129,7 @@ const impactStatItems = computed<ImpactStatItem[]>(() => [
     descKey: 'landing_impact_stat_4_description',
     barWidthClass: 'w-full',
     barClass: 'bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.45)]',
-    glowOrbClass: 'bg-blue-600/10 group-hover:bg-blue-600/15'
+    glowOrbClass: 'bg-azure-600/10 group-hover:bg-azure-600/15'
   }
 ])
 </script>

@@ -1,26 +1,42 @@
 <template>
-  <section id="services" class="bg-[#1b1f2e] px-4 py-16 text-white sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-6xl">
-      <div class="mb-12 text-center">
-        <h2 class="text-2xl font-bold sm:text-3xl">
+  <section
+    id="services"
+    class="relative overflow-hidden bg-[#1b1f2e] px-4 py-20 text-white sm:px-6 lg:px-8"
+  >
+    <!-- Resplandores decorativos de fondo -->
+    <div class="pointer-events-none absolute inset-0 -z-0">
+      <div class="absolute -left-24 top-0 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
+      <div class="absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-azure-600/10 blur-3xl" />
+    </div>
+
+    <div class="relative z-10 mx-auto max-w-6xl">
+      <div class="mx-auto mb-14 max-w-3xl text-center">
+        <span class="inline-block rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-cyan-300">
+          {{ t('landing_section_banks_title') }}
+        </span>
+        <h2 class="mt-4 bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-2xl font-bold text-transparent sm:text-3xl lg:text-4xl">
           {{ t('landing_best_rates_title') }}
         </h2>
       </div>
 
-      <div class="grid grid-cols-1 gap-8 text-left md:grid-cols-2 lg:grid-cols-3">
-        <article v-for="(service, index) in services" :key="`service-${index}`" class="flex items-start gap-4">
+      <div class="grid grid-cols-1 gap-6 text-left sm:grid-cols-2 lg:grid-cols-3">
+        <article
+          v-for="(service, index) in services"
+          :key="`service-${index}`"
+          class="group relative flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-cyan-400/40 hover:bg-white/[0.07] hover:shadow-[0_16px_40px_-16px_rgba(34,211,238,0.4)]"
+        >
           <span
-            class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10 text-cyan-300"
+            class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-azure-600 text-white shadow-lg shadow-cyan-500/20 transition-transform duration-300 group-hover:scale-110"
           >
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="service.icon" />
             </svg>
           </span>
           <div>
-            <h4 class="mb-1 text-sm font-bold">
+            <h4 class="mb-1.5 text-base font-bold text-white">
               {{ service.title }}
             </h4>
-            <p class="text-sm text-gray-300">
+            <p class="text-sm leading-relaxed text-slate-300">
               {{ service.description }}
             </p>
           </div>

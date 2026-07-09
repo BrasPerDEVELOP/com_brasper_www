@@ -1,10 +1,12 @@
 <template>
-  <section id="bancos-section" class="relative py-12 bg-white">
+  <section id="bancos-section" class="relative bg-gradient-to-b from-white to-slate-50 py-14">
     <div class="mx-auto max-w-7xl px-4 text-center">
-      <span class="block text-xs font-semibold text-gray-500 uppercase mb-2">
+      <span class="inline-block rounded-full bg-azure-50 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-azure-600">
         {{ t('landing_section_banks_title') }}
       </span>
-      <h2 class="text-2xl font-bold mb-6">{{ t('landing_section_banks_subtitle') }}</h2>
+      <h2 class="mt-3 mb-8 text-2xl font-bold text-slate-800 sm:text-3xl">
+        {{ t('landing_section_banks_subtitle') }}
+      </h2>
 
       <div
         class="relative mx-auto max-w-6xl"
@@ -30,12 +32,15 @@
                 :href="banco.enlace"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="block cursor-pointer"
+                class="bank-card"
+                :title="banco.nombre"
               >
                 <img
                   :src="banco.img1"
                   :alt="banco.nombre"
-                  class="mx-auto h-auto w-28 object-contain opacity-70 transition-opacity hover:opacity-100 md:w-32"
+                  loading="lazy"
+                  decoding="async"
+                  class="bank-logo"
                 />
               </a>
             </div>
@@ -46,22 +51,24 @@
           type="button"
           class="nav-btn nav-btn-left"
           aria-label="Anterior"
-          @click="prevSlide"
+          @click.stop="prevSlide"
         >
-          ‹
+          <svg class="nav-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+          </svg>
         </button>
         <button
           type="button"
           class="nav-btn nav-btn-right"
           aria-label="Siguiente"
-          @click="nextSlide"
+          @click.stop="nextSlide"
         >
-          ›
+          <svg class="nav-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+          </svg>
         </button>
 
-     
-
-        <div class="mt-4 flex items-center justify-center gap-2">
+        <div class="mt-6 flex items-center justify-center gap-2">
           <button
             v-for="n in totalPages"
             :key="n"
@@ -89,15 +96,12 @@ const { t } = useI18n()
 
 const currentPage = ref(0)
 const slidesPerView = ref(5)
-const progress = ref(0)
 
 const pointerStartX = ref(0)
 const dragging = ref(false)
 const wheelLocked = ref(false)
 
 let autoplayTimer: ReturnType<typeof setInterval> | null = null
-let progressTimer: ReturnType<typeof setInterval> | null = null
-let autoplayStart = Date.now()
 let wheelUnlockTimer: ReturnType<typeof setTimeout> | null = null
 
 const totalPages = computed(() => {
@@ -119,46 +123,29 @@ const setSlidesPerView = () => {
   }
 }
 
-const resetClock = () => {
-  autoplayStart = Date.now()
-  progress.value = 0
-}
-
 const nextSlide = () => {
   if (totalPages.value <= 1) return
   currentPage.value = (currentPage.value + 1) % totalPages.value
-  resetClock()
 }
 
 const prevSlide = () => {
   if (totalPages.value <= 1) return
   currentPage.value = (currentPage.value - 1 + totalPages.value) % totalPages.value
-  resetClock()
 }
 
 const goToPage = (page: number) => {
   currentPage.value = page
-  resetClock()
 }
 
 const startAutoplay = () => {
   pauseAutoplay()
-  resetClock()
   autoplayTimer = setInterval(nextSlide, AUTOPLAY_DELAY)
-  progressTimer = setInterval(() => {
-    const elapsed = Date.now() - autoplayStart
-    progress.value = Math.min((elapsed / AUTOPLAY_DELAY) * 100, 100)
-  }, 60)
 }
 
 const pauseAutoplay = () => {
   if (autoplayTimer) {
     clearInterval(autoplayTimer)
     autoplayTimer = null
-  }
-  if (progressTimer) {
-    clearInterval(progressTimer)
-    progressTimer = null
   }
 }
 
@@ -224,32 +211,103 @@ onBeforeUnmount(() => {
 
 .slider-slide {
   flex: 0 0 calc(100% / var(--slides-per-view));
-  padding: 0.75rem 0.5rem;
+  padding: 0.5rem;
+}
+
+.bank-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 6rem;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid #eef1f6;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.bank-card:hover {
+  transform: translateY(-4px);
+  border-color: #c7d7f5;
+  box-shadow: 0 12px 24px -12px rgba(21, 62, 128, 0.35);
+}
+
+.bank-logo {
+  max-height: 2.75rem;
+  max-width: 80%;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.6;
+  transition: filter 200ms ease, opacity 200ms ease;
+}
+
+.bank-card:hover .bank-logo {
+  filter: grayscale(0);
+  opacity: 1;
 }
 
 .nav-btn {
   position: absolute;
-  top: 40%;
-  z-index: 10;
-  height: 2.25rem;
-  width: 2.25rem;
+  top: 50%;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  width: 2.5rem;
   border-radius: 9999px;
-  border: 1px solid #e5e7eb;
-  background: #ffffff;
-  color: #111827;
-  font-size: 1.5rem;
-  line-height: 1;
+  border: 1px solid #dbe3ee;
+  background: rgba(255, 255, 255, 0.95);
+  color: #165efc;
+  box-shadow: 0 4px 12px -4px rgba(15, 23, 42, 0.25);
   cursor: pointer;
+  transform: translateY(-50%);
+  transition: background 150ms ease, color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+
+.nav-btn__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.nav-btn:hover {
+  background: #165efc;
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.05);
 }
 
 .nav-btn-left {
-  left: -0.5rem;
+  left: 0.25rem;
 }
 
 .nav-btn-right {
-  right: -0.5rem;
+  right: 0.25rem;
 }
 
+@media (min-width: 768px) {
+  .nav-btn-left {
+    left: -1rem;
+  }
+
+  .nav-btn-right {
+    right: -1rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .nav-btn {
+    height: 2.25rem;
+    width: 2.25rem;
+    background: #ffffff;
+  }
+
+  .nav-btn__icon {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+}
 .dot {
   height: 0.5rem;
   width: 0.5rem;
@@ -259,13 +317,7 @@ onBeforeUnmount(() => {
 }
 
 .dot-active {
-  width: 1rem;
-  background: #153e80;
-}
-
-@media (max-width: 767px) {
-  .nav-btn {
-    display: none;
-  }
+  width: 1.25rem;
+  background: #165efc;
 }
 </style>

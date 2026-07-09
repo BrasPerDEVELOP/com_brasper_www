@@ -1,26 +1,26 @@
 <template>
-  <section id="banner" class="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-400 text-white">
+  <section id="banner" class="relative overflow-hidden bg-gradient-to-br from-azure-700 via-azure-600 to-azure-500 text-white md:bg-gradient-to-r md:from-azure-600 md:to-azure-400">
     <div class="absolute inset-0 -z-10">
-      <div class="absolute left-1/2 top-0 h-[520px] w-[720px] -translate-x-1/2 rounded-full bg-cyan-300/40 blur-3xl" />
-      <div class="absolute right-0 top-28 h-80 w-80 rounded-full bg-blue-300/30 blur-3xl" />
-      <div class="absolute left-0 top-64 h-80 w-80 rounded-full bg-emerald-200/40 blur-3xl" />
+      <div class="absolute left-1/2 top-0 h-[420px] w-[520px] -translate-x-1/2 rounded-full bg-cyan-300/30 blur-3xl md:h-[520px] md:w-[720px] md:bg-cyan-300/40" />
+      <div class="absolute right-0 top-20 h-56 w-56 rounded-full bg-azure-300/25 blur-3xl md:top-28 md:h-80 md:w-80 md:bg-azure-300/30" />
+      <div class="absolute -left-10 bottom-0 h-48 w-48 rounded-full bg-cyan-200/30 blur-3xl md:left-0 md:top-64 md:h-80 md:w-80 md:bg-cyan-200/40" />
     </div>
 
-    <div class="relative z-10 mx-auto flex max-w-7xl flex-col items-stretch justify-center gap-8 px-4 py-12 sm:px-6 md:flex-row md:items-start md:gap-6 lg:gap-12 lg:px-12 lg:py-20">
+    <div class="relative z-10 mx-auto flex max-w-7xl flex-col gap-4 px-4 pt-4 pb-6 sm:px-6 sm:pt-5 md:flex-row md:items-start md:gap-6 md:py-12 lg:gap-12 lg:px-12 lg:py-20">
       <div class="min-w-0 w-full flex-1 text-center md:text-left">
-        <div class="flex items-center gap-2 font-bold">
+        <div class="hidden items-center gap-2 font-bold md:flex">
           <Icon icon="ic:round-whatsapp" width="32" height="32" class="shrink-0" />
           <span class="inline-flex rounded-full px-3 py-1.5 text-xs uppercase tracking-widest text-white">
-            <p class="text-yellow-400">{{ t('landing_badge_title') }}</p>
+            <p class="text-cyan-300">{{ t('landing_badge_title') }}</p>
             {{ t('landing_badge') }}
           </span>
         </div>
 
-        <h1 class="text-xl font-bold leading-snug sm:text-lg md:text-xl lg:text-3xl xl:text-4xl">
+        <h1 class="mx-auto max-w-[22rem] px-1 text-[1.35rem] font-bold leading-[1.35] tracking-tight sm:max-w-md sm:text-2xl sm:leading-tight md:mx-0 md:max-w-none md:px-0 md:text-xl md:leading-snug lg:text-3xl xl:text-4xl">
           {{ t('landing_title') }}
         </h1>
 
-        <div class="mt-4 flex flex-wrap items-center justify-center gap-4 lg:justify-center">
+        <div class="mt-4 hidden flex-wrap items-center justify-center gap-4 md:flex lg:justify-center">
           <div class="aspect-[760/366] w-full overflow-hidden">
             <img
               :src="displayedBannerImageSrc"
@@ -38,9 +38,9 @@
         </div>
       </div>
 
-      <div class="mx-auto w-full sm:w-lg">
-        <div class="relative w-full min-w-[min(100%,280px)]">
-          <div class="absolute -inset-3 -z-10 rounded-[30px] bg-gradient-to-r from-cyan-300/60 via-blue-300/40 to-cyan-300/60 blur-2xl" />
+      <div class="mx-auto w-full max-w-md md:max-w-none sm:w-lg">
+        <div class="relative w-full min-w-0">
+          <div class="absolute -inset-2 -z-10 rounded-3xl bg-white/25 blur-xl md:-inset-3 md:rounded-[30px] md:bg-gradient-to-r md:from-cyan-300/60 md:via-azure-300/40 md:to-cyan-300/60 md:blur-2xl" />
           <CalculatorView
             variant="banner"
             :initial-amount="300"
@@ -50,7 +50,7 @@
             :button-text="t('send_money')"
             :title="t('calculatorTitle')"
             :subtitle="t('calculator_description')"
-            custom-classes="!max-w-full !rounded-[30px] !p-6 sm:!p-8"
+            custom-classes="!max-w-full !rounded-2xl !border !border-white/60 !p-4 !shadow-[0_20px_50px_-12px_rgba(0,0,0,0.35)] sm:!rounded-[28px] sm:!p-6 md:!rounded-[30px] md:!border-0 md:!p-8 md:!shadow-2xl"
           />
         </div>
       </div>

@@ -18,7 +18,7 @@ let onUnauthorized: OnUnauthorizedFn = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('auth_user')
   }
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && window.location.pathname.startsWith('/dashboard')) {
     const locale = appLocaleToRouteLocale(getSavedAppLocale())
     window.location.href = `/${locale}/auth`
   }

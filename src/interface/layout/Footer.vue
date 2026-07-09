@@ -1,11 +1,13 @@
 <template>
-  <footer class="bg-blue-900 text-white">
+  <footer class="relative bg-azure-900 text-white">
+    <!-- Línea de acento de marca -->
+    <div class="h-1 w-full bg-gradient-to-r from-azure-500 via-cyan-400 to-azure-500" />
     <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
         <!-- Columna 1: Logo y descripción -->
         <div class="space-y-4">
           <div class="flex items-center gap-2">
-            <img :src="logoCompleto" alt="Brasper" class="h-8 w-auto" width="166" height="40" loading="lazy" />
+            <img :src="logoBlanco" alt="Brasper" class="h-9 w-auto" width="166" height="40" loading="lazy" />
           </div>
           <p class="text-sm leading-relaxed text-white/90">
             {{ t('footer_description') }}
@@ -87,6 +89,11 @@
           </ul>
         </div>
       </div>
+
+      <div class="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/15 pt-6 text-xs text-white/70 sm:flex-row">
+        <p>© {{ year }} Brasper Transferências. {{ t('footer_rights') }}</p>
+        <p>Brasil · Perú · EUA</p>
+      </div>
     </div>
   </footer>
 </template>
@@ -97,5 +104,6 @@ import { useLanguage } from '@/interface/presentation/composables/useLanguage'
 
 const { t } = useI18n()
 const { routeLocale } = useLanguage()
-const logoCompleto = '/assets/images/logo/logo-completo-332.png'
+const logoBlanco = '/assets/images/logo/logo-blanco.png'
+const year = new Date().getFullYear()
 </script>
