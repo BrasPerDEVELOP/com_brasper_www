@@ -18,7 +18,9 @@ import { dirname, resolve } from 'node:path'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = resolve(ROOT, 'dist')
-const SITE = 'https://brasper.com'
+// Dominio canónico. Configurable por si el dominio de producción cambia
+// (p. ej. build para brasper.online). Por defecto brasper.com.
+const SITE = (process.env.SITE_URL ?? 'https://brasper.com').replace(/\/+$/, '')
 
 const LOCALES = ['pr', 'es', 'en'] as const
 type Loc = (typeof LOCALES)[number]
@@ -111,7 +113,9 @@ interface RouteDef {
 const ROUTES: RouteDef[] = [
   {
     suffix: '',
-    outFile: (loc) => `${loc}.html`,
+    // {idioma}/index.html (no {idioma}.html): así /pr, /es, /en se resuelven por
+    // DirectoryIndex y no colisiona un archivo con la carpeta del mismo nombre (causa del 403).
+    outFile: (loc) => `${loc}/index.html`,
     titleKey: 'seo_home_title',
     descKey: 'seo_home_description',
     content: homeContent,

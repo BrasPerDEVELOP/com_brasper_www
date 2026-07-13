@@ -7,29 +7,35 @@ ServerSignature Off
   RewriteEngine On
   RewriteBase /
 
-  # Permite acceso directo a archivos/carpetas existentes
+  # 1) Prerender: portada por idioma y raíz.
+  #    VA ANTES de la regla de carpetas existentes: la carpeta /pr (y /es, /en) existe
+  #    por los sub-HTML (blog.html, faq.html) y no tiene índice propio, así que la regla
+  #    de carpetas la trataría como directorio sin index -> 403. Reescribiendo primero a
+  #    {idioma}/index.html se evita ese 403.
+  RewriteRule ^$ pr/index.html [L]
+  RewriteRule ^(es|en|pr)/?$ $1/index.html [L]
+  RewriteRule ^(es|en|pr)/faq/?$ $1/faq.html [L]
+  RewriteRule ^(es|en|pr)/blog/?$ $1/blog.html [L]
+
+  # 2) Archivos/carpetas existentes se sirven directamente (assets, HTML prerenderizado).
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  # Prerender: entrega el HTML localizado por idioma/ruta (generado en el build).
-  # Los crawlers/scrapers sin JS reciben lang/title/canonical/hreflang correctos.
-  RewriteRule ^(es|en|pr)/?$ $1.html [L]
-  RewriteRule ^(es|en|pr)/faq/?$ $1/faq.html [L]
-  RewriteRule ^(es|en|pr)/blog/?$ $1/blog.html [L]
-  # Raíz → portada x-default (portugués).
-  RewriteRule ^$ pr.html [L]
+  # 3) Rutas SPA válidas con contenido dinámico -> index.html (200):
+  #    blog (redirección), detalle de artículo, login/registro y dashboard.
+  RewriteRule ^blog(/.*)?$ index.html [L]
+  RewriteRule ^(es|en|pr)/blog/[^/]+/?$ index.html [L]
+  RewriteRule ^(es|en|pr)/(auth|register)/?$ index.html [L]
+  RewriteRule ^dashboard(/.*)?$ index.html [L]
 
-  # Evita el soft 404: si se pide un archivo con extensión (assets, .txt, .xml, .json,
-  # favicon, manifest, sourcemaps, fuentes…) y NO existe, devuelve un 404 real en vez
-  # de servir index.html. Así /llms.txt o /.well-known/security.txt responden 404.
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_URI} \.(txt|xml|json|ico|png|jpe?g|webp|gif|svg|webmanifest|map|css|js|mjs|woff2?|ttf|eot|pdf)$ [NC]
+  # 4) Cualquier otra ruta no reconocida -> 404 real (elimina el soft 404).
+  #    ErrorDocument (abajo) sirve la SPA para mostrar la página 404 (noindex) con estado 404.
   RewriteRule ^ - [R=404,L]
-
-  # SPA fallback: cualquier ruta de frontend va a index.html
-  RewriteRule ^ index.html [L]
 </IfModule>
+
+# La SPA se muestra con estado HTTP 404 para rutas inexistentes (evita soft 404).
+ErrorDocument 404 /index.html
 
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
@@ -51,7 +57,13 @@ ServerSignature Off
   # Content-Security-Policy: validar en staging antes de forzar. Se deja en modo
   # Report-Only para no romper GTM/GA/Ads/Meta/Cloudinary/n8n/API en producción.
   # Cuando esté validada, duplicar como "Content-Security-Policy" (sin -Report-Only).
-  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://connect.facebook.net https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://apibras.finzeler.com https://www.google-analytics.com https://region1.google-analytics.com https://res.cloudinary.com; frame-src https://www.googletagmanager.com https://td.doubleclick.net; base-uri 'self'"
+  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://connect.facebook.net https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://apibras.finzeler.com https://media.ingenitechsac.workers.dev https://www.google-analytics.com https://region1.google-analytics.com https://res.cloudinary.com; frame-src https://www.googletagmanager.com https://td.doubleclick.net; base-uri 'self'"
+
+  # site.webmanifest debe servirse como manifest, no como text/plain.
+  <FilesMatch "\.webmanifest$">
+    Header set Content-Type "application/manifest+json; charset=utf-8"
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
 
   <FilesMatch "\.(css|js|svg|png|jpg|jpeg|webp|gif|woff|woff2)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
@@ -60,14 +72,14 @@ ServerSignature Off
   <FilesMatch "\.(html)$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
+</IfModule>
 
-  <FilesMatch "\.webmanifest$">
-    Header set Cache-Control "public, max-age=604800"
-  </FilesMatch>
+<IfModule mod_mime.c>
+  AddType application/manifest+json .webmanifest
 </IfModule>
 
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/plain text/html text/css text/javascript application/javascript application/json application/xml image/svg+xml
+  AddOutputFilterByType DEFLATE text/plain text/html text/css text/javascript application/javascript application/json application/xml image/svg+xml application/manifest+json
 </IfModule>
 
 <IfModule mod_expires.c>
