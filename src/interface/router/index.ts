@@ -135,6 +135,20 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/modules/comisiones/presentation/bodies/ComisionesView.vue')
       }
     ]
+  },
+  // 404 con idioma en la URL (p. ej. /es/no-existe): mantiene el idioma correcto.
+  {
+    path: '/:locale(es|en|pr)/:pathMatch(.*)*',
+    name: 'not-found-localized',
+    component: () => import('@/interface/presentation/bodies/NotFoundView.vue'),
+    meta: { public: true }
+  },
+  // 404 genérico para cualquier ruta no reconocida.
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('@/interface/presentation/bodies/NotFoundView.vue'),
+    meta: { public: true }
   }
 ]
 

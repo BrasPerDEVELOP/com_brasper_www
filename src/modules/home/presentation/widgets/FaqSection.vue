@@ -7,9 +7,9 @@
     <div class="mx-auto max-w-6xl">
       <div class="mb-10 text-center">
         <p class="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-700">{{ t('faq') }}</p>
-        <h2 class="text-3xl font-bold text-[#0c1b3a] sm:text-4xl">{{ t('landing_section_faq_title') }}</h2>
+        <h1 class="text-3xl font-bold text-[#0c1b3a] sm:text-4xl">{{ t('landing_section_faq_title') }}</h1>
         <p class="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
-          Resuelve tus dudas sobre transferencias, tiempos, monedas y condiciones con una guia clara y directa.
+          {{ t('faq_intro') }}
         </p>
       </div>
 
@@ -17,9 +17,9 @@
         <aside class="w-full md:w-72">
           <div class="rounded-[28px] bg-[#0F123E] p-4 shadow-[0_20px_60px_rgba(15,18,62,0.18)]">
             <div class="mb-4 rounded-2xl border border-white/10 bg-white/5 p-4">
-              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Brasper Help</p>
+              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">{{ t('faq_help_label') }}</p>
               <p class="mt-2 text-sm leading-relaxed text-white/80">
-                Encuentra respuestas rapidas y revisa nuestras condiciones antes de operar.
+                {{ t('faq_help_text') }}
               </p>
             </div>
             <div class="space-y-3">
@@ -55,11 +55,11 @@
           <div v-if="activeFaqTab === 'faq'" class="space-y-4">
             <div class="mb-6 flex items-center justify-between gap-4 border-b border-slate-100 pb-5">
               <div>
-                <h3 class="text-2xl font-bold text-[#0c1b3a]">
+                <h2 class="text-2xl font-bold text-[#0c1b3a]">
                   {{ t('faq') }}
-                </h3>
+                </h2>
                 <p class="mt-2 text-sm text-slate-500">
-                  Informacion clave sobre el servicio Brasper.
+                  {{ t('faq_key_info') }}
                 </p>
               </div>
               <div class="hidden rounded-2xl bg-cyan-50 px-4 py-3 text-right sm:block">
@@ -95,9 +95,9 @@
           <div v-else class="space-y-5">
             <div class="rounded-[26px] bg-gradient-to-r from-[#0F123E] via-blue-700 to-cyan-500 p-6 text-white shadow-lg">
               <p class="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Legal</p>
-              <h3 class="mt-2 text-2xl font-bold">
+              <h2 class="mt-2 text-2xl font-bold">
                 {{ termsTabLabel }}
-              </h3>
+              </h2>
               <p class="mt-3 max-w-2xl text-sm leading-relaxed text-white/85">
                 {{ termsDescription }}
               </p>
@@ -105,7 +105,7 @@
 
             <div class="rounded-3xl border border-slate-200 bg-slate-50 p-6">
               <p class="text-sm leading-relaxed text-slate-600">
-                Consulta el documento oficial con politicas, condiciones operativas y detalles importantes del servicio.
+                {{ t('faq_terms_doc_text') }}
               </p>
               <a
                 href="https://drive.google.com/file/d/1ACrx6qdwvws_pSuUrlL2w4AgNydPMlW6/view?usp=sharing"

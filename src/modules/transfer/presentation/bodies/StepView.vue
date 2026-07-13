@@ -22,7 +22,7 @@
     </section>
 
     <!-- Paso 1: Calculadora -->
-    <CalculatorView v-if="currentStep === 1" />
+    <CalculatorView v-if="currentStep === 1" title-tag="h2" />
 
     <!-- Paso 2: Seleccionar cuenta origen -->
     <section v-else-if="currentStep === 2" class="rounded-lg bg-white p-6 shadow-sm">

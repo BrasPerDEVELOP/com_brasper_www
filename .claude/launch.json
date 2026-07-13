@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 5173
+    },
+    {
+      "name": "dist",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["/private/tmp/claude-502/-Users-nito-Documents-GitHub-com-brasper-www/577be26c-285a-4770-93c3-091918953153/scratchpad/serve-dist.mjs"],
+      "port": 4180
     }
   ]
 }

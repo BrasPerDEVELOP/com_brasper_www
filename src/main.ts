@@ -84,7 +84,7 @@ function scheduleChatWidgetLoad() {
         primaryColor: '#4a52d8',
         secondaryColor: '#01e8fc',
         welcomeMessage: 'Hola, ¿en qué te ayudo?',
-        launcherImageUrl: '/assets/projects/bot.gif',
+        launcherImageUrl: '/assets/projects/bot.webp',
         fontImportUrl: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap'
       })
     } catch {

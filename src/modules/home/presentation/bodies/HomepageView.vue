@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Navbar from '@/interface/layout/Navbar.vue'
 import Footer from '@/interface/layout/Footer.vue'
@@ -43,11 +43,13 @@ import LandingAttentionSection from '../sections/LandingAttentionSection.vue'
 
 const { t } = useI18n()
 
-useSeo({
-  title: t('seo_home_title'),
-  description: t('seo_home_description'),
-  image: '/assets/images/banner/pr.webp'
-})
+useSeo(
+  computed(() => ({
+    title: t('seo_home_title'),
+    description: t('seo_home_description'),
+    image: '/assets/images/banner/pr-1152.webp'
+  }))
+)
 
 const GetInformedSlider = defineAsyncComponent(() => import('../widgets/GetInformedSlider.vue'))
 const LandingImpactSection = defineAsyncComponent(() => import('../sections/LandingImpactSection.vue')) 

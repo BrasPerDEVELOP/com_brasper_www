@@ -4,9 +4,9 @@
 
     <section class="mx-auto max-w-7xl px-4 pb-8 pt-6 sm:px-6 lg:px-8">
       <div class="overflow-hidden rounded-2xl bg-gradient-to-r from-blue-700 via-indigo-700 to-cyan-700 px-6 py-12 text-white">
-        <h1 class="text-3xl font-bold md:text-4xl">Últimos artículos</h1>
+        <h1 class="text-3xl font-bold md:text-4xl">{{ t('blog_latest_heading') }}</h1>
         <p class="mt-3 max-w-2xl text-sm font-medium !text-white md:text-base">
-          Mantente informado sobre transferencias internacionales, cambios de moneda y consejos financieros.
+          {{ t('seo_blog_description') }}
         </p>
       </div>
     </section>
@@ -19,7 +19,7 @@
           :class="activeCategory === '' ? 'bg-slate-800 text-white' : 'bg-gray-200 hover:bg-gray-300 text-slate-700'"
           @click="selectCategory('')"
         >
-          Todos
+          {{ t('blog_filter_all') }}
         </button>
         <button
           v-for="cat in categories"
@@ -35,7 +35,7 @@
 
       <input
         type="text"
-        placeholder="Buscar artículo..."
+        :placeholder="t('blog_search_placeholder')"
         :value="searchTerm"
         class="mb-6 w-full rounded-lg border border-gray-300 px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         @input="onSearch"
@@ -46,7 +46,7 @@
           <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
           <span class="relative inline-flex h-3 w-3 rounded-full bg-indigo-500"></span>
         </span>
-        <span class="font-medium">Cargando blogs...</span>
+        <span class="font-medium">{{ t('blog_loading') }}</span>
       </div>
 
       <p v-if="blogStore.error" class="mb-6 text-sm text-red-600">
@@ -71,7 +71,7 @@
 
       <template v-else>
         <p v-if="filteredBlogs.length === 0" class="mt-10 text-gray-500">
-          No se encontraron blogs.
+          {{ t('blog_empty') }}
         </p>
 
         <div v-else class="mt-8 grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
@@ -89,7 +89,7 @@
                 loading="lazy"
               />
               <div v-else class="flex h-full items-center justify-center text-sm text-slate-500">
-                Imagen no disponible
+                {{ t('blog_image_unavailable') }}
               </div>
             </div>
             <div class="p-4">
@@ -105,7 +105,7 @@
                   :to="{ name: 'blog-detail', params: { locale: routeLocale, slug: blog.slug } }"
                   class="inline-flex items-center gap-2 rounded bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors duration-300 hover:bg-indigo-700"
                 >
-                  Leer más
+                  {{ t('blog_read_more') }}
                   <span class="text-base">→</span>
                 </router-link>
               </div>
@@ -115,7 +115,7 @@
 
         <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div class="text-sm text-gray-600">
-            Página {{ currentPage }} de {{ totalPages }}
+            {{ t('blog_pagination', { current: currentPage, total: totalPages }) }}
           </div>
           <div class="inline-flex items-center gap-2">
             <button
@@ -125,7 +125,7 @@
               :disabled="!canPrev"
               @click="goPrev"
             >
-              Anterior
+              {{ t('blog_prev') }}
             </button>
             <button
               type="button"
@@ -134,7 +134,7 @@
               :disabled="!canNext"
               @click="goNext"
             >
-              Siguiente
+              {{ t('blog_next') }}
             </button>
           </div>
         </div>
@@ -159,10 +159,12 @@ const blogStore = useBlogStore()
 const route = useRoute()
 const { t, locale } = useI18n()
 
-useSeo({
-  title: t('seo_blog_title'),
-  description: t('seo_blog_description')
-})
+useSeo(
+  computed(() => ({
+    title: t('seo_blog_title'),
+    description: t('seo_blog_description')
+  }))
+)
 
 const categories = computed(() => blogStore.categories)
 const filteredBlogs = computed(() => blogStore.filteredBlogs)

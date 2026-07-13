@@ -72,12 +72,20 @@ import { BaseButton, BaseInput } from '@/interface/widgets'
 import { TR } from '@/interface/domain/generated/tr'
 import { env } from '@/interface/config/env'
 import { useLanguage } from '@/interface/presentation/composables/useLanguage'
+import { useSeo } from '@/interface/presentation/composables/useSeo'
 import { useAuthStore } from '../controllers/useAuthStore'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const { t } = useI18n()
 const { routeLocale } = useLanguage()
+
+// Página privada: no indexar y evitar que herede el <head> de la página anterior.
+useSeo({
+  title: t('seo_login_title'),
+  description: t('seo_login_description'),
+  robots: 'noindex,follow'
+})
 
 const username = ref(env.username)
 const password = ref(env.password)

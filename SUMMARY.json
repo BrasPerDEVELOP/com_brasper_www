@@ -1,0 +1,59 @@
+{
+  "url": "https://brasper.com/es",
+  "analyzed_at": "2026-07-08T16:58:25.656Z",
+  "tool": {
+    "name": "Lighthouse",
+    "version": "13.4.0"
+  },
+  "data_type": "lab",
+  "mobile": {
+    "performance_score": 55,
+    "fcp_ms": 6883.58,
+    "lcp_ms": 26890.23,
+    "speed_index_ms": 11967.23,
+    "tbt_ms": 116,
+    "cls": 0.000332,
+    "tti_ms": 27101.55,
+    "requests": 70,
+    "transfer_bytes": 6876070
+  },
+  "desktop": {
+    "performance_score": 57,
+    "fcp_ms": 2947.58,
+    "lcp_ms": 6738.45,
+    "speed_index_ms": 4497.11,
+    "tbt_ms": 0,
+    "cls": 0.001195,
+    "tti_ms": 6749.87,
+    "requests": 68,
+    "transfer_bytes": 7189782
+  },
+  "field_metrics": {
+    "inp_ms": null,
+    "note": "INP was not available from this Lighthouse lab run."
+  },
+  "priority_issues": [
+    {
+      "severity": "high",
+      "issue": "Oversized images",
+      "estimated_savings_bytes": 4232192,
+      "estimated_lcp_savings_ms": 10350
+    },
+    {
+      "severity": "high",
+      "issue": "Unused JavaScript",
+      "estimated_savings_bytes": 536508,
+      "estimated_savings_ms": 2930
+    },
+    {
+      "severity": "high",
+      "issue": "Inefficient cache lifetimes",
+      "estimated_savings_bytes": 1757184
+    },
+    {
+      "severity": "medium",
+      "issue": "Render-blocking CSS",
+      "estimated_savings_ms": 750
+    }
+  ]
+}

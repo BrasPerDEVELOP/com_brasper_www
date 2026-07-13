@@ -27,7 +27,7 @@ export const databancos: Banco[] = [
   },
   {
     nombre: 'C6 Bank',
-    img1: "/assets/images/bancos/yapeplin.png",
+    img1: "/assets/images/bancos/yapeplin.webp",
     enlace: "https://www.yape.com.pe/",
   },
   {

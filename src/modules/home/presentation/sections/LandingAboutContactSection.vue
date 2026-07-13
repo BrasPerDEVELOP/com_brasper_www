@@ -70,13 +70,17 @@
 
       <div class="relative hidden w-full items-center justify-center md:flex lg:w-1/2">
         <img
-          src="/assets/images/acerca/img1.png"
+          src="/assets/images/acerca/img1.webp"
           alt="Acerca de Brasper"
+          loading="lazy"
+          decoding="async"
           class="z-10 w-72 rounded-lg object-cover shadow-lg md:w-96"
         />
         <img
-          src="/assets/images/acerca/img2.png"
+          src="/assets/images/acerca/img2.webp"
           alt="Acerca secundario"
+          loading="lazy"
+          decoding="async"
           class="absolute bottom-0 left-0 w-48 -translate-x-[20%] translate-y-[30%] rounded-lg object-cover shadow-md md:w-60"
         />
         <div class="absolute right-0 top-0 h-20 w-20 translate-x-[50%] -translate-y-[30%] rounded-full bg-cyan-400/30 blur-sm md:h-24 md:w-24" />

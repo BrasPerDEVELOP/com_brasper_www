@@ -90,6 +90,7 @@ import { TR } from '@/interface/domain/generated/tr'
 import { DOCUMENT_TYPES, PHONE_CODES } from '@/interface/enums'
 import type { DocumentType, PhoneCode } from '@/interface/enums'
 import { useLanguage } from '@/interface/presentation/composables/useLanguage'
+import { useSeo } from '@/interface/presentation/composables/useSeo'
 import type { UserCreateCmd } from '../../domain/models'
 import { useRegisterStore } from '../controllers/useRegisterStore'
 
@@ -97,6 +98,13 @@ const router = useRouter()
 const { t } = useI18n()
 const { routeLocale } = useLanguage()
 const registerStore = useRegisterStore()
+
+// Página privada: no indexar y evitar que herede el <head> de la página anterior.
+useSeo({
+  title: t('seo_register_title'),
+  description: t('seo_register_description'),
+  robots: 'noindex,follow'
+})
 
 const form = ref<{
   names: string

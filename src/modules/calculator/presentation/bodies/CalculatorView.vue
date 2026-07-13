@@ -11,11 +11,12 @@
           width="40"
           height="40"
         />
-        <h1
+        <component
+          :is="titleTag"
           :class="variant === 'banner' ? 'text-xl font-bold text-secondary sm:text-2xl' : 'text-2xl font-semibold text-on-surface'"
         >
           {{ title || t('calculatorTitle') }}
-        </h1>
+        </component>
       </div>
     </template>
 
@@ -311,6 +312,8 @@ interface Props {
   initialCurrencyFrom?: CurrencyCode
   initialCurrencyTo?: CurrencyCode
   showTitle?: boolean
+  /** Nivel semántico del título; usar 'h2'/'h3' cuando se incrusta bajo un h1 existente. */
+  titleTag?: 'h1' | 'h2' | 'h3'
   showButton?: boolean
   showReductions?: boolean
   showTerms?: boolean
@@ -328,6 +331,7 @@ const props = withDefaults(defineProps<Props>(), {
   initialCurrencyFrom: undefined,
   initialCurrencyTo: undefined,
   showTitle: true,
+  titleTag: 'h1',
   showButton: false,
   showReductions: true,
   showTerms: false,

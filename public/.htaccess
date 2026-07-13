@@ -1,5 +1,8 @@
 Options -Indexes
 
+# Oculta la versión del servidor en las cabeceras/errores (defensa en profundidad).
+ServerSignature Off
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
@@ -9,6 +12,21 @@ Options -Indexes
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
+  # Prerender: entrega el HTML localizado por idioma/ruta (generado en el build).
+  # Los crawlers/scrapers sin JS reciben lang/title/canonical/hreflang correctos.
+  RewriteRule ^(es|en|pr)/?$ $1.html [L]
+  RewriteRule ^(es|en|pr)/faq/?$ $1/faq.html [L]
+  RewriteRule ^(es|en|pr)/blog/?$ $1/blog.html [L]
+  # Raíz → portada x-default (portugués).
+  RewriteRule ^$ pr.html [L]
+
+  # Evita el soft 404: si se pide un archivo con extensión (assets, .txt, .xml, .json,
+  # favicon, manifest, sourcemaps, fuentes…) y NO existe, devuelve un 404 real en vez
+  # de servir index.html. Así /llms.txt o /.well-known/security.txt responden 404.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_URI} \.(txt|xml|json|ico|png|jpe?g|webp|gif|svg|webmanifest|map|css|js|mjs|woff2?|ttf|eot|pdf)$ [NC]
+  RewriteRule ^ - [R=404,L]
+
   # SPA fallback: cualquier ruta de frontend va a index.html
   RewriteRule ^ index.html [L]
 </IfModule>
@@ -17,7 +35,23 @@ Options -Indexes
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
-  Header always set X-XSS-Protection "1; mode=block"
+  # X-XSS-Protection está obsoleto; el valor recomendado hoy es 0 (se confía en CSP).
+  Header always set X-XSS-Protection "0"
+
+  # HSTS: fuerza HTTPS durante 1 año. El sitio ya es HTTPS-only.
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+  # Limita APIs sensibles del navegador que el sitio no usa.
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()"
+
+  # Áreas privadas: nunca deben indexarse aunque devuelvan el HTML de la SPA.
+  SetEnvIf Request_URI "^/dashboard" IS_PRIVATE
+  Header always set X-Robots-Tag "noindex, nofollow" env=IS_PRIVATE
+
+  # Content-Security-Policy: validar en staging antes de forzar. Se deja en modo
+  # Report-Only para no romper GTM/GA/Ads/Meta/Cloudinary/n8n/API en producción.
+  # Cuando esté validada, duplicar como "Content-Security-Policy" (sin -Report-Only).
+  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://connect.facebook.net https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://apibras.finzeler.com https://www.google-analytics.com https://region1.google-analytics.com https://res.cloudinary.com; frame-src https://www.googletagmanager.com https://td.doubleclick.net; base-uri 'self'"
 
   <FilesMatch "\.(css|js|svg|png|jpg|jpeg|webp|gif|woff|woff2)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
@@ -25,6 +59,10 @@ Options -Indexes
 
   <FilesMatch "\.(html)$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+
+  <FilesMatch "\.webmanifest$">
+    Header set Cache-Control "public, max-age=604800"
   </FilesMatch>
 </IfModule>
 

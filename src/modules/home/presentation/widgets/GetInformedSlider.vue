@@ -154,7 +154,7 @@ const activeVideoSrc = ref('')
 
 const slides = computed<InformedSlide[]>(() => [
   {
-    thumbnail: '/assets/projects/img_video2.png',
+    thumbnail: '/assets/projects/img_video2.webp',
     thumbnailSmall: '/assets/projects/img_video2-332.jpg',
     videoSrc: 'https://www.youtube.com/embed/r3lA3P9evjk?start=18&rel=0&autoplay=1',
     alt: t('landing_get_informed_slide_1_alt'),
@@ -168,7 +168,7 @@ const slides = computed<InformedSlide[]>(() => [
     channelUrl: 'https://www.youtube.com/@BrasperTransferencias'
   },
   {
-    thumbnail: '/assets/projects/img-video1.png',
+    thumbnail: '/assets/projects/img-video1.webp',
     videoSrc: 'https://www.youtube.com/embed/DDQb7731Fn0?start=2&rel=0&autoplay=1',
     alt: t('landing_get_informed_slide_2_alt'),
     title: t('landing_get_informed_slide_2_title'),

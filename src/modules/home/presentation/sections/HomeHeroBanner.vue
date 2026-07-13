@@ -47,6 +47,7 @@
           <div class="aspect-[760/366] w-full max-w-[560px] overflow-hidden">
             <img
               :src="displayedBannerImageSrc"
+              :srcset="displayedBannerSrcset"
               :alt="t('landing_badge')"
               loading="eager"
               fetchpriority="high"
@@ -66,6 +67,7 @@
           <div class="absolute -inset-4 -z-10 rounded-[30px] bg-black/10 blur-2xl" />
           <CalculatorView
             variant="banner"
+            title-tag="h2"
             :initial-amount="300"
             :show-button="true"
             :show-terms="true"
@@ -102,17 +104,40 @@ type HomeBannerApiRow = {
 }
 
 const { t, locale } = useI18n()
+
+const LOCAL_BANNER_WIDTHS = [480, 768, 1152] as const
+const LOCAL_BANNER_PREFIX = '/assets/images/banner/'
+
 const remoteBanner = shallowRef<HomeBannerApiRow | null>(readCachedHomeBanner())
 const displayedBannerImageSrc = shallowRef(localBannerSrc())
+
+/**
+ * Solo el banner local tiene variantes responsive. Cuando se muestra el banner
+ * remoto (URL absoluta del CMS) se omite `srcset` para que el navegador use `src`.
+ */
+const displayedBannerSrcset = computed(() =>
+  displayedBannerImageSrc.value.startsWith(LOCAL_BANNER_PREFIX) ? localBannerSrcset() : ''
+)
 
 function withStableVersion(url: string, version?: string): string {
   if (!url || !version) return url
   return `${url}${url.includes('?') ? '&' : '?'}v=${encodeURIComponent(version)}`
 }
 
-function localBannerSrc(): string {
+function localBannerBase(): string {
   const file = locale.value === 'es' ? 'es' : locale.value === 'en' ? 'en' : 'pr'
-  return `/assets/images/banner/${file}.webp`
+  return `${LOCAL_BANNER_PREFIX}${file}`
+}
+
+/** Variante base usada como `src` (fallback si el navegador no soporta srcset). */
+function localBannerSrc(): string {
+  return `${localBannerBase()}-768.webp`
+}
+
+/** Conjunto responsive: el navegador elige la variante según viewport/DPR. */
+function localBannerSrcset(): string {
+  const base = localBannerBase()
+  return LOCAL_BANNER_WIDTHS.map((w) => `${base}-${w}.webp ${w}w`).join(', ')
 }
 
 function readCachedHomeBanner(): HomeBannerApiRow | null {

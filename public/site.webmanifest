@@ -1,0 +1,25 @@
+{
+  "name": "Brasper",
+  "short_name": "Brasper",
+  "description": "Transferencias entre Brasil, Perú y Estados Unidos con calculadora en línea y soporte multilingüe.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4a52d8",
+  "lang": "es-PE",
+  "icons": [
+    {
+      "src": "/assets/images/logo/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/logo/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

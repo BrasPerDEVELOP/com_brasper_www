@@ -110,7 +110,7 @@
             <p class="text-base leading-relaxed text-slate-600">
               {{ blog.excerpt }}
             </p>
-            <div class="prose prose-slate mt-8 max-w-none prose-headings:text-slate-900" v-html="blog.content" />
+            <div class="prose prose-slate mt-8 max-w-none prose-headings:text-slate-900" v-html="articleHtml" />
           </article>
         </div>
 
@@ -199,7 +199,8 @@ import { useI18n } from 'vue-i18n'
 import Navbar from '@/interface/layout/Navbar.vue'
 import Footer from '@/interface/layout/Footer.vue'
 import { useSeo } from '@/interface/presentation/composables/useSeo'
-import { normalizeRouteLocale } from '@/interface/presentation/i18n/locales'
+import { useJsonLd } from '@/interface/presentation/composables/useJsonLd'
+import { getLanguageTag, normalizeRouteLocale, routeLocaleToAppLocale } from '@/interface/presentation/i18n/locales'
 import { useBlogStore } from '../controllers/useBlogStore'
 import type { Blog } from '../../domain/models'
 
@@ -220,6 +221,12 @@ const recommendedPosts = computed((): Blog[] => {
 function getCloudinaryImage(publicId: string): string {
   return `https://res.cloudinary.com/dhkmdutec/image/upload/f_auto,q_auto,w_1200/${publicId}`
 }
+
+// El contenido del CMS suele repetir el título como <h1>. Bajamos un nivel todos los
+// encabezados del artículo para conservar un único <h1> (el del título del hero).
+const articleHtml = computed(() =>
+  (blog.value?.content ?? '').replace(/(<\/?h)([1-5])/gi, (_m, tag, level) => `${tag}${Number(level) + 1}`)
+)
 
 const seoTitle = computed(() => {
   const activeBlog = blog.value
@@ -244,6 +251,57 @@ useSeo(
     type: 'article'
   }))
 )
+
+const siteOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://brasper.com'
+
+// BlogPosting: solo datos verificables del artículo. Autor/editor = Brasper.
+const blogJsonLd = computed(() => {
+  const activeBlog = blog.value
+  if (!activeBlog) return null
+  const published = activeBlog.date || activeBlog.created_at || undefined
+  // El @id coincide con el nodo Organization estático de index.html para que Google
+  // fusione ambos bloques en la misma entidad.
+  const ORG_ID = 'https://brasper.com/#organization'
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: activeBlog.title.slice(0, 110),
+    description: activeBlog.excerpt || undefined,
+    image: activeBlog.public_id ? getCloudinaryImage(activeBlog.public_id) : undefined,
+    datePublished: published,
+    dateModified: activeBlog.updated_at || published,
+    inLanguage: getLanguageTag(routeLocaleToAppLocale(routeLocale.value)),
+    author: { '@type': 'Organization', '@id': ORG_ID, name: 'Brasper' },
+    publisher: {
+      '@type': 'Organization',
+      '@id': ORG_ID,
+      name: 'Brasper',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteOrigin}/assets/images/logo/logo_completo.png`
+      }
+    },
+    mainEntityOfPage: `${siteOrigin}${route.path}`
+  }
+})
+
+const breadcrumbJsonLd = computed(() => {
+  const activeBlog = blog.value
+  if (!activeBlog) return null
+  const loc = routeLocale.value
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Brasper', item: `${siteOrigin}/${loc}` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteOrigin}/${loc}/blog` },
+      { '@type': 'ListItem', position: 3, name: activeBlog.title }
+    ]
+  }
+})
+
+useJsonLd('blog-posting', blogJsonLd)
+useJsonLd('blog-breadcrumb', breadcrumbJsonLd)
 
 function formatDate(dateValue: string): string {
   if (!dateValue) return t('blog_no_date')
