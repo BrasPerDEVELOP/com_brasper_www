@@ -68,7 +68,7 @@
         </div>
       </div>
 
-      <div class="relative hidden w-full items-center justify-center md:flex lg:w-1/2">
+      <div class="relative hidden w-full items-center justify-center overflow-hidden md:flex lg:w-1/2">
         <img
           src="/assets/images/acerca/img1.webp"
           alt="Acerca de Brasper"
