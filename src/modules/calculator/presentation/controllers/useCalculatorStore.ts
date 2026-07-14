@@ -287,7 +287,7 @@ export const useCalculatorStore = defineStore('calculator', {
       const coupon = state.skipAutomaticCoupon
         ? null
         : getAutomaticCouponForPair(state.coupons, state.currencyFrom, state.currencyTo)
-      let amountSend = state.inputMode === 'receive' ? 0 : state.amountSend
+      const amountSend = state.inputMode === 'receive' ? 0 : state.amountSend
 
       if (amountSend <= 0 && state.amountReceive > 0) {
         const inverseCalculation = calculateInverseBreakdown(state.amountReceive, rate, ranges, coupon)

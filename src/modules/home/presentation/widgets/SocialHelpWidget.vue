@@ -17,7 +17,7 @@
     <Transition name="social-help-fade" mode="out-in">
       <div
         :key="currentText"
-        class="max-w-xs rounded-full bg-pink-600 px-4 py-2 text-sm font-medium text-white shadow-lg"
+        class="max-w-xs rounded-full bg-azure-600 px-4 py-2 text-sm font-medium text-white shadow-lg"
       >
         {{ currentText }}
       </div>
@@ -58,13 +58,13 @@ const socialLinks = [
     href: 'https://www.instagram.com/reel/DJZgOHdOAKk/?igsh=aHMwOW1jZmtvd2sw',
     label: 'Instagram',
     icon: 'mdi:instagram',
-    iconClass: 'text-pink-600'
+    iconClass: 'text-azure-600'
   },
   {
     href: 'https://www.facebook.com/share/r/1ARL1Z9f3G/',
     label: 'Facebook',
     icon: 'mdi:facebook',
-    iconClass: 'text-blue-700'
+    iconClass: 'text-azure-700'
   }
 ] as const
 

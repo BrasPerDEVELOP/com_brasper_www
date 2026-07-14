@@ -1,5 +1,5 @@
 <template>
-  <section :class="[getContainerClasses, variant === 'banner' ? 'calculator-banner' : '']">
+  <section :class="getContainerClasses">
     <!-- Header -->
     <template v-if="showTitle">
       <div class="mb-5 flex items-center justify-center gap-2">
@@ -17,53 +17,52 @@
         >
           {{ title || t('calculatorTitle') }}
         </component>
+    <template v-if="showTitle" >
+      <div
+        class="mb-4 flex items-center justify-center gap-2 sm:mb-6"
+        :class="variant === 'banner' ? 'hidden md:flex' : ''"
+      >
+       <img src="/assets/images/logo/logo-80.png" alt="Logo Brasper" class="h-9 w-9 sm:h-10 sm:w-10" width="40" height="40" />
+        <h1
+          :class="variant === 'banner' ? 'text-lg font-semibold text-slate-900 sm:text-xl' : 'text-2xl font-semibold text-on-surface'">
+          {{ t('calculatorTitle')}}
+        </h1>
       </div>
+      <!-- <p v-if="subtitle || (variant === 'default' && !subtitle)" class="mb-4 text-sm text-on-surface/80">
+        {{ t('calculatorTitle') }}
+      </p> -->
     </template>
 
     <!-- Diseño unificado para todos los contextos -->
-    <div :class="variant === 'banner' ? 'banner-body space-y-4' : 'mt-4 space-y-4'">
+    <div :class="variant === 'banner' ? 'space-y-3 sm:space-y-4' : 'mt-4 space-y-4'">
       <!-- YOU SEND Section -->
-      <div
-        :class="variant === 'banner'
-          ? 'banner-field rounded-2xl border border-slate-200 bg-white px-3 py-2.5'
-          : 'border overflow-visible border-gray-300 text-2xl rounded-xl px-3 py-2 shadow-lg'"
-      >
-        <label
-          :class="variant === 'banner'
-            ? 'block pl-2 text-xs font-semibold uppercase tracking-wide text-slate-500'
-            : 'block text-xs font-semibold uppercase pl-2 tracking-wide text-gray-500'"
-        >
+      <div class="overflow-visible rounded-xl border border-slate-200 px-3 py-2.5 shadow-sm sm:border-slate-300 sm:py-2 sm:shadow-lg">
+        <label class="block text-xs font-semibold uppercase pl-2 tracking-wide text-slate-500">
           {{ t('you_send') }}
         </label>
-        <div class="flex gap-0">
+        <div class="flex items-center gap-2">
           <input
             :value="amountSendLocal"
             type="text"
             inputmode="decimal"
             autocomplete="off"
-            :class="variant === 'banner' ? 'banner-amount-input text-2xl text-[#0B1F4A] pl-2 font-bold focus:outline-none' : 'min-w-0 flex-1 rounded-lg border px-3 sm:px-4 py-3 text-base  focus:outline-none focus:ring-2 '"
+            :class="variant === 'banner' ? 'min-w-0 flex-1 py-1 pl-2 text-lg font-semibold text-black focus:outline-none sm:text-xl' : 'min-w-0 flex-1 rounded-lg border px-3 sm:px-4 py-3 text-base  focus:outline-none focus:ring-2 '"
             placeholder="300"
             @focus="activeInput = 'send'"
             @input="onAmountSendInput"
             @blur="onAmountSendBlur"
           />
-          <div class="relative shrink-0 w-[96px] sm:w-auto">
-            <span
-              v-if="variant === 'banner'"
-              aria-hidden="true"
-              class="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-base leading-none"
-            >{{ currencyFlagEmoji(calculatorStore.currencyFrom) }}</span>
+          <div class="relative w-[7.5rem] shrink-0 sm:w-auto">
             <img
-              v-else
               :src="currencyFromFlagSrc"
               alt=""
               aria-hidden="true"
-              class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full"
+              class="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full"
             />
             <select
               :value="calculatorStore.currencyFrom"
               aria-label="Moneda de origen"
-              :class="variant === 'banner' ? 'w-full text-black bg-white py-2 pl-9 pr-8 text-lg font-light focus:outline-none' : 'w-full rounded-lg border bg-white py-3 pr-2 sm:pr-3 pl-8 text-sm focus:outline-none focus:ring-2'"
+              :class="variant === 'banner' ? 'w-full cursor-pointer bg-white py-2.5 pl-9 pr-2 text-base font-semibold text-black focus:outline-none sm:text-lg' : 'w-full cursor-pointer rounded-lg border bg-white py-3 pl-9 pr-3 text-sm focus:outline-none focus:ring-2'"
               @change="onFromChange($event)"
             >
               <option v-for="code in CURRENCY_CODES" :key="code" :value="code">
@@ -74,48 +73,35 @@
         </div>
       </div>
 
+
       <!-- RECIPIENT RECEIVES Section -->
-      <div
-        :class="variant === 'banner'
-          ? 'banner-field rounded-2xl border border-slate-200 bg-white px-3 py-2.5'
-          : 'border overflow-visible border-gray-300  text-2xl rounded-xl px-3 py-2 shadow-lg'"
-      >
-        <label
-          :class="variant === 'banner'
-            ? 'block pl-2 text-xs font-semibold uppercase tracking-wide text-slate-500'
-            : 'block text-xs font-semibold uppercase pl-2 tracking-wide text-gray-500'"
-        >
+      <div class="overflow-visible rounded-xl border border-slate-200 px-3 py-2.5 shadow-sm sm:border-slate-300 sm:py-2 sm:shadow-lg">
+        <label class="block text-xs font-semibold uppercase pl-2 tracking-wide text-slate-500">
           {{ t('recipient_receives') }}
         </label>
-      <div class="flex gap-0">
+      <div class="flex items-center gap-2">
           <input
             :value="amountReceiveLocal"
             type="text"
             inputmode="decimal"
             autocomplete="off"
-            :class="variant === 'banner' ? 'banner-amount-input text-2xl text-[#0B1F4A] pl-2 font-bold focus:outline-none' : 'min-w-0 flex-1 rounded-lg border px-3 sm:px-4 py-3 text-base  focus:outline-none focus:ring-2 '"
+            :class="variant === 'banner' ? 'min-w-0 flex-1 py-1 pl-2 text-lg font-semibold text-black focus:outline-none sm:text-xl' : 'min-w-0 flex-1 rounded-lg border px-3 sm:px-4 py-3 text-base  focus:outline-none focus:ring-2 '"
             placeholder="0.00"
             @focus="activeInput = 'receive'"
             @input="onAmountReceiveInput"
             @blur="onAmountReceiveBlur"
           />
-          <div class="relative shrink-0 w-[96px] sm:w-auto">
-            <span
-              v-if="variant === 'banner'"
-              aria-hidden="true"
-              class="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-base leading-none"
-            >{{ currencyFlagEmoji(calculatorStore.currencyTo) }}</span>
+          <div class="relative w-[7.5rem] shrink-0 sm:w-auto">
             <img
-              v-else
               :src="currencyToFlagSrc"
               alt=""
               aria-hidden="true"
-              class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full"
+              class="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full"
             />
             <select
               :value="calculatorStore.currencyTo"
               aria-label="Moneda de destino"
-              :class="variant === 'banner' ? 'w-full text-black bg-white py-2 pl-9 pr-8 text-lg font-light focus:outline-none' : 'w-full rounded-lg border bg-white py-3 pr-2 sm:pr-3 pl-8 text-sm focus:outline-none focus:ring-2'"
+              :class="variant === 'banner' ? 'w-full cursor-pointer bg-white py-2.5 pl-9 pr-2 text-base font-semibold text-black focus:outline-none sm:text-lg' : 'w-full cursor-pointer rounded-lg border bg-white py-3 pl-9 pr-3 text-sm focus:outline-none focus:ring-2'"
               @change="onToChange($event)"
             >
               <option v-for="code in calculatorStore.destinationOptions" :key="code" :value="code">
@@ -134,27 +120,22 @@
       </p>
 
       <!-- Reductions (Commission Fee and Exchange Rate) -->
-      <div
-        v-if="showReductions"
-        :class="variant === 'banner'
-          ? 'space-y-2 border-t border-slate-200 pt-4'
-          : 'space-y-2 border-t border-gray-200 pt-4'"
-      >
+      <div v-if="showReductions" class="space-y-2 border-t border-slate-100 pt-3 sm:border-slate-200 sm:pt-4">
         <div class="flex justify-between text-sm">
-          <span :class="variant === 'banner' ? 'text-slate-500' : 'text-gray-600'">{{ t('commission_fee') }}</span>
-          <span :class="variant === 'banner' ? 'font-semibold text-[#0B1F4A]' : 'font-semibold text-green-600'">
+          <span class="text-slate-600">{{ t('commission_fee') }}</span>
+          <span class="font-semibold text-green-600">
             {{ summaryCommission }} {{ calculatorStore.currencyFrom.toUpperCase() }}
           </span>
         </div>
         <div class="flex justify-between text-sm">
-          <span :class="variant === 'banner' ? 'text-slate-500' : 'text-gray-600'">{{ t('total_to_send') }}</span>
-          <span :class="variant === 'banner' ? 'font-semibold text-[#0B1F4A]' : 'font-semibold text-green-600'">
+          <span class="text-slate-600">{{ t('total_to_send') }}</span>
+          <span class="font-semibold text-green-600">
             {{ summaryTotalToSend }} {{ calculatorStore.currencyFrom.toUpperCase() }}
           </span>
         </div>
         <div class="flex justify-between text-sm">
-          <span :class="variant === 'banner' ? 'text-slate-500' : 'text-gray-600'">{{ t('exchange_rate') }}</span>
-          <span :class="variant === 'banner' ? 'font-semibold text-[#0B1F4A]' : 'font-semibold text-gray-900'">
+          <span class="text-slate-600">{{ t('exchange_rate') }}</span>
+          <span class="font-semibold text-slate-900">
             1 {{ calculatorStore.currencyFrom.toUpperCase() }} = {{ summaryRate }} {{ calculatorStore.currencyTo.toUpperCase() }}
           </span>
         </div>
@@ -162,9 +143,7 @@
 
       <div
         v-if="calculatorStore.currentAutomaticCoupon"
-        :class="variant === 'banner'
-          ? 'rounded-xl border border-blue-100 bg-blue-50/90 px-4 py-3'
-          : 'rounded-2xl border border-teal-200 bg-stone-100 px-4 py-3'"
+        class="rounded-2xl border border-cyan-200 bg-stone-100 px-4 py-3"
       >
         <div class="flex items-center justify-between gap-3">
           <div class="flex min-w-0 flex-1 gap-3">
@@ -185,20 +164,20 @@
                   <line x1="6" y1="16" x2="24" y2="16" />
                   <line x1="6" y1="22" x2="24" y2="22" />
                 </g>
-                <path d="M6 27 V5 H24 V27" fill="none" stroke="#4a52d8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M6 27 V5 H24 V27" fill="none" stroke="#165efc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
               <span class="gol-ball">
                 <svg viewBox="0 0 40 40" fill="none">
                   <circle cx="20" cy="20" r="16" fill="#ffffff" />
-                  <polygon points="20,15 24.76,18.45 22.94,24.05 17.06,24.05 15.24,18.45" fill="#0b1220" />
-                  <g stroke="#0b1220" stroke-width="1.4" stroke-linecap="round">
+                  <polygon points="20,15 24.76,18.45 22.94,24.05 17.06,24.05 15.24,18.45" fill="#1b1f2e" />
+                  <g stroke="#1b1f2e" stroke-width="1.4" stroke-linecap="round">
                     <line x1="20" y1="15" x2="20" y2="4.2" />
                     <line x1="24.76" y1="18.45" x2="34.8" y2="15.4" />
                     <line x1="22.94" y1="24.05" x2="29.1" y2="32.4" />
                     <line x1="17.06" y1="24.05" x2="10.9" y2="32.4" />
                     <line x1="15.24" y1="18.45" x2="5.2" y2="15.4" />
                   </g>
-                  <circle cx="20" cy="20" r="16" fill="none" stroke="#0b1220" stroke-width="1.8" />
+                  <circle cx="20" cy="20" r="16" fill="none" stroke="#1b1f2e" stroke-width="1.8" />
                 </svg>
               </span>
               <span class="gol-label">¡GOL!</span>
@@ -206,7 +185,7 @@
             <!-- Otros cupones automáticos: check -->
             <div
               v-else-if="!calculatorStore.skipAutomaticCoupon"
-              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-teal-500 text-teal-500"
+              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-cyan-500 text-cyan-500"
             >
               <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path
@@ -224,7 +203,7 @@
                 <p class="truncate font-bold leading-none text-secondary">
                   {{ calculatorStore.currentAutomaticCoupon.code }}
                 </p>
-                <p v-if="automaticCouponDetail" :class="variant === 'banner' ? 'text-blue-medium' : 'text-secondary'">
+                <p v-if="automaticCouponDetail" class="text-secondary">
                   {{ t('coupon_savings', { amount: automaticCouponDetail.savings, currency: calculatorStore.currencyFrom.toUpperCase() }) }}
                 </p>
               </template>
@@ -242,12 +221,8 @@
             type="button"
             class="flex shrink-0 items-center justify-center text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
             :class="calculatorStore.skipAutomaticCoupon
-              ? variant === 'banner'
-                ? 'min-h-9 rounded-lg bg-primary-tailwind px-4 py-2 text-sm font-medium text-white'
-                : 'min-h-9 rounded-lg bg-secondary px-4 py-2 text-sm font-medium hover:bg-secondary'
-              : variant === 'banner'
-                ? 'h-8 w-8 rounded-full bg-slate-400 text-white hover:bg-slate-500'
-                : 'h-8 w-8 rounded-full bg-on-surface hover:bg-on-surface/80'"
+              ? 'min-h-9 rounded-lg bg-azure-600 px-4 py-2 text-sm font-medium hover:bg-azure-600'
+              : 'h-8 w-8 rounded-full bg-on-surface hover:bg-on-surface/80'"
             :aria-label="calculatorStore.skipAutomaticCoupon ? t('coupon_apply') : t('close')"
             @click="calculatorStore.setSkipAutomaticCoupon(!calculatorStore.skipAutomaticCoupon)"
           >
@@ -258,23 +233,17 @@
       </div>
 
       <!-- Send Money Button -->
-      <button
-        v-if="showButton"
-        type="button"
-        :class="variant === 'banner'
-          ? 'banner-cta inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-[30px] py-3 text-base font-bold text-white transition-opacity hover:opacity-95 max-[575px]:px-[25px] max-[575px]:py-2.5'
-          : 'relative z-1 inline-flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-secondary px-[30px] py-[12px] text-base font-bold capitalize text-on-surface transition-colors duration-500 hover:text-white after:absolute after:left-1/2 after:top-1/2 after:z-[-1] after:h-[calc(100%+5px)] after:w-[calc(100%+5px)] after:content-[\'\'] after:bg-primary after:-translate-x-1/2 after:-translate-y-1/2 after:scale-100 after:transition-transform after:duration-700 hover:after:scale-0 hover:after:rounded-full max-[575px]:px-[25px] max-[575px]:py-[9px]'"
-        @click="handleButtonClick"
-      >
-        <Icon v-if="variant !== 'banner'" icon="ic:round-whatsapp" class="h-6 w-6 shrink-0" aria-hidden="true" />
+      <button v-if="showButton" type="button"
+        class="relative z-1 inline-flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-azure-600 px-[30px] py-[12px] text-base font-bold capitalize text-on-surface transition-colors duration-500 hover:text-white after:absolute after:left-1/2 after:top-1/2 after:z-[-1] after:h-[calc(100%+5px)] after:w-[calc(100%+5px)] after:content-[''] after:bg-primary after:-translate-x-1/2 after:-translate-y-1/2 after:scale-100 after:transition-transform after:duration-700 hover:after:scale-0 hover:after:rounded-full max-[575px]:px-[25px] max-[575px]:py-[9px]"
+        @click="handleButtonClick">
+        <Icon icon="ic:round-whatsapp" class="h-6 w-6 shrink-0" aria-hidden="true" />
         {{ buttonText || t('send_money') }}
-        <Icon v-if="variant === 'banner'" icon="mdi:arrow-right" class="h-5 w-5 shrink-0" aria-hidden="true" />
       </button>
 
       <!-- Terms and Conditions -->
       <p v-if="showTerms" class="text-center text-xs text-slate-500">
         {{ t('terms_and_conditions') }}
-        <a href="#" class="text-primary-tailwind hover:underline">{{ t('terms_and_conditions_link') }}</a>
+        <a href="#" class="text-primary hover:underline">{{ t('terms_and_conditions_link') }}</a>
       </p>
     </div>
 
@@ -388,14 +357,6 @@ const currencyFlagSrcByCode: Record<CurrencyCode, string> = {
   pen: '/assets/flags/peru.svg',
   usd: '/assets/flags/usa.png',
   brl: '/assets/flags/bra.svg',
-}
-const currencyFlagEmojiByCode: Record<CurrencyCode, string> = {
-  pen: '🇵🇪',
-  usd: '🇺🇸',
-  brl: '🇧🇷',
-}
-function currencyFlagEmoji(code: CurrencyCode): string {
-  return currencyFlagEmojiByCode[code]
 }
 const currencyFromFlagSrc = computed(() => currencyFlagSrcByCode[calculatorStore.currencyFrom])
 const currencyToFlagSrc = computed(() => currencyFlagSrcByCode[calculatorStore.currencyTo])
@@ -742,7 +703,7 @@ function handleButtonClick() {
 const getContainerClasses = computed(() => {
   const baseClasses = {
     'default': 'rounded-lg bg-white p-6 shadow-sm',
-    'banner': 'w-full max-w-full rounded-2xl bg-white p-6 shadow-xl',
+    'banner': 'w-full max-w-full rounded-2xl bg-white p-4 shadow-xl sm:p-6 sm:shadow-2xl',
     'compact': 'rounded-lg bg-white p-4 shadow-sm',
     'inline': 'bg-transparent p-0 shadow-none'
   }
@@ -782,29 +743,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.calculator-banner {
-  width: 100%;
-  max-width: 500px;
-}
-
-.calculator-banner .banner-body {
-  width: 100%;
-  max-width: 400px;
-  margin-inline: auto;
-}
-
-.calculator-banner .banner-amount-input {
-  width: 200px;
-  max-width: 200px;
-  flex: 0 0 200px;
-  min-width: 0;
-}
-
-.banner-cta {
-  background: linear-gradient(90deg, #4952D6 0%, #01e8fc 100%);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
-}
-
 /* Microescena: la pelota describe un arco y entra al arco = ¡GOL! */
 .gol-scene { overflow: visible; }
 
@@ -825,7 +763,7 @@ onMounted(async () => {
   width: 30px;
   margin-top: -15px;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(1, 232, 252, 0.85) 0%, rgba(94, 214, 179, 0.45) 45%, rgba(1, 232, 252, 0) 72%);
+  background: radial-gradient(circle, rgba(1, 232, 252, 0.85) 0%, rgba(22, 94, 252, 0.45) 45%, rgba(1, 232, 252, 0) 72%);
   opacity: 0;
   transform: scale(0.4);
   pointer-events: none;
@@ -854,7 +792,7 @@ onMounted(async () => {
   line-height: 1;
   font-weight: 800;
   letter-spacing: 0.03em;
-  color: #4a52d8;
+  color: #165efc;
   white-space: nowrap;
   opacity: 0;
   transform: translateY(2px) scale(0.6);

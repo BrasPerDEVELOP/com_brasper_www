@@ -1,14 +1,15 @@
 <template>
   <section class="overflow-hidden bg-gradient-to-b from-gray-50 to-white px-4 py-16 sm:px-6 lg:px-8">
+  <section class="bg-gradient-to-b from-slate-50 to-white px-4 py-16 sm:px-6 lg:px-8">
     <div class="container mx-auto max-w-6xl">
       <div class="mb-12 text-center">
-        <span class="text-sm font-semibold uppercase tracking-wide text-blue-600">
+        <span class="text-sm font-semibold uppercase tracking-wide text-azure-600">
           {{ t('landing_partners_title') }}
         </span>
-        <h2 class="mt-2 text-3xl font-bold text-gray-900 md:text-4xl">
+        <h2 class="mt-2 text-3xl font-bold text-slate-900 md:text-4xl">
           {{ t('landing_partners_subtitle') }}
         </h2>
-        <p class="mx-auto mt-3 max-w-2xl text-gray-600">
+        <p class="mx-auto mt-3 max-w-2xl text-slate-600">
           {{ t('landing_partners_description') }}
         </p>
       </div>
@@ -17,7 +18,7 @@
         <div class="overflow-hidden rounded-2xl bg-white shadow-xl transition-all duration-500 ease-in-out">
           <div class="flex flex-col items-center lg:flex-row lg:items-start">
             <div
-              class="flex min-h-[300px] w-full items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-8 lg:w-2/5 lg:p-12"
+              class="flex min-h-[300px] w-full items-center justify-center bg-gradient-to-br from-azure-50 to-azure-50 p-8 lg:w-2/5 lg:p-12"
             >
               <div class="text-center">
                 <img
@@ -31,18 +32,18 @@
                   height="235"
                   @error="markLogoError(currentPartner.id)"
                 />
-                <div v-else class="text-sm text-gray-400">Logo no disponible</div>
-                <h3 class="mt-4 text-xl font-bold text-gray-800">
+                <div v-else class="text-sm text-slate-400">Logo no disponible</div>
+                <h3 class="mt-4 text-xl font-bold text-slate-800">
                   {{ currentPartner.title }}
                 </h3>
               </div>
             </div>
 
             <div class="w-full p-8 lg:w-3/5 lg:p-12">
-              <h4 class="mb-4 text-2xl font-bold text-gray-900">
+              <h4 class="mb-4 text-2xl font-bold text-slate-900">
                 {{ currentPartner.name }}
               </h4>
-              <p class="mb-6 leading-relaxed text-gray-600">
+              <p class="mb-6 leading-relaxed text-slate-600">
                 {{ currentPartner.description }}
               </p>
 
@@ -50,9 +51,9 @@
                 <li
                   v-for="(benefit, index) in currentPartner.benefits"
                   :key="`${currentPartner.id}-${index}`"
-                  class="flex items-start gap-3 text-gray-700"
+                  class="flex items-start gap-3 text-slate-700"
                 >
-                  <span class="mt-1 text-blue-600">
+                  <span class="mt-1 text-azure-600">
                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                       <path
                         fill-rule="evenodd"
@@ -72,6 +73,7 @@
           type="button"
           aria-label="Partner anterior"
           class="absolute left-0 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-blue-200 bg-white text-2xl text-blue-600 shadow-lg transition-all duration-300 hover:scale-110 hover:border-blue-400 hover:bg-blue-50 md:flex"
+          class="absolute left-0 top-1/2 z-20 hidden h-12 w-12 -translate-x-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-azure-200 bg-white text-2xl text-azure-600 shadow-lg transition-all duration-300 hover:scale-110 hover:border-azure-400 hover:bg-azure-50 md:flex"
           @click="prevPartner"
         >
           ‹
@@ -80,6 +82,7 @@
           type="button"
           aria-label="Siguiente partner"
           class="absolute right-0 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-blue-200 bg-white text-2xl text-blue-600 shadow-lg transition-all duration-300 hover:scale-110 hover:border-blue-400 hover:bg-blue-50 md:flex"
+          class="absolute right-0 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 translate-x-12 items-center justify-center rounded-full border-2 border-azure-200 bg-white text-2xl text-azure-600 shadow-lg transition-all duration-300 hover:scale-110 hover:border-azure-400 hover:bg-azure-50 md:flex"
           @click="nextPartner"
         >
           ›
@@ -92,13 +95,13 @@
             type="button"
             :aria-label="`Ir al partner ${index + 1}`"
             class="h-3 rounded-full transition-all duration-300"
-            :class="index === currentIndex ? 'w-8 bg-blue-600' : 'w-3 bg-gray-300 hover:bg-gray-400'"
+            :class="index === currentIndex ? 'w-8 bg-azure-600' : 'w-3 bg-slate-300 hover:bg-slate-400'"
             @click="goToPartner(index)"
           />
         </div>
       </div>
 
-      <div class="mt-4 text-center text-sm text-gray-500">
+      <div class="mt-4 text-center text-sm text-slate-500">
         {{ currentIndex + 1 }} / {{ partners.length }}
       </div>
     </div>

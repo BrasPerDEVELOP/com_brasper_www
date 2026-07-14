@@ -1,10 +1,10 @@
 <template>
   <section id="how-it-works" class="relative z-10 bg-white px-4 py-20 sm:px-6 lg:px-8">
     <div class="mb-16 text-center">
-      <p class="text-3xl font-semibold text-indigo-600">
+      <p class="text-3xl font-semibold text-azure-600">
         {{ t('landing_section_process') }}
       </p>
-      <h2 class="mt-2 text-2xl font-bold text-gray-900 md:text-3xl">
+      <h2 class="mt-2 text-2xl font-bold text-slate-900 md:text-3xl">
         {{ t('landing_section_process_title') }}
       </h2>
     </div>
@@ -25,7 +25,7 @@
         <div
           v-for="(step, index) in processSteps"
           :key="`process-badge-${step.number}`"
-          class="relative z-10 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 text-lg font-bold text-white shadow-xl ring-4 ring-white"
+          class="relative z-10 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-tr from-azure-500 to-azure-500 text-lg font-bold text-white shadow-xl ring-4 ring-white"
           :style="{
             boxShadow: '0 0 30px rgba(99, 102, 241, 0.5)',
             marginTop: index % 2 === 0 ? '2rem' : '0'
@@ -40,7 +40,7 @@
       <article
         v-for="step in processSteps"
         :key="`process-step-${step.number}`"
-        class="rounded-lg p-6 text-gray-800 shadow-md duration-300 hover:bg-blue-600 hover:text-white"
+        class="rounded-lg p-6 text-slate-800 shadow-md duration-300 hover:bg-azure-600 hover:text-white"
       >
         <h4 class="mb-2 text-lg font-bold">
           {{ step.title }}

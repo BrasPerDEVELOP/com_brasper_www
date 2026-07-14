@@ -2,6 +2,27 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8">
+    <!-- Preload del banner LCP: elige el idioma antes de cargar el bundle para adelantar la descarga -->
+    <script>
+      (function () {
+        try {
+          var seg = location.pathname.split('/')[1]
+          var file
+          if (seg === 'es' || seg === 'en' || seg === 'pr') {
+            file = seg
+          } else {
+            var saved = localStorage.getItem('locale')
+            file = saved === 'es' ? 'es' : saved === 'en' ? 'en' : 'pr'
+          }
+          var l = document.createElement('link')
+          l.rel = 'preload'
+          l.as = 'image'
+          l.href = '/assets/images/banner/' + file + '.webp'
+          l.setAttribute('fetchpriority', 'high')
+          document.head.appendChild(l)
+        } catch (e) {}
+      })()
+    </script>
      <!-- Google Tag Manager -->
      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

@@ -1,50 +1,27 @@
 <template>
-  <section id="banner" class="relative overflow-hidden text-slate-800">
-    <div class="absolute inset-0 -z-10 bg-gradient-to-br from-[#e8f2ff] via-[#edf4ff] to-[#dce9ff]" />
+  <section id="banner" class="relative overflow-hidden bg-gradient-to-br from-azure-700 via-azure-600 to-azure-500 text-white md:bg-gradient-to-r md:from-azure-600 md:to-azure-400">
     <div class="absolute inset-0 -z-10">
-      <div class="absolute left-1/2 top-0 h-[520px] w-[720px] -translate-x-1/2 rounded-full bg-blue-300/25 blur-3xl" />
-      <div class="absolute right-0 top-20 h-80 w-80 rounded-full bg-cyan-300/20 blur-3xl" />
-      <div class="absolute -left-16 bottom-0 h-72 w-72 rounded-full bg-blue-400/15 blur-3xl" />
+      <div class="absolute left-1/2 top-0 h-[420px] w-[520px] -translate-x-1/2 rounded-full bg-cyan-300/30 blur-3xl md:h-[520px] md:w-[720px] md:bg-cyan-300/40" />
+      <div class="absolute right-0 top-20 h-56 w-56 rounded-full bg-azure-300/25 blur-3xl md:top-28 md:h-80 md:w-80 md:bg-azure-300/30" />
+      <div class="absolute -left-10 bottom-0 h-48 w-48 rounded-full bg-cyan-200/30 blur-3xl md:left-0 md:top-64 md:h-80 md:w-80 md:bg-cyan-200/40" />
     </div>
 
-    <div
-      class="relative z-10 mx-auto flex max-w-7xl flex-col items-stretch justify-center gap-8 px-4 py-10 sm:px-6 md:flex-row md:items-start md:gap-10 lg:gap-14 lg:px-12 lg:py-16"
-    >
-      <div class="order-2 flex min-w-0 w-full flex-1 flex-col items-center text-center md:order-1">
-        <div class="flex items-center justify-center gap-4">
-          <img
-            src="/assets/flags/peru.svg"
-            :alt="t('landing_section_peru')"
-            width="56"
-            height="56"
-            class="h-12 w-12 rounded-full object-cover sm:h-14 sm:w-14"
-          />
-          <img
-            src="/assets/flags/banderabrasil.png"
-            :alt="t('landing_section_brazil')"
-            width="56"
-            height="56"
-            class="h-12 w-12 rounded-full object-cover sm:h-14 sm:w-14"
-          />
-        </div>
-
-        <div class="relative mx-auto mt-5 w-full max-w-[465px] pl-11 sm:pl-12">
-          <span class="absolute left-0 top-1 flex h-10 w-10 items-center justify-center text-[#25D366]" aria-hidden="true">
-            <svg viewBox="0 0 24 24" class="h-7 w-7 fill-current sm:h-8 sm:w-8" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
-            </svg>
+    <div class="relative z-10 mx-auto flex max-w-7xl flex-col gap-4 px-4 pt-4 pb-6 sm:px-6 sm:pt-5 md:flex-row md:items-start md:gap-6 md:py-12 lg:gap-12 lg:px-12 lg:py-20">
+      <div class="min-w-0 w-full flex-1 text-center md:text-left">
+        <div class="hidden items-center gap-2 font-bold md:flex">
+          <Icon icon="ic:round-whatsapp" width="32" height="32" class="shrink-0" />
+          <span class="inline-flex rounded-full px-3 py-1.5 text-xs uppercase tracking-widest text-white">
+            <p class="text-cyan-300">{{ t('landing_badge_title') }}</p>
+            {{ t('landing_badge') }}
           </span>
-          <h1 class="text-center text-3xl font-extrabold leading-tight text-secondary sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15]">
-            {{ t('landing_title') }}
-          </h1>
         </div>
 
-        <p class="mx-auto mt-3 max-w-[465px] text-center text-lg font-semibold leading-relaxed text-secondary sm:text-xl">
-          {{ t('landing_description') }}
-        </p>
+        <h1 class="mx-auto max-w-[22rem] px-1 text-[1.35rem] font-bold leading-[1.35] tracking-tight sm:max-w-md sm:text-2xl sm:leading-tight md:mx-0 md:max-w-none md:px-0 md:text-xl md:leading-snug lg:text-3xl xl:text-4xl">
+          {{ t('landing_title') }}
+        </h1>
 
-        <div class="mt-6 flex w-full flex-wrap items-center justify-center gap-4">
-          <div class="aspect-[760/366] w-full max-w-[560px] overflow-hidden">
+        <div class="mt-4 hidden flex-wrap items-center justify-center gap-4 md:flex lg:justify-center">
+          <div class="aspect-[760/366] w-full overflow-hidden">
             <img
               :src="displayedBannerImageSrc"
               :srcset="displayedBannerSrcset"
@@ -54,17 +31,17 @@
               decoding="async"
               width="760"
               height="366"
-              sizes="(max-width: 768px) 100vw, 560px"
-              class="h-full w-full object-contain"
+              sizes="(max-width: 768px) 100vw, 380px"
+              class="h-full w-full object-cover"
               @error="onDisplayedBannerImageError"
             />
           </div>
         </div>
       </div>
 
-      <div class="order-1 flex w-full justify-center md:order-2 md:block md:w-lg md:justify-normal">
-        <div class="relative w-full max-w-[500px] min-w-[min(100%,280px)] md:max-w-none">
-          <div class="absolute -inset-4 -z-10 rounded-[30px] bg-black/10 blur-2xl" />
+      <div class="mx-auto w-full max-w-md md:max-w-none sm:w-lg">
+        <div class="relative w-full min-w-0">
+          <div class="absolute -inset-2 -z-10 rounded-3xl bg-white/25 blur-xl md:-inset-3 md:rounded-[30px] md:bg-gradient-to-r md:from-cyan-300/60 md:via-azure-300/40 md:to-cyan-300/60 md:blur-2xl" />
           <CalculatorView
             variant="banner"
             title-tag="h2"
@@ -75,7 +52,7 @@
             :button-text="t('send_money')"
             :title="t('calculatorTitle')"
             :subtitle="t('calculator_description')"
-            custom-classes="!mx-auto !w-full !max-w-[500px] !rounded-[24px] !border !border-white/70 !bg-white !p-6 !shadow-[0_18px_50px_rgba(0,0,0,0.18)] sm:!p-8"
+            custom-classes="!max-w-full !rounded-2xl !border !border-white/60 !p-4 !shadow-[0_20px_50px_-12px_rgba(0,0,0,0.35)] sm:!rounded-[28px] sm:!p-6 md:!rounded-[30px] md:!border-0 md:!p-8 md:!shadow-2xl"
           />
         </div>
       </div>
@@ -86,6 +63,7 @@
 <script setup lang="ts">
 import { computed, onMounted, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Icon } from '@iconify/vue'
 import { apiClient } from '@/interface/api/client'
 import { env } from '@/interface/config/env'
 import { Domain } from '@/interface/infrastructure/services'

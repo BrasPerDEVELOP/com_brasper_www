@@ -18,28 +18,21 @@ app.use(i18n)
 setAuthCallbacks(
   () => useAuthStore().token ?? (typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null),
   () => {
-    const authStore = useAuthStore()
-    // Token inválido/expirado: limpiar en local sin POST /logout (evita otro 401 en bucle).
-    if (!authStore.token && !localStorage.getItem('token')) return
-    authStore.clearSession()
+    void useAuthStore().logout()
 
-    // Solo forzar login en rutas protegidas. La home y demás públicas deben seguir accesibles.
-    const current = router.currentRoute.value
-    const requiresAuth = current.matched.some((r) => r.meta.requiresAuth === true)
-    if (!requiresAuth) return
+    // Solo redirigir al login desde el dashboard; en la landing u otras rutas públicas no.
+    if (typeof window === 'undefined' || !window.location.pathname.startsWith('/dashboard')) return
 
     const locale = i18n.global.locale.value as 'es' | 'en' | 'pt'
     router.push({
       name: 'auth',
       params: { locale: appLocaleToRouteLocale(locale) },
-      query: current.fullPath ? { redirect: current.fullPath } : undefined
+      query: { redirect: router.currentRoute.value.fullPath }
     })
   }
 )
 
 app.mount('#app')
-
-useAuthStore().restoreSession()
  
  function loadExternalStylesheet(href: string) {
   if (document.querySelector(`link[href="${href}"]`)) return
@@ -81,7 +74,7 @@ function scheduleChatWidgetLoad() {
         title: 'Asistente Brasper',
         position: 'bottom-right',
         subtitle: 'Remesas y consultas',
-        primaryColor: '#4a52d8',
+        primaryColor: '#165efc',
         secondaryColor: '#01e8fc',
         welcomeMessage: 'Hola, ¿en qué te ayudo?',
         launcherImageUrl: '/assets/projects/bot.webp',

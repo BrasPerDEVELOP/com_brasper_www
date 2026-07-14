@@ -4,6 +4,19 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Marca: azul eléctrico/royal del diseño original. 600 = #165efc.
+        azure: {
+          50: '#ecf2ff',
+          100: '#d8e4ff',
+          200: '#b6ccff',
+          300: '#86a9ff',
+          400: '#5a92ff',
+          500: '#2e6dfe',
+          600: '#165efc',
+          700: '#124ad4',
+          800: '#163ea6',
+          900: '#183781',
+        },
         // Primarios
         primary: '#01e8fc',
         'primary-hover': '#066ac9',

@@ -75,18 +75,13 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    /** Limpia sesión en memoria y localStorage sin llamar al backend. */
-    clearSession() {
+    async logout() {
+      const repository = new AuthApiAdapter()
+      await repository.logout()
       this.user = null
       this.token = null
       localStorage.removeItem(TOKEN_KEY)
       localStorage.removeItem(USER_KEY)
-    },
-
-    async logout() {
-      const repository = new AuthApiAdapter()
-      await repository.logout()
-      this.clearSession()
     },
 
     /** Restaurar usuario solo desde localStorage (sin validar en backend). */
@@ -106,7 +101,7 @@ export const useAuthStore = defineStore('auth', {
     /**
      * Valida la sesión en el backend (GET /auth/me/).
      * Si hay token, obtiene el usuario actual; si responde 401, el interceptor
-     * del apiClient limpia la sesión y solo redirige a /auth en rutas protegidas.
+     * del apiClient cierra sesión y redirige a /auth.
      */
     async restoreSession(): Promise<void> {
       const token = this.token ?? localStorage.getItem(TOKEN_KEY)
