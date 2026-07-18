@@ -1,22 +1,6 @@
 <template>
   <section :class="getContainerClasses">
     <!-- Header -->
-    <template v-if="showTitle">
-      <div class="mb-5 flex items-center justify-center gap-2">
-        <img
-          v-if="variant !== 'banner'"
-          src="/assets/images/logo/logo-80.png"
-          alt="Logo Brasper"
-          class="h-10 w-10"
-          width="40"
-          height="40"
-        />
-        <component
-          :is="titleTag"
-          :class="variant === 'banner' ? 'text-xl font-bold text-secondary sm:text-2xl' : 'text-2xl font-semibold text-on-surface'"
-        >
-          {{ title || t('calculatorTitle') }}
-        </component>
     <template v-if="showTitle" >
       <div
         class="mb-4 flex items-center justify-center gap-2 sm:mb-6"
@@ -143,7 +127,8 @@
 
       <div
         v-if="calculatorStore.currentAutomaticCoupon"
-        class="rounded-2xl border border-cyan-200 bg-stone-100 px-4 py-3"
+        class="rounded-2xl border px-4 py-3 shadow-sm transition-colors"
+        :class="couponBoxClasses"
       >
         <div class="flex items-center justify-between gap-3">
           <div class="flex min-w-0 flex-1 gap-3">
@@ -182,12 +167,12 @@
               </span>
               <span class="gol-label">¡GOL!</span>
             </span>
-            <!-- Otros cupones automáticos: check -->
+            <!-- Otros cupones automáticos: check verde relleno (estado aplicado) -->
             <div
               v-else-if="!calculatorStore.skipAutomaticCoupon"
-              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-cyan-500 text-cyan-500"
+              class="flex h-10 w-10 shrink-0 items-center justify-center self-center rounded-full bg-emerald-500 text-white shadow-sm ring-4 ring-emerald-500/15"
             >
-              <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path
                   fill-rule="evenodd"
                   d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.26a1 1 0 0 1-1.42.003l-3.3-3.3a1 1 0 1 1 1.414-1.414l2.59 2.59 6.49-6.547a1 1 0 0 1 1.42-.006Z"
@@ -195,20 +180,33 @@
                 />
               </svg>
             </div>
-            <div class="min-w-0 text-sm">
+            <!-- Cupón disponible pero no aplicado: check tenue -->
+            <div
+              v-else
+              class="flex h-10 w-10 shrink-0 items-center justify-center self-center rounded-full border border-slate-300 bg-white text-slate-400"
+            >
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.26a1 1 0 0 1-1.42.003l-3.3-3.3a1 1 0 1 1 1.414-1.414l2.59 2.59 6.49-6.547a1 1 0 0 1 1.42-.006Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <div class="min-w-0 self-center text-sm">
               <template v-if="!calculatorStore.skipAutomaticCoupon">
-                <p class="font-medium text-on-surface">
+                <p class="font-semibold text-slate-700">
                   {{ t('coupon_auto_applied') }}
                 </p>
-                <p class="truncate font-bold leading-none text-secondary">
+                <p class="truncate font-bold leading-none text-rose-600">
                   {{ calculatorStore.currentAutomaticCoupon.code }}
                 </p>
-                <p v-if="automaticCouponDetail" class="text-secondary">
+                <p v-if="automaticCouponDetail" class="text-emerald-600">
                   {{ t('coupon_savings', { amount: automaticCouponDetail.savings, currency: calculatorStore.currencyFrom.toUpperCase() }) }}
                 </p>
               </template>
               <template v-else>
-                <p class="font-medium text-on-surface">
+                <p class="font-semibold text-slate-700">
                   {{ t('coupon_available') }}
                 </p>
                 <p class="truncate font-bold leading-none text-secondary">
@@ -219,10 +217,10 @@
           </div>
           <button
             type="button"
-            class="flex shrink-0 items-center justify-center text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
+            class="flex shrink-0 items-center justify-center self-center text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
             :class="calculatorStore.skipAutomaticCoupon
-              ? 'min-h-9 rounded-lg bg-azure-600 px-4 py-2 text-sm font-medium hover:bg-azure-600'
-              : 'h-8 w-8 rounded-full bg-on-surface hover:bg-on-surface/80'"
+              ? 'min-h-9 rounded-lg bg-azure-600 px-4 py-2 text-sm font-medium hover:bg-azure-700'
+              : 'h-9 w-9 rounded-full bg-slate-800 hover:bg-slate-700'"
             :aria-label="calculatorStore.skipAutomaticCoupon ? t('coupon_apply') : t('close')"
             @click="calculatorStore.setSkipAutomaticCoupon(!calculatorStore.skipAutomaticCoupon)"
           >
@@ -385,6 +383,13 @@ const automaticCouponDetail = computed(() => {
 const isWorldCupCoupon = computed(() =>
   /^MUNDIAL/i.test(calculatorStore.currentAutomaticCoupon?.code ?? '')
 )
+
+/** Color de la caja del cupón según su estado (aplicado, Mundial o disponible). */
+const couponBoxClasses = computed(() => {
+  if (calculatorStore.skipAutomaticCoupon) return 'border-slate-200 bg-slate-50'
+  if (isWorldCupCoupon.value) return 'border-azure-200 bg-azure-50'
+  return 'border-emerald-200 bg-emerald-50'
+})
 
 function toTwoDecimals(n: number): number {
   return Number((n || 0).toFixed(2))

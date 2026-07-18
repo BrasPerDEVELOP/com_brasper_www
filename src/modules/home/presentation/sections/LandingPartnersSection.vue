@@ -1,6 +1,5 @@
 <template>
-  <section class="overflow-hidden bg-gradient-to-b from-gray-50 to-white px-4 py-16 sm:px-6 lg:px-8">
-  <section class="bg-gradient-to-b from-slate-50 to-white px-4 py-16 sm:px-6 lg:px-8">
+  <section class="overflow-hidden bg-gradient-to-b from-slate-50 to-white px-4 py-16 sm:px-6 lg:px-8">
     <div class="container mx-auto max-w-6xl">
       <div class="mb-12 text-center">
         <span class="text-sm font-semibold uppercase tracking-wide text-azure-600">
@@ -72,7 +71,6 @@
         <button
           type="button"
           aria-label="Partner anterior"
-          class="absolute left-0 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-blue-200 bg-white text-2xl text-blue-600 shadow-lg transition-all duration-300 hover:scale-110 hover:border-blue-400 hover:bg-blue-50 md:flex"
           class="absolute left-0 top-1/2 z-20 hidden h-12 w-12 -translate-x-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-azure-200 bg-white text-2xl text-azure-600 shadow-lg transition-all duration-300 hover:scale-110 hover:border-azure-400 hover:bg-azure-50 md:flex"
           @click="prevPartner"
         >
@@ -81,7 +79,6 @@
         <button
           type="button"
           aria-label="Siguiente partner"
-          class="absolute right-0 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-blue-200 bg-white text-2xl text-blue-600 shadow-lg transition-all duration-300 hover:scale-110 hover:border-blue-400 hover:bg-blue-50 md:flex"
           class="absolute right-0 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 translate-x-12 items-center justify-center rounded-full border-2 border-azure-200 bg-white text-2xl text-azure-600 shadow-lg transition-all duration-300 hover:scale-110 hover:border-azure-400 hover:bg-azure-50 md:flex"
           @click="nextPartner"
         >

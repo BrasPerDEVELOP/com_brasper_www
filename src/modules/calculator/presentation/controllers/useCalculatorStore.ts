@@ -24,8 +24,8 @@ interface CalculatorState {
   error: string | null
 }
 
-const DEFAULT_FROM: CurrencyCode = 'pen'
-const DEFAULT_TO: CurrencyCode = 'brl'
+const DEFAULT_FROM: CurrencyCode = 'brl'
+const DEFAULT_TO: CurrencyCode = 'pen'
 
 interface CalculationBreakdown {
   amountSend: number

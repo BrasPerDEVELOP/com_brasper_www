@@ -20,8 +20,8 @@
           {{ t('landing_title') }}
         </h1>
 
-        <div class="mt-4 hidden flex-wrap items-center justify-center gap-4 md:flex lg:justify-center">
-          <div class="aspect-[760/366] w-full overflow-hidden">
+        <div class="mt-4 flex flex-wrap items-center justify-center gap-4 lg:justify-center">
+          <div class="aspect-[760/366] w-full overflow-hidden rounded-2xl md:rounded-none">
             <img
               :src="displayedBannerImageSrc"
               :srcset="displayedBannerSrcset"
@@ -54,6 +54,39 @@
             :subtitle="t('calculator_description')"
             custom-classes="!max-w-full !rounded-2xl !border !border-white/60 !p-4 !shadow-[0_20px_50px_-12px_rgba(0,0,0,0.35)] sm:!rounded-[28px] sm:!p-6 md:!rounded-[30px] md:!border-0 md:!p-8 md:!shadow-2xl"
           />
+        </div>
+
+        <!-- Sello de confianza: solo móvil, debajo de la calculadora -->
+        <div class="mt-6 md:hidden">
+          <div class="grid grid-cols-3 divide-x divide-white/15 rounded-2xl bg-white/10 px-1 py-5 backdrop-blur-sm">
+            <div class="flex flex-col items-center gap-2 px-2 text-center">
+              <Icon icon="mdi:shield-check" width="30" height="30" class="shrink-0 text-white" aria-hidden="true" />
+              <p class="text-sm font-bold leading-tight text-white">
+                {{ t('hero_trust_secure_title') }}<br />{{ t('hero_trust_secure_subtitle') }}
+              </p>
+            </div>
+            <div class="flex flex-col items-center gap-2 px-2 text-center">
+              <Icon icon="ic:round-whatsapp" width="30" height="30" class="shrink-0 text-white" aria-hidden="true" />
+              <p class="text-sm font-bold leading-tight text-white">
+                {{ t('hero_trust_bilingual_title') }}<br />{{ t('hero_trust_bilingual_subtitle') }}
+              </p>
+            </div>
+            <div class="flex flex-col items-center gap-2 px-2 text-center">
+              <Icon icon="mdi:finance" width="30" height="30" class="shrink-0 text-white" aria-hidden="true" />
+              <p class="text-sm font-bold leading-tight text-white">
+                {{ t('hero_trust_rate_title') }}<br />{{ t('hero_trust_rate_subtitle') }}
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-5 flex items-center justify-center gap-3">
+            <span class="h-px w-10 bg-white/25" aria-hidden="true"></span>
+            <span class="inline-flex items-center gap-2 text-sm font-semibold text-white">
+              <Icon icon="mdi:shield-check" width="20" height="20" class="shrink-0 text-cyan-300" aria-hidden="true" />
+              <span><span class="text-cyan-300">{{ t('hero_trust_tagline_highlight') }}</span> {{ t('hero_trust_tagline_rest') }}</span>
+            </span>
+            <span class="h-px w-10 bg-white/25" aria-hidden="true"></span>
+          </div>
         </div>
       </div>
     </div>

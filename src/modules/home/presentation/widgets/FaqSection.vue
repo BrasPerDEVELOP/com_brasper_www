@@ -56,10 +56,9 @@
           <div v-if="activeFaqTab === 'faq'" class="space-y-4">
             <div class="mb-6 flex items-center justify-between gap-4 border-b border-slate-100 pb-5">
               <div>
-                <h2 class="text-2xl font-bold text-[#0c1b3a]">
                 <h3 class="text-2xl font-bold text-[#1b1f2e]">
                   {{ t('faq') }}
-                </h2>
+                </h3>
                 <p class="mt-2 text-sm text-slate-500">
                   {{ t('faq_key_info') }}
                 </p>
