@@ -232,7 +232,7 @@
 
       <!-- Send Money Button -->
       <button v-if="showButton" type="button"
-        class="relative z-1 inline-flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-azure-600 px-[30px] py-[12px] text-base font-bold capitalize text-on-surface transition-colors duration-500 hover:text-white after:absolute after:left-1/2 after:top-1/2 after:z-[-1] after:h-[calc(100%+5px)] after:w-[calc(100%+5px)] after:content-[''] after:bg-primary after:-translate-x-1/2 after:-translate-y-1/2 after:scale-100 after:transition-transform after:duration-700 hover:after:scale-0 hover:after:rounded-full max-[575px]:px-[25px] max-[575px]:py-[9px]"
+        class="relative z-1 inline-flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-azure-600 px-[30px] py-[12px] text-base font-bold text-on-surface transition-colors duration-500 hover:text-white after:absolute after:left-1/2 after:top-1/2 after:z-[-1] after:h-[calc(100%+5px)] after:w-[calc(100%+5px)] after:content-[''] after:bg-primary after:-translate-x-1/2 after:-translate-y-1/2 after:scale-100 after:transition-transform after:duration-700 hover:after:scale-0 hover:after:rounded-full max-[575px]:px-[25px] max-[575px]:py-[9px]"
         @click="handleButtonClick">
         <Icon icon="ic:round-whatsapp" class="h-6 w-6 shrink-0" aria-hidden="true" />
         {{ buttonText || t('send_money') }}
@@ -242,6 +242,10 @@
       <p v-if="showTerms" class="text-center text-xs text-slate-500">
         {{ t('terms_and_conditions') }}
         <a href="#" class="text-primary hover:underline">{{ t('terms_and_conditions_link') }}</a>
+      </p>
+      <p v-if="showTerms" class="flex items-center justify-center gap-1.5 text-center text-xs font-semibold text-slate-700">
+        <span aria-hidden="true">🔒</span>
+        <span>{{ t('whatsapp_secure_attention') }}</span>
       </p>
     </div>
 
@@ -302,7 +306,7 @@ const props = withDefaults(defineProps<Props>(), {
   showButton: false,
   showReductions: true,
   showTerms: false,
-  buttonText: 'SEND MONEY',
+  buttonText: '',
   title: undefined,
   subtitle: undefined,
   customClasses: '',

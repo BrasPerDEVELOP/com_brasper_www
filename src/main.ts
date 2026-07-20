@@ -32,7 +32,7 @@ setAuthCallbacks(
   }
 )
 
-app.mount('#app')
+app.mount('#app')/* 
  
  function loadExternalStylesheet(href: string) {
   if (document.querySelector(`link[href="${href}"]`)) return
@@ -56,8 +56,8 @@ function loadScript(src: string): Promise<void> {
     script.onerror = () => reject(new Error(`Unable to load script: ${src}`))
     document.body.appendChild(script)
   })
-}
-
+} */
+/* 
 function scheduleChatWidgetLoad() {
   if (typeof window === 'undefined') return
 
@@ -83,18 +83,18 @@ function scheduleChatWidgetLoad() {
     } catch {
       // El widget es secundario; no debe romper el render principal.
     }
-  }
+  } */
 
-  if ('requestIdleCallback' in window) {
+/*   if ('requestIdleCallback' in window) {
     window.requestIdleCallback(() => {
       void initialize()
     }, { timeout: 3000 })
     return
   }
-
-  setTimeout(() => {
+ */
+ /*  setTimeout(() => {
     void initialize()
-  }, 1500)
-}
+  }, 1500) */
+/* } */
 
-scheduleChatWidgetLoad() 
+/* scheduleChatWidgetLoad()  */

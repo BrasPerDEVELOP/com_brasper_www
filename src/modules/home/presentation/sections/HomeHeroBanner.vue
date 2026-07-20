@@ -6,18 +6,14 @@
       <div class="absolute -left-10 bottom-0 h-48 w-48 rounded-full bg-cyan-200/30 blur-3xl md:left-0 md:top-64 md:h-80 md:w-80 md:bg-cyan-200/40" />
     </div>
 
-    <div class="relative z-10 mx-auto flex max-w-7xl flex-col gap-4 px-4 pt-4 pb-6 sm:px-6 sm:pt-5 md:flex-row md:items-start md:gap-6 md:py-12 lg:gap-12 lg:px-12 lg:py-20">
+    <div class="relative z-10 mx-auto flex max-w-7xl flex-col gap-4 px-4 pt-4 sm:px-6 sm:pt-5 md:flex-row md:items-start md:gap-6 md:pt-12 lg:gap-12 lg:px-12 lg:pt-20">
       <div class="min-w-0 w-full flex-1 text-center md:text-left">
-        <div class="hidden items-center gap-2 font-bold md:flex">
-          <Icon icon="ic:round-whatsapp" width="32" height="32" class="shrink-0" />
-          <span class="inline-flex rounded-full px-3 py-1.5 text-xs uppercase tracking-widest text-white">
-            <p class="text-cyan-300">{{ t('landing_badge_title') }}</p>
-            {{ t('landing_badge') }}
-          </span>
-        </div>
-
-        <h1 class="mx-auto max-w-[22rem] px-1 text-[1.35rem] font-bold leading-[1.35] tracking-tight sm:max-w-md sm:text-2xl sm:leading-tight md:mx-0 md:max-w-none md:px-0 md:text-xl md:leading-snug lg:text-3xl xl:text-4xl">
-          {{ t('landing_title') }}
+        <h1 class="mx-auto max-w-[22rem] px-1 text-[1.35rem] font-bold leading-[1.16] tracking-tight sm:max-w-xl sm:text-2xl md:mx-0 md:max-w-none md:px-0 md:text-2xl lg:text-3xl xl:text-[2.35rem]">
+          <span>{{ t('hero_title_prefix') }}</span><span aria-hidden="true">&nbsp;</span>
+          <span class="text-cyan-300">{{ t('hero_title_peru') }}</span>
+          <span aria-hidden="true">&nbsp;</span><span>{{ t('hero_title_and') }}</span><span aria-hidden="true">&nbsp;</span>
+          <span class="text-emerald-400">{{ t('hero_title_brazil') }}</span>
+          <span class="mt-1 block">{{ t('hero_title_suffix') }}</span>
         </h1>
 
         <div class="mt-4 flex flex-wrap items-center justify-center gap-4 lg:justify-center">
@@ -37,6 +33,10 @@
             />
           </div>
         </div>
+
+        <p class="mt-5 hidden text-center text-base font-medium tracking-wide text-white/95 sm:text-lg md:mt-6 md:block md:text-xl">
+          {{ t('hero_support_message') }}
+        </p>
       </div>
 
       <div class="mx-auto w-full max-w-md md:max-w-none sm:w-lg">
@@ -56,38 +56,38 @@
           />
         </div>
 
-        <!-- Sello de confianza: solo móvil, debajo de la calculadora -->
-        <div class="mt-6 md:hidden">
-          <div class="grid grid-cols-3 divide-x divide-white/15 rounded-2xl bg-white/10 px-1 py-5 backdrop-blur-sm">
-            <div class="flex flex-col items-center gap-2 px-2 text-center">
-              <Icon icon="mdi:shield-check" width="30" height="30" class="shrink-0 text-white" aria-hidden="true" />
-              <p class="text-sm font-bold leading-tight text-white">
-                {{ t('hero_trust_secure_title') }}<br />{{ t('hero_trust_secure_subtitle') }}
-              </p>
-            </div>
-            <div class="flex flex-col items-center gap-2 px-2 text-center">
-              <Icon icon="ic:round-whatsapp" width="30" height="30" class="shrink-0 text-white" aria-hidden="true" />
-              <p class="text-sm font-bold leading-tight text-white">
-                {{ t('hero_trust_bilingual_title') }}<br />{{ t('hero_trust_bilingual_subtitle') }}
-              </p>
-            </div>
-            <div class="flex flex-col items-center gap-2 px-2 text-center">
-              <Icon icon="mdi:finance" width="30" height="30" class="shrink-0 text-white" aria-hidden="true" />
-              <p class="text-sm font-bold leading-tight text-white">
-                {{ t('hero_trust_rate_title') }}<br />{{ t('hero_trust_rate_subtitle') }}
-              </p>
-            </div>
-          </div>
+      </div>
+    </div>
 
-          <div class="mt-5 flex items-center justify-center gap-3">
-            <span class="h-px w-10 bg-white/25" aria-hidden="true"></span>
-            <span class="inline-flex items-center gap-2 text-sm font-semibold text-white">
-              <Icon icon="mdi:shield-check" width="20" height="20" class="shrink-0 text-cyan-300" aria-hidden="true" />
-              <span><span class="text-cyan-300">{{ t('hero_trust_tagline_highlight') }}</span> {{ t('hero_trust_tagline_rest') }}</span>
-            </span>
-            <span class="h-px w-10 bg-white/25" aria-hidden="true"></span>
-          </div>
+    <div class="relative z-10 mx-auto max-w-7xl px-4 pb-6 pt-6 sm:px-6 md:pb-10 md:pt-8 lg:px-12 lg:pb-12">
+      <div class="grid grid-cols-3 overflow-hidden rounded-2xl bg-blue-950/25 shadow-[0_12px_35px_rgba(0,54,180,0.16)] backdrop-blur-sm lg:grid-cols-[1.12fr_1fr_1fr_1fr] lg:rounded-[18px] lg:border lg:border-white/85 lg:bg-azure-700/15">
+        <div class="hidden min-h-24 items-center justify-center px-5 py-4 text-center lg:flex lg:border-r lg:border-white/40 lg:text-left">
+          <p class="text-lg font-bold leading-tight text-white sm:text-xl lg:text-[1.35rem]">
+            {{ t('hero_trust_intro_title') }}<br />{{ t('hero_trust_intro_subtitle') }}
+          </p>
         </div>
+
+        <div
+          v-for="item in trustItems"
+          :key="item.title"
+          class="flex min-h-36 flex-col items-center justify-center gap-3 border-r border-white/15 px-2 py-5 text-center last:border-r-0 lg:min-h-24 lg:flex-row lg:gap-4 lg:border-white/40 lg:px-4 lg:py-4 lg:text-left"
+        >
+          <span class="flex h-12 w-12 shrink-0 items-center justify-center text-white lg:h-14 lg:w-14 lg:rounded-xl lg:bg-white lg:text-azure-600 lg:shadow-md" aria-hidden="true">
+            <Icon :icon="item.icon" width="40" height="40" />
+          </span>
+          <p class="text-sm font-bold leading-tight !text-white sm:text-base lg:text-lg">
+            {{ t(item.title) }}<br />{{ t(item.subtitle) }}
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-6 flex items-center justify-center gap-3 lg:hidden">
+        <span class="h-px flex-1 bg-white/45" aria-hidden="true"></span>
+        <span class="inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-white sm:text-base">
+          <Icon icon="mdi:shield-check" width="21" height="21" class="text-cyan-300" aria-hidden="true" />
+          <span><span class="text-cyan-300">{{ t('hero_trust_tagline_highlight') }}</span> {{ t('hero_trust_tagline_rest') }}</span>
+        </span>
+        <span class="h-px flex-1 bg-white/45" aria-hidden="true"></span>
       </div>
     </div>
   </section>
@@ -115,6 +115,12 @@ type HomeBannerApiRow = {
 }
 
 const { t, locale } = useI18n()
+
+const trustItems = [
+  { icon: 'mdi:shield-check', title: 'hero_trust_secure_title', subtitle: 'hero_trust_secure_subtitle' },
+  { icon: 'ic:round-whatsapp', title: 'hero_trust_bilingual_title', subtitle: 'hero_trust_bilingual_subtitle' },
+  { icon: 'mdi:finance', title: 'hero_trust_rate_title', subtitle: 'hero_trust_rate_subtitle' }
+] as const
 
 const LOCAL_BANNER_WIDTHS = [480, 768, 1152] as const
 const LOCAL_BANNER_PREFIX = '/assets/images/banner/'

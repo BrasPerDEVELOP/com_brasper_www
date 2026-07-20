@@ -23,6 +23,17 @@
       </div>
     </Transition>
   </div>
+
+  <a
+    :href="whatsappUrl"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="group fixed bottom-5 right-4 z-50 flex items-center gap-2 rounded-full bg-[#25D366] p-3 text-white shadow-[0_10px_30px_rgba(0,0,0,0.28)] transition duration-200 hover:-translate-y-1 hover:bg-[#20bd5a] hover:shadow-[0_14px_35px_rgba(0,0,0,0.32)] sm:right-5 sm:px-4 lg:bottom-8 lg:right-8"
+    :aria-label="whatsappLabel"
+  >
+    <Icon icon="ic:round-whatsapp" class="h-8 w-8 shrink-0" aria-hidden="true" />
+    <span class="hidden pr-1 text-sm font-bold sm:block">{{ whatsappLabel }}</span>
+  </a>
 </template>
 
 <script setup lang="ts">
@@ -53,6 +64,23 @@ const textByLocale: Record<SupportedLocale, string[]> = {
   ]
 }
 
+const whatsappData: Record<SupportedLocale, { label: string; message: string }> = {
+  es: {
+    label: 'Atención por WhatsApp',
+    message: 'Hola, necesito atención para realizar una transferencia.'
+  },
+  en: {
+    label: 'WhatsApp support',
+    message: 'Hello, I need assistance with a transfer.'
+  },
+  pt: {
+    label: 'Atendimento pelo WhatsApp',
+    message: 'Olá, preciso de atendimento para realizar uma transferência.'
+  }
+}
+
+const WHATSAPP_PHONE_NUMBER = '51966991933'
+
 const socialLinks = [
   {
     href: 'https://www.instagram.com/reel/DJZgOHdOAKk/?igsh=aHMwOW1jZmtvd2sw',
@@ -75,6 +103,12 @@ let intervalId: ReturnType<typeof setInterval> | null = null
 const currentLocale = computed<SupportedLocale>(() => {
   const value = locale.value
   return value === 'es' || value === 'en' || value === 'pt' ? value : 'es'
+})
+
+const whatsappLabel = computed(() => whatsappData[currentLocale.value].label)
+const whatsappUrl = computed(() => {
+  const message = encodeURIComponent(whatsappData[currentLocale.value].message)
+  return `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${message}`
 })
 
 const texts = computed(() => textByLocale[currentLocale.value])

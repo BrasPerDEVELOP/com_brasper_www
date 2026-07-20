@@ -91,7 +91,7 @@ export const TR = {
   /** Tasa de Cambio | exchange_rate */
   get exchangeRate(): string { return "exchange_rate" },
 
-  /** ENVIAR DINERO AHORA | send_money_now */
+  /** ENVIAR DINERO | send_money_now */
   get sendMoneyNow(): string { return "send_money_now" },
 
   /** Al continuar, aceptas nuestros | terms_and_conditions */
@@ -112,8 +112,11 @@ export const TR = {
   /** Ahorras {amount} {currency} | coupon_savings */
   get couponSavings(): string { return "coupon_savings" },
 
-  /** Enviar dinero | send_money */
+  /** Enviar por WhatsApp | send_money */
   get sendMoney(): string { return "send_money" },
+
+  /** Atención inmediata y segura por WhatsApp | whatsapp_secure_attention */
+  get whatsappSecureAttention(): string { return "whatsapp_secure_attention" },
 
   /** ¡Para montos mayores o menores, contáctanos! | calculator_amount_out_of_range_contact_us */
   get calculatorAmountOutOfRangeContactUs(): string { return "calculator_amount_out_of_range_contact_us" },
@@ -207,6 +210,54 @@ export const TR = {
 
   /** Envía soles, dólares y reales a Brasil y Perú con el mejor tipo de cambio. | landing_title */
   get landingTitle(): string { return "landing_title" },
+
+  /** Envía dinero a | hero_title_prefix */
+  get heroTitlePrefix(): string { return "hero_title_prefix" },
+
+  /** Perú | hero_title_peru */
+  get heroTitlePeru(): string { return "hero_title_peru" },
+
+  /** y | hero_title_and */
+  get heroTitleAnd(): string { return "hero_title_and" },
+
+  /** Brasil | hero_title_brazil */
+  get heroTitleBrazil(): string { return "hero_title_brazil" },
+
+  /** por WhatsApp, seguro y en minutos | hero_title_suffix */
+  get heroTitleSuffix(): string { return "hero_title_suffix" },
+
+  /** Transacciones | hero_trust_secure_title */
+  get heroTrustSecureTitle(): string { return "hero_trust_secure_title" },
+
+  /** seguras | hero_trust_secure_subtitle */
+  get heroTrustSecureSubtitle(): string { return "hero_trust_secure_subtitle" },
+
+  /** Atención | hero_trust_bilingual_title */
+  get heroTrustBilingualTitle(): string { return "hero_trust_bilingual_title" },
+
+  /** bilingüe | hero_trust_bilingual_subtitle */
+  get heroTrustBilingualSubtitle(): string { return "hero_trust_bilingual_subtitle" },
+
+  /** Mejor tasa | hero_trust_rate_title */
+  get heroTrustRateTitle(): string { return "hero_trust_rate_title" },
+
+  /** del mercado | hero_trust_rate_subtitle */
+  get heroTrustRateSubtitle(): string { return "hero_trust_rate_subtitle" },
+
+  /** Más simple, | hero_trust_intro_title */
+  get heroTrustIntroTitle(): string { return "hero_trust_intro_title" },
+
+  /** claro y confiable | hero_trust_intro_subtitle */
+  get heroTrustIntroSubtitle(): string { return "hero_trust_intro_subtitle" },
+
+  /** Nuestro equipo te acompaña en cada paso. | hero_support_message */
+  get heroSupportMessage(): string { return "hero_support_message" },
+
+  /** Confianza | hero_trust_tagline_highlight */
+  get heroTrustTaglineHighlight(): string { return "hero_trust_tagline_highlight" },
+
+  /** en cada envío | hero_trust_tagline_rest */
+  get heroTrustTaglineRest(): string { return "hero_trust_tagline_rest" },
 
   /** Simula en segundos cuánto recibe tu destinatario, con tasas competitivas, soporte en español y total transparencia desde el primer paso. | landing_description */
   get landingDescription(): string { return "landing_description" },
@@ -454,6 +505,150 @@ export const TR = {
   /** Enviar vía WhatsApp | landing_schedule_send_whatsapp */
   get landingScheduleSendWhatsapp(): string { return "landing_schedule_send_whatsapp" },
 
+  /** Eficiencia en vivo | landing_attention_kicker */
+  get landingAttentionKicker(): string { return "landing_attention_kicker" },
+
+  /** Operaciones en  | landing_attention_title_prefix */
+  get landingAttentionTitlePrefix(): string { return "landing_attention_title_prefix" },
+
+  /** tiempo real | landing_attention_title_highlight */
+  get landingAttentionTitleHighlight(): string { return "landing_attention_title_highlight" },
+
+  /** Durante nuestro horario de atención, tus operaciones se gestionan con prioridad el mismo día. Tu capital se mueve con la menor fricción posible y un equipo que te acompaña. | landing_attention_description */
+  get landingAttentionDescription(): string { return "landing_attention_description" },
+
+  /** Horarios de atención | landing_attention_hours_title */
+  get landingAttentionHoursTitle(): string { return "landing_attention_hours_title" },
+
+  /** Horario regular: | landing_attention_hours_section_regular */
+  get landingAttentionHoursSectionRegular(): string { return "landing_attention_hours_section_regular" },
+
+  /** Horario extendido: | landing_attention_hours_section_extended */
+  get landingAttentionHoursSectionExtended(): string { return "landing_attention_hours_section_extended" },
+
+  /** Feriados: | landing_attention_hours_section_holidays */
+  get landingAttentionHoursSectionHolidays(): string { return "landing_attention_hours_section_holidays" },
+
+  /** * Horarios referenciales. Sin atención en días feriados. | landing_attention_hours_footnote */
+  get landingAttentionHoursFootnote(): string { return "landing_attention_hours_footnote" },
+
+  /** Lunes a viernes | landing_attention_hours_weekdays_label */
+  get landingAttentionHoursWeekdaysLabel(): string { return "landing_attention_hours_weekdays_label" },
+
+  /** 7:00 a.m. a 6:00 p. m. | landing_attention_hours_weekdays_hours */
+  get landingAttentionHoursWeekdaysHours(): string { return "landing_attention_hours_weekdays_hours" },
+
+  /** Sábado | landing_attention_hours_saturday_label */
+  get landingAttentionHoursSaturdayLabel(): string { return "landing_attention_hours_saturday_label" },
+
+  /** 8:00 a.m. a 2:00 p. m. | landing_attention_hours_saturday_hours */
+  get landingAttentionHoursSaturdayHours(): string { return "landing_attention_hours_saturday_hours" },
+
+  /** Domingo | landing_attention_hours_sunday_label */
+  get landingAttentionHoursSundayLabel(): string { return "landing_attention_hours_sunday_label" },
+
+  /** 12:00 p. m. a 2:00 p. m. | landing_attention_hours_sunday_hours */
+  get landingAttentionHoursSundayHours(): string { return "landing_attention_hours_sunday_hours" },
+
+  /** Feriado | landing_attention_hours_holiday_label */
+  get landingAttentionHoursHolidayLabel(): string { return "landing_attention_hours_holiday_label" },
+
+  /** Cerrado | landing_attention_hours_holiday_hours */
+  get landingAttentionHoursHolidayHours(): string { return "landing_attention_hours_holiday_hours" },
+
+  /** Tiempo promedio | landing_attention_card_avg_title */
+  get landingAttentionCardAvgTitle(): string { return "landing_attention_card_avg_title" },
+
+  /** Entrega orientativa: 1 h | landing_attention_card_avg_description */
+  get landingAttentionCardAvgDescription(): string { return "landing_attention_card_avg_description" },
+
+  /** Atención personalizada | landing_attention_card_support_title */
+  get landingAttentionCardSupportTitle(): string { return "landing_attention_card_support_title" },
+
+  /** Soporte experto por los canales oficiales | landing_attention_card_support_description */
+  get landingAttentionCardSupportDescription(): string { return "landing_attention_card_support_description" },
+
+  /** Calcula tu operación | landing_attention_cta */
+  get landingAttentionCta(): string { return "landing_attention_cta" },
+
+  /** Procesamiento | landing_attention_metric_label */
+  get landingAttentionMetricLabel(): string { return "landing_attention_metric_label" },
+
+  /** 99.8% | landing_attention_metric_value */
+  get landingAttentionMetricValue(): string { return "landing_attention_metric_value" },
+
+  /** Flujo optimizado para operaciones entre Perú, Brasil y dólares. | landing_attention_metric_caption */
+  get landingAttentionMetricCaption(): string { return "landing_attention_metric_caption" },
+
+  /** Ilustración BrasPer: flujo de transferencias entre Perú y Brasil con estética digital. | landing_attention_image_alt */
+  get landingAttentionImageAlt(): string { return "landing_attention_image_alt" },
+
+  /** Impacto global | landing_impact_kicker */
+  get landingImpactKicker(): string { return "landing_impact_kicker" },
+
+  /** Nuestra  | landing_impact_title_line1 */
+  get landingImpactTitleLine1(): string { return "landing_impact_title_line1" },
+
+  /** trayectoria y logros | landing_impact_title_highlight */
+  get landingImpactTitleHighlight(): string { return "landing_impact_title_highlight" },
+
+  /**  | landing_impact_title_line2 */
+  get landingImpactTitleLine2(): string { return "landing_impact_title_line2" },
+
+  /** Transparencia radical y velocidad sin precedentes. Hemos construido un puente digital robusto para quienes operan entre Perú, Brasil. | landing_impact_lead */
+  get landingImpactLead(): string { return "landing_impact_lead" },
+
+  /** +45 mil | landing_impact_stat_1_value */
+  get landingImpactStat1Value(): string { return "landing_impact_stat_1_value" },
+
+  /** Operaciones realizadas | landing_impact_stat_1_label */
+  get landingImpactStat1Label(): string { return "landing_impact_stat_1_label" },
+
+  /** Procesamiento de transacciones en tiempo real con latencia mínima. | landing_impact_stat_1_description */
+  get landingImpactStat1Description(): string { return "landing_impact_stat_1_description" },
+
+  /** +3,5 mil | landing_impact_stat_2_value */
+  get landingImpactStat2Value(): string { return "landing_impact_stat_2_value" },
+
+  /** Usuarios atendidos | landing_impact_stat_2_label */
+  get landingImpactStat2Label(): string { return "landing_impact_stat_2_label" },
+
+  /** Una comunidad creciente que confía su capital en nuestra tecnología. | landing_impact_stat_2_description */
+  get landingImpactStat2Description(): string { return "landing_impact_stat_2_description" },
+
+  /** +50 Millones | landing_impact_stat_3_value */
+  get landingImpactStat3Value(): string { return "landing_impact_stat_3_value" },
+
+  /** Soles cambiados | landing_impact_stat_3_label */
+  get landingImpactStat3Label(): string { return "landing_impact_stat_3_label" },
+
+  /** Liquidez y claridad para operaciones de distinto volumen. | landing_impact_stat_3_description */
+  get landingImpactStat3Description(): string { return "landing_impact_stat_3_description" },
+
+  /** +4 años | landing_impact_stat_4_value */
+  get landingImpactStat4Value(): string { return "landing_impact_stat_4_value" },
+
+  /** De experiencia | landing_impact_stat_4_label */
+  get landingImpactStat4Label(): string { return "landing_impact_stat_4_label" },
+
+  /** Impulsando el cambio en el sector con seguridad y procesos claros. | landing_impact_stat_4_description */
+  get landingImpactStat4Description(): string { return "landing_impact_stat_4_description" },
+
+  /** ¿Listo para operar al siguiente nivel? | landing_impact_cta_title */
+  get landingImpactCtaTitle(): string { return "landing_impact_cta_title" },
+
+  /** Únete a quienes ya transformaron su gestión de capital con nuestra infraestructura ágil. | landing_impact_cta_description */
+  get landingImpactCtaDescription(): string { return "landing_impact_cta_description" },
+
+  /** Únete a la revolución Brasper | landing_impact_cta_button */
+  get landingImpactCtaButton(): string { return "landing_impact_cta_button" },
+
+  /** Red en vivo | landing_impact_network_badge */
+  get landingImpactNetworkBadge(): string { return "landing_impact_network_badge" },
+
+  /** Visualización de red financiera y operaciones BrasPer. | landing_impact_visual_alt */
+  get landingImpactVisualAlt(): string { return "landing_impact_visual_alt" },
+
   /** Visión y Misión | landing_vision_mission_title */
   get landingVisionMissionTitle(): string { return "landing_vision_mission_title" },
 
@@ -677,7 +872,142 @@ export const TR = {
   get footerContactTerms(): string { return "footer_contact_terms" },
 
   /** Libro de reclamaciones | footer_contact_complaints */
-  get footerContactComplaints(): string { return "footer_contact_complaints" }
+  get footerContactComplaints(): string { return "footer_contact_complaints" },
+
+  /** Todos los derechos reservados. | footer_rights */
+  get footerRights(): string { return "footer_rights" },
+
+  /** ← Volver al blog | blog_back_to_list */
+  get blogBackToList(): string { return "blog_back_to_list" },
+
+  /** Leer artículo | blog_read_article */
+  get blogReadArticle(): string { return "blog_read_article" },
+
+  /** Tiempo de lectura: {time} | blog_reading_time */
+  get blogReadingTime(): string { return "blog_reading_time" },
+
+  /** Imagen no disponible | blog_image_unavailable */
+  get blogImageUnavailable(): string { return "blog_image_unavailable" },
+
+  /** No se encontró el artículo. | blog_not_found */
+  get blogNotFound(): string { return "blog_not_found" },
+
+  /** Publicaciones  | blog_recent_posts_prefix */
+  get blogRecentPostsPrefix(): string { return "blog_recent_posts_prefix" },
+
+  /** Recientes | blog_recent_posts_highlight */
+  get blogRecentPostsHighlight(): string { return "blog_recent_posts_highlight" },
+
+  /** Leer más | blog_read_more */
+  get blogReadMore(): string { return "blog_read_more" },
+
+  /** Todos | blog_filter_all */
+  get blogFilterAll(): string { return "blog_filter_all" },
+
+  /** Buscar artículo... | blog_search_placeholder */
+  get blogSearchPlaceholder(): string { return "blog_search_placeholder" },
+
+  /** Cargando artículos... | blog_loading */
+  get blogLoading(): string { return "blog_loading" },
+
+  /** No se encontraron artículos. | blog_empty */
+  get blogEmpty(): string { return "blog_empty" },
+
+  /** Página {current} de {total} | blog_pagination */
+  get blogPagination(): string { return "blog_pagination" },
+
+  /** Anterior | blog_prev */
+  get blogPrev(): string { return "blog_prev" },
+
+  /** Siguiente | blog_next */
+  get blogNext(): string { return "blog_next" },
+
+  /** Resuelve tus dudas sobre transferencias, tiempos, monedas y condiciones con una guía clara y directa. | faq_intro */
+  get faqIntro(): string { return "faq_intro" },
+
+  /** Ayuda Brasper | faq_help_label */
+  get faqHelpLabel(): string { return "faq_help_label" },
+
+  /** Encuentra respuestas rápidas y revisa nuestras condiciones antes de operar. | faq_help_text */
+  get faqHelpText(): string { return "faq_help_text" },
+
+  /** Información clave sobre el servicio Brasper. | faq_key_info */
+  get faqKeyInfo(): string { return "faq_key_info" },
+
+  /** Consulta el documento oficial con políticas, condiciones operativas y detalles importantes del servicio. | faq_terms_doc_text */
+  get faqTermsDocText(): string { return "faq_terms_doc_text" },
+
+  /** Sin fecha | blog_no_date */
+  get blogNoDate(): string { return "blog_no_date" },
+
+  /** Brasper | blog_author_brasper */
+  get blogAuthorBrasper(): string { return "blog_author_brasper" },
+
+  /** No hay más artículos para mostrar. | blog_no_recommended */
+  get blogNoRecommended(): string { return "blog_no_recommended" },
+
+  /** Brasper {'|'} Transferencias internacionales entre Brasil, Perú y EE. UU. | seo_home_title */
+  get seoHomeTitle(): string { return "seo_home_title" },
+
+  /** Cotiza y coordina transferencias internacionales con Brasper. Atención rápida, calculadora en línea y soporte en español, inglés y portugués. | seo_home_description */
+  get seoHomeDescription(): string { return "seo_home_description" },
+
+  /** Preguntas frecuentes {'|'} Brasper | seo_faq_title */
+  get seoFaqTitle(): string { return "seo_faq_title" },
+
+  /** Resuelve tus dudas sobre tasas, horarios, envíos, validaciones y soporte de Brasper desde una sola página. | seo_faq_description */
+  get seoFaqDescription(): string { return "seo_faq_description" },
+
+  /** Iniciar sesión {'|'} Brasper | seo_login_title */
+  get seoLoginTitle(): string { return "seo_login_title" },
+
+  /** Accede a tu cuenta Brasper para gestionar tus transferencias entre Brasil, Perú y Estados Unidos. | seo_login_description */
+  get seoLoginDescription(): string { return "seo_login_description" },
+
+  /** Crear cuenta {'|'} Brasper | seo_register_title */
+  get seoRegisterTitle(): string { return "seo_register_title" },
+
+  /** Crea tu cuenta Brasper y empieza a enviar dinero entre Brasil, Perú y Estados Unidos. | seo_register_description */
+  get seoRegisterDescription(): string { return "seo_register_description" },
+
+  /** Últimos artículos | blog_latest_heading */
+  get blogLatestHeading(): string { return "blog_latest_heading" },
+
+  /** Blog de Brasper {'|'} Noticias y guías de transferencias | seo_blog_title */
+  get seoBlogTitle(): string { return "seo_blog_title" },
+
+  /** Artículos y guías sobre remesas, cambio de divisas y consejos para operar con Brasper. | seo_blog_description */
+  get seoBlogDescription(): string { return "seo_blog_description" },
+
+  /** Artículo del blog {'|'} Brasper | seo_blog_detail_title */
+  get seoBlogDetailTitle(): string { return "seo_blog_detail_title" },
+
+  /** Lee los contenidos de Brasper sobre transferencias internacionales, tasas y recomendaciones operativas. | seo_blog_detail_description */
+  get seoBlogDetailDescription(): string { return "seo_blog_detail_description" },
+
+  /** EN VIVO | worldcup_live */
+  get worldcupLive(): string { return "worldcup_live" },
+
+  /** Próximo partido | worldcup_next_match */
+  get worldcupNextMatch(): string { return "worldcup_next_match" },
+
+  /** vs | worldcup_vs */
+  get worldcupVs(): string { return "worldcup_vs" },
+
+  /** ¡Sin comisión! | worldcup_no_commission */
+  get worldcupNoCommission(): string { return "worldcup_no_commission" },
+
+  /** Comisión -{percent}% | worldcup_commission_off */
+  get worldcupCommissionOff(): string { return "worldcup_commission_off" },
+
+  /** Termina en | worldcup_ends_in */
+  get worldcupEndsIn(): string { return "worldcup_ends_in" },
+
+  /** Empieza | worldcup_starts_at */
+  get worldcupStartsAt(): string { return "worldcup_starts_at" },
+
+  /** Calcular mi envío | worldcup_cta */
+  get worldcupCta(): string { return "worldcup_cta" }
 
 } as const
 
