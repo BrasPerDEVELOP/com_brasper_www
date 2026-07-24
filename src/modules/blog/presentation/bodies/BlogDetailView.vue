@@ -252,7 +252,7 @@ useSeo(
   }))
 )
 
-const siteOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://brasper.com'
+const siteOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://brasper.online'
 
 // BlogPosting: solo datos verificables del artículo. Autor/editor = Brasper.
 const blogJsonLd = computed(() => {
@@ -261,7 +261,7 @@ const blogJsonLd = computed(() => {
   const published = activeBlog.date || activeBlog.created_at || undefined
   // El @id coincide con el nodo Organization estático de index.html para que Google
   // fusione ambos bloques en la misma entidad.
-  const ORG_ID = 'https://brasper.com/#organization'
+  const ORG_ID = 'https://brasper.online/#organization'
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',

@@ -1,7 +1,7 @@
 /**
  * Prerender de las rutas públicas (post-build).
  *
- * La app es una SPA: sin esto, /es, /pr y /en entregan el mismo index.html genérico
+ * La app es una SPA: sin esto, /es, /br y /en entregan el mismo index.html genérico
  * (lang="pt-BR", <title>Brasper</title>, sin canonical/hreflang) a cualquier crawler o
  * scraper que no ejecute JS. Este script genera, a partir de dist/index.html, un HTML por
  * idioma y ruta con el <head> correcto (lang, title, description, canonical, hreflang, OG)
@@ -19,14 +19,14 @@ import { dirname, resolve } from 'node:path'
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = resolve(ROOT, 'dist')
 // Dominio canónico. Configurable por si el dominio de producción cambia
-// (p. ej. build para brasper.online). Por defecto brasper.com.
-const SITE = (process.env.SITE_URL ?? 'https://brasper.com').replace(/\/+$/, '')
+// Dominio de producción, configurable para otros entornos.
+const SITE = (process.env.SITE_URL ?? 'https://brasper.online').replace(/\/+$/, '')
 
-const LOCALES = ['pr', 'es', 'en'] as const
+const LOCALES = ['br', 'es', 'en'] as const
 type Loc = (typeof LOCALES)[number]
-const LANG_TAG: Record<Loc, string> = { pr: 'pt-BR', es: 'es-PE', en: 'en-US' }
-const OG_LOCALE: Record<Loc, string> = { pr: 'pt_BR', es: 'es_PE', en: 'en_US' }
-const APP_LOCALE: Record<Loc, string> = { pr: 'pt', es: 'es', en: 'en' }
+const LANG_TAG: Record<Loc, string> = { br: 'pt-BR', es: 'es-PE', en: 'en-US' }
+const OG_LOCALE: Record<Loc, string> = { br: 'pt_BR', es: 'es_PE', en: 'en_US' }
+const APP_LOCALE: Record<Loc, string> = { br: 'pt', es: 'es', en: 'en' }
 
 function esc(s: string): string {
   return s
@@ -113,13 +113,13 @@ interface RouteDef {
 const ROUTES: RouteDef[] = [
   {
     suffix: '',
-    // {idioma}/index.html (no {idioma}.html): así /pr, /es, /en se resuelven por
+    // {idioma}/index.html (no {idioma}.html): así /br, /es, /en se resuelven por
     // DirectoryIndex y no colisiona un archivo con la carpeta del mismo nombre (causa del 403).
     outFile: (loc) => `${loc}/index.html`,
     titleKey: 'seo_home_title',
     descKey: 'seo_home_description',
     content: homeContent,
-    ogImage: (loc) => `${SITE}/assets/images/banner/${loc}-1152.webp`
+    ogImage: (loc) => `${SITE}/assets/images/banner/${loc === 'br' ? 'pr' : loc}-1152.webp`
   },
   {
     suffix: '/faq',
@@ -144,7 +144,7 @@ function hreflangLinks(suffix: string): string {
   const links = LOCALES.map(
     (l) => `<link rel="alternate" hreflang="${LANG_TAG[l]}" href="${SITE}/${l}${suffix}">`
   )
-  links.push(`<link rel="alternate" hreflang="x-default" href="${SITE}/pr${suffix}">`)
+  links.push(`<link rel="alternate" hreflang="x-default" href="${SITE}/br${suffix}">`)
   return links.join('\n    ')
 }
 

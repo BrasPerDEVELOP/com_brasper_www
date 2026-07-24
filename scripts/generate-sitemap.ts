@@ -6,7 +6,7 @@
  *   npx tsx scripts/generate-sitemap.ts
  *
  * Variables de entorno opcionales:
- *   SITE_URL            Base del sitio (por defecto https://brasper.com)
+ *   SITE_URL            Base del sitio (por defecto https://brasper.online)
  *   SITEMAP_API_BASE    Base de la API del blog (por defecto https://apibras.finzeler.com)
  *   SITEMAP_SKIP_API    Si es "1", no intenta traer artículos.
  *
@@ -18,13 +18,13 @@ import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 
-const SITE_URL = (process.env.SITE_URL ?? 'https://brasper.com').replace(/\/+$/, '')
+const SITE_URL = (process.env.SITE_URL ?? 'https://brasper.online').replace(/\/+$/, '')
 const API_BASE = (process.env.SITEMAP_API_BASE ?? 'https://apibras.finzeler.com').replace(/\/+$/, '')
 const SKIP_API = process.env.SITEMAP_SKIP_API === '1'
 
-const LOCALES = ['pr', 'es', 'en'] as const
-const HREFLANG: Record<(typeof LOCALES)[number], string> = { pr: 'pt-BR', es: 'es-PE', en: 'en-US' }
-const X_DEFAULT: (typeof LOCALES)[number] = 'pr'
+const LOCALES = ['br', 'es', 'en'] as const
+const HREFLANG: Record<(typeof LOCALES)[number], string> = { br: 'pt-BR', es: 'es-PE', en: 'en-US' }
+const X_DEFAULT: (typeof LOCALES)[number] = 'br'
 const STATIC_SUFFIXES = ['', '/blog', '/faq']
 
 const TODAY = new Date().toISOString().slice(0, 10)

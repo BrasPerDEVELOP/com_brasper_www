@@ -8,12 +8,14 @@
 
     <div class="relative z-10 mx-auto flex max-w-7xl flex-col gap-4 px-4 pt-4 sm:px-6 sm:pt-5 md:flex-row md:items-start md:gap-6 md:pt-12 lg:gap-12 lg:px-12 lg:pt-20">
       <div class="min-w-0 w-full flex-1 text-center md:text-left">
-        <h1 class="mx-auto max-w-[22rem] px-1 text-[1.35rem] font-bold leading-[1.16] tracking-tight sm:max-w-xl sm:text-2xl md:mx-0 md:max-w-none md:px-0 md:text-2xl lg:text-3xl xl:text-[2.35rem]">
-          <span>{{ t('hero_title_prefix') }}</span><span aria-hidden="true">&nbsp;</span>
-          <span class="text-cyan-300">{{ t('hero_title_peru') }}</span>
-          <span aria-hidden="true">&nbsp;</span><span>{{ t('hero_title_and') }}</span><span aria-hidden="true">&nbsp;</span>
-          <span class="text-emerald-400">{{ t('hero_title_brazil') }}</span>
-          <span class="mt-1 block">{{ t('hero_title_suffix') }}</span>
+        <h1 class="mx-auto max-w-none px-0 text-[1rem] font-extrabold leading-[1.18] tracking-tight !text-white sm:text-[1.35rem] md:mx-0 md:text-[1.3rem] lg:text-[1.7rem] xl:text-[2rem]">
+          <span class="block whitespace-nowrap">
+            <span class="!text-white">{{ t('hero_title_prefix') }}</span><span aria-hidden="true">&nbsp;</span>
+            <span class="text-cyan-300">{{ t('hero_title_peru') }}</span>
+            <span aria-hidden="true">&nbsp;</span><span class="!text-white">{{ t('hero_title_and') }}</span><span aria-hidden="true">&nbsp;</span>
+            <span class="text-emerald-400">{{ t('hero_title_brazil') }}</span>
+          </span>
+          <span class="mt-1 block whitespace-nowrap !text-white">{{ t('hero_title_suffix') }}</span>
         </h1>
 
         <div class="mt-4 flex flex-wrap items-center justify-center gap-4 lg:justify-center">

@@ -1,5 +1,5 @@
-export const ROUTE_LOCALES = ['es', 'en', 'pr'] as const
-export const DEFAULT_ROUTE_LOCALE = 'pr'
+export const ROUTE_LOCALES = ['es', 'en', 'br'] as const
+export const DEFAULT_ROUTE_LOCALE = 'br'
 
 export type RouteLocale = (typeof ROUTE_LOCALES)[number]
 export type AppLocale = 'es' | 'en' | 'pt'
@@ -7,13 +7,13 @@ export type AppLocale = 'es' | 'en' | 'pt'
 const ROUTE_TO_APP_LOCALE: Record<RouteLocale, AppLocale> = {
   es: 'es',
   en: 'en',
-  pr: 'pt'
+  br: 'pt'
 }
 
 const APP_TO_ROUTE_LOCALE: Record<AppLocale, RouteLocale> = {
   es: 'es',
   en: 'en',
-  pt: 'pr'
+  pt: 'br'
 }
 
 export function isRouteLocale(value: unknown): value is RouteLocale {

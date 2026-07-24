@@ -8,14 +8,15 @@ ServerSignature Off
   RewriteBase /
 
   # 1) Prerender: portada por idioma y raíz.
-  #    VA ANTES de la regla de carpetas existentes: la carpeta /pr (y /es, /en) existe
+  #    VA ANTES de la regla de carpetas existentes: la carpeta /br (y /es, /en) existe
   #    por los sub-HTML (blog.html, faq.html) y no tiene índice propio, así que la regla
   #    de carpetas la trataría como directorio sin index -> 403. Reescribiendo primero a
   #    {idioma}/index.html se evita ese 403.
-  RewriteRule ^$ pr/index.html [L]
-  RewriteRule ^(es|en|pr)/?$ $1/index.html [L]
-  RewriteRule ^(es|en|pr)/faq/?$ $1/faq.html [L]
-  RewriteRule ^(es|en|pr)/blog/?$ $1/blog.html [L]
+  RewriteRule ^pr(?:/(.*))?$ /br/$1 [R=301,L]
+  RewriteRule ^$ br/index.html [L]
+  RewriteRule ^(es|en|br)/?$ $1/index.html [L]
+  RewriteRule ^(es|en|br)/faq/?$ $1/faq.html [L]
+  RewriteRule ^(es|en|br)/blog/?$ $1/blog.html [L]
 
   # 2) Archivos/carpetas existentes se sirven directamente (assets, HTML prerenderizado).
   RewriteCond %{REQUEST_FILENAME} -f [OR]
@@ -25,8 +26,8 @@ ServerSignature Off
   # 3) Rutas SPA válidas con contenido dinámico -> index.html (200):
   #    blog (redirección), detalle de artículo, login/registro y dashboard.
   RewriteRule ^blog(/.*)?$ index.html [L]
-  RewriteRule ^(es|en|pr)/blog/[^/]+/?$ index.html [L]
-  RewriteRule ^(es|en|pr)/(auth|register)/?$ index.html [L]
+  RewriteRule ^(es|en|br)/blog/[^/]+/?$ index.html [L]
+  RewriteRule ^(es|en|br)/(auth|register)/?$ index.html [L]
   RewriteRule ^dashboard(/.*)?$ index.html [L]
 
   # 4) Cualquier otra ruta no reconocida -> 404 real (elimina el soft 404).

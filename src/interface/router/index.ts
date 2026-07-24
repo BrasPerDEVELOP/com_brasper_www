@@ -30,37 +30,41 @@ const routes: RouteRecordRaw[] = [
     })
   },
   {
-    path: '/:locale(es|en|pr)',
+    path: '/pr/:pathMatch(.*)*',
+    redirect: (to) => to.fullPath.replace(/^\/pr(?=\/|\?|#|$)/, '/br')
+  },
+  {
+    path: '/:locale(es|en|br)',
     name: 'homepage',
     component: () => import('@/modules/home/presentation/bodies/HomepageView.vue'),
     meta: { public: true, localized: true }
   },
   {
-    path: '/:locale(es|en|pr)/blog',
+    path: '/:locale(es|en|br)/blog',
     name: 'blog-list',
     component: () => import('@/modules/blog/presentation/bodies/BlogListView.vue'),
     meta: { public: true, localized: true }
   },
   {
-    path: '/:locale(es|en|pr)/blog/:slug',
+    path: '/:locale(es|en|br)/blog/:slug',
     name: 'blog-detail',
     component: () => import('@/modules/blog/presentation/bodies/BlogDetailView.vue'),
     meta: { public: true, localized: true }
   },
   {
-    path: '/:locale(es|en|pr)/faq',
+    path: '/:locale(es|en|br)/faq',
     name: 'faq',
     component: () => import('@/modules/home/presentation/bodies/FaqView.vue'),
     meta: { public: true, localized: true }
   },
   {
-    path: '/:locale(es|en|pr)/auth',
+    path: '/:locale(es|en|br)/auth',
     name: 'auth',
     component: () => import('@/modules/auth/presentation/bodies/LoginView.vue'),
     meta: { public: true, localized: true, robots: 'noindex,follow' }
   },
   {
-    path: '/:locale(es|en|pr)/register',
+    path: '/:locale(es|en|br)/register',
     name: 'register',
     component: () => import('@/modules/user/presentation/bodies/RegisterView.vue'),
     meta: { public: true, localized: true, robots: 'noindex,follow' }
@@ -138,7 +142,7 @@ const routes: RouteRecordRaw[] = [
   },
   // 404 con idioma en la URL (p. ej. /es/no-existe): mantiene el idioma correcto.
   {
-    path: '/:locale(es|en|pr)/:pathMatch(.*)*',
+    path: '/:locale(es|en|br)/:pathMatch(.*)*',
     name: 'not-found-localized',
     component: () => import('@/interface/presentation/bodies/NotFoundView.vue'),
     meta: { public: true }
@@ -173,7 +177,7 @@ const router = createRouter({
 const TOKEN_KEY = 'token'
 
 function isPublicLandingPath(path: string): boolean {
-  return path === '/' || /^\/(es|en|pr)\/?$/.test(path)
+  return path === '/' || /^\/(es|en|br)\/?$/.test(path)
 }
 
 // Guard: rutas públicas (/, /auth, /register) libres; todo lo bajo /dashboard requiere auth.

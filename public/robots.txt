@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://brasper.com/sitemap.xml
+Sitemap: https://brasper.online/sitemap.xml
