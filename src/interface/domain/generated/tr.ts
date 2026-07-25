@@ -226,6 +226,21 @@ export const TR = {
   /** por WhatsApp, seguro y en minutos | hero_title_suffix */
   get heroTitleSuffix(): string { return "hero_title_suffix" },
 
+  /** En minutos | hero_chip_minutes */
+  get heroChipMinutes(): string { return "hero_chip_minutes" },
+
+  /** 100% seguro | hero_chip_secure */
+  get heroChipSecure(): string { return "hero_chip_secure" },
+
+  /** Por WhatsApp | hero_chip_whatsapp */
+  get heroChipWhatsapp(): string { return "hero_chip_whatsapp" },
+
+  /** +50 mil | hero_trust_volume_title */
+  get heroTrustVolumeTitle(): string { return "hero_trust_volume_title" },
+
+  /** envíos realizados | hero_trust_volume_subtitle */
+  get heroTrustVolumeSubtitle(): string { return "hero_trust_volume_subtitle" },
+
   /** Transacciones | hero_trust_secure_title */
   get heroTrustSecureTitle(): string { return "hero_trust_secure_title" },
 
@@ -252,6 +267,15 @@ export const TR = {
 
   /** Nuestro equipo te acompaña en cada paso. | hero_support_message */
   get heroSupportMessage(): string { return "hero_support_message" },
+
+  /** Nuestro equipo | hero_support_prefix */
+  get heroSupportPrefix(): string { return "hero_support_prefix" },
+
+  /** te acompaña | hero_support_highlight */
+  get heroSupportHighlight(): string { return "hero_support_highlight" },
+
+  /** en cada paso. | hero_support_suffix */
+  get heroSupportSuffix(): string { return "hero_support_suffix" },
 
   /** Confianza | hero_trust_tagline_highlight */
   get heroTrustTaglineHighlight(): string { return "hero_trust_tagline_highlight" },
