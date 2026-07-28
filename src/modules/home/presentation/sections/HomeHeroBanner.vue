@@ -8,14 +8,14 @@
 
     <div class="relative z-10 mx-auto flex max-w-7xl flex-col gap-4 px-4 pt-4 sm:px-6 sm:pt-5 md:flex-row md:items-start md:gap-6 md:pt-12 lg:gap-12 lg:px-12 lg:pt-20">
       <div class="min-w-0 w-full flex-1 text-center md:text-left">
-        <h1 class="mx-auto max-w-[20ch] px-0 text-balance text-[1.6rem] font-extrabold leading-[1.14] tracking-tight !text-white sm:max-w-[22ch] sm:text-[2rem] md:mx-0 md:max-w-none md:text-[1.7rem] lg:text-[2.2rem] xl:text-[2.75rem]">
-          <span class="block">
+        <h1 class="mx-auto max-w-none px-0 text-[0.875rem] font-extrabold leading-[1.18] tracking-[-0.02em] !text-white sm:text-[1.1rem] md:mx-0 md:text-[1.2rem] lg:text-[1.5rem] xl:text-[1.8rem]">
+          <span class="block whitespace-nowrap">
             <span class="!text-white">{{ t('hero_title_prefix') }}</span><span aria-hidden="true">&nbsp;</span>
             <span class="text-cyan-300">{{ t('hero_title_peru') }}</span>
             <span aria-hidden="true">&nbsp;</span><span class="!text-white">{{ t('hero_title_and') }}</span><span aria-hidden="true">&nbsp;</span>
             <span class="text-emerald-400">{{ t('hero_title_brazil') }}</span>
           </span>
-          <span class="mt-1 block !text-white">{{ t('hero_title_suffix') }}</span>
+          <span class="mt-1 block whitespace-nowrap !text-white">{{ t('hero_title_suffix') }}</span>
         </h1>
 
         <ul class="mt-5 grid grid-cols-3 items-start gap-2 md:mt-6 md:flex md:flex-wrap md:items-center md:justify-start md:gap-x-7 md:gap-y-3">
