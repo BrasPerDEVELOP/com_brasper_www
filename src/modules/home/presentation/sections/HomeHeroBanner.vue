@@ -62,7 +62,7 @@
       </div>
 
       <div class="mx-auto w-full max-w-md md:max-w-none sm:w-lg">
-        <div class="relative w-full min-w-0">
+        <div id="calculadora" class="relative w-full min-w-0 scroll-mt-24">
           <CalculatorView
             variant="banner"
             title-tag="h2"
