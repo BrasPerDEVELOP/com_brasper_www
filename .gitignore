@@ -30,3 +30,8 @@ ads.txt
 *.njsproj
 *.sln
 *.sw?
+
+# Generado por `npm run sitemap:generate`, que corre en prebuild y escribe la
+# fecha del día en <lastmod>. Versionarlo ensuciaba el árbol en cada despliegue
+# y bloqueaba `git pull --rebase` en el servidor.
+public/sitemap.xml

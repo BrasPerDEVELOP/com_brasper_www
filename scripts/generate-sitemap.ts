@@ -59,7 +59,10 @@ async function fetchArticles(): Promise<{ suffix: string; lastmod: string }[]> {
   }
 
   const out: { suffix: string; lastmod: string }[] = []
-  let url: string | null = `${API_BASE}/blog/?page_size=100`
+  // Forma canónica sin barra final: con `/` la API responde 307 y, tras retirar
+  // los alias legacy, dejaría de responder. El fallo es silencioso (el sitemap
+  // se genera sin artículos), así que no se notaría hasta perder el indexado.
+  let url: string | null = `${API_BASE}/blog?page_size=100`
 
   try {
     while (url) {
@@ -84,7 +87,7 @@ async function fetchArticles(): Promise<{ suffix: string; lastmod: string }[]> {
     }
   } catch (error) {
     console.warn(
-      `[sitemap] No se pudieron obtener artículos desde ${API_BASE}/blog/ (${(error as Error).message}). ` +
+      `[sitemap] No se pudieron obtener artículos desde ${API_BASE}/blog (${(error as Error).message}). ` +
         'Se genera el sitemap solo con páginas estáticas.'
     )
     return []
