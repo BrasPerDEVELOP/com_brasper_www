@@ -76,10 +76,10 @@ export const TR = {
   /** Monto, moneda origen/destino (PEN, USD, BRL), tasa y comisión. | calculator_description */
   get calculatorDescription(): string { return "calculator_description" },
 
-  /** TÚ ENVÍAS | you_send */
+  /** Tú envías | you_send */
   get youSend(): string { return "you_send" },
 
-  /** DESTINATARIO RECIBE | recipient_receives */
+  /** Destinatario recibe | recipient_receives */
   get recipientReceives(): string { return "recipient_receives" },
 
   /** Comisión | commission_fee */

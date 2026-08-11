@@ -21,7 +21,7 @@
     <div :class="variant === 'banner' ? 'space-y-3 sm:space-y-4' : 'mt-4 space-y-4'">
       <!-- YOU SEND Section -->
       <div class="overflow-visible rounded-xl border border-slate-200 px-3 py-2.5 shadow-sm sm:border-slate-300 sm:py-2 sm:shadow-lg">
-        <label class="block text-xs font-semibold uppercase pl-2 tracking-wide text-slate-500">
+        <label class="block text-sm font-bold pl-2 text-slate-600">
           {{ t('you_send') }}
         </label>
         <div class="flex items-center gap-2">
@@ -60,7 +60,7 @@
 
       <!-- RECIPIENT RECEIVES Section -->
       <div class="overflow-visible rounded-xl border border-slate-200 px-3 py-2.5 shadow-sm sm:border-slate-300 sm:py-2 sm:shadow-lg">
-        <label class="block text-xs font-semibold uppercase pl-2 tracking-wide text-slate-500">
+        <label class="block text-sm font-bold pl-2 text-slate-600">
           {{ t('recipient_receives') }}
         </label>
       <div class="flex items-center gap-2">
