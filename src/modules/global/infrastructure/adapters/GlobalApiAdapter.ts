@@ -36,11 +36,11 @@ function parseDocumentType(item: unknown): DocumentType | null {
 
 export class GlobalApiAdapter implements GlobalRepository {
   private coinBase() {
-    return Domain.http('coin')
+    return Domain.apiPath('coin')
   }
 
   private globalBase() {
-    return Domain.http('global')
+    return Domain.apiPath('global')
   }
 
   async getCurrencies(): Promise<Currency[]> {
@@ -52,7 +52,7 @@ export class GlobalApiAdapter implements GlobalRepository {
   }
 
   async getDocumentTypes(): Promise<DocumentType[]> {
-    const url = `${this.globalBase()}/document-types/`
+    const url = `${this.globalBase()}/document-types`
     const response = await apiClient.get<unknown>(url).catch(() => ({ data: [] }))
     const data = response.data
     if (!Array.isArray(data)) return []

@@ -21,14 +21,14 @@ export class Adapter<T> {
     _getToken?: GetTokenFn,
     onError?: OnErrorNotifyFn
   ) {
-    this.path = path.endsWith('/') ? path : `${path}/`
+    this.path = path.replace(/^\/+/, '').replace(/\/+$/, '')
     this.tryParse = tryParse
     this.onError = onError
   }
 
   /** URL base para este path (Domain construye con SSL + DOMAIN + COMPANY) */
   get url(): string {
-    return Domain.http(this.path)
+    return Domain.apiPath(this.path)
   }
 
   private handleError(error: unknown): void {
@@ -39,7 +39,7 @@ export class Adapter<T> {
 
   async get(id: string): Promise<T | null> {
     try {
-      const response: AxiosResponse<unknown> = await apiClient.get(`${this.url}${id}/`)
+      const response: AxiosResponse<unknown> = await apiClient.get(`${this.url}/${encodeURIComponent(id)}`)
       return this.makeDTO(response.data)
     } catch (error) {
       this.handleError(error)
@@ -59,7 +59,7 @@ export class Adapter<T> {
 
   async put(id: string, body: unknown): Promise<T | null> {
     try {
-      const response: AxiosResponse<unknown> = await apiClient.put(`${this.url}${id}/`, body)
+      const response: AxiosResponse<unknown> = await apiClient.put(`${this.url}/${encodeURIComponent(id)}`, body)
       return this.makeDTO(response.data)
     } catch (error) {
       this.handleError(error)
@@ -69,7 +69,7 @@ export class Adapter<T> {
 
   async delete(id: string): Promise<boolean> {
     try {
-      await apiClient.delete(`${this.url}${id}/`)
+      await apiClient.delete(`${this.url}/${encodeURIComponent(id)}`)
       return true
     } catch (error) {
       this.handleError(error)

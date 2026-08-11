@@ -90,73 +90,18 @@ useSeo({
 const username = ref(env.username)
 const password = ref(env.password)
 
-function toBase64Url(bytes: Uint8Array): string {
-  let binary = ''
-  for (let i = 0; i < bytes.length; i += 1) {
-    binary += String.fromCharCode(bytes[i])
-  }
-  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '')
-}
-
-async function deriveAesKey(secret: string, salt: Uint8Array): Promise<CryptoKey> {
-  const material = await crypto.subtle.importKey(
-    'raw',
-    new TextEncoder().encode(secret),
-    'PBKDF2',
-    false,
-    ['deriveKey']
-  )
-
-  return crypto.subtle.deriveKey(
-    {
-      name: 'PBKDF2',
-      salt,
-      iterations: 120000,
-      hash: 'SHA-256'
-    },
-    material,
-    {
-      name: 'AES-GCM',
-      length: 256
-    },
-    false,
-    ['encrypt']
-  )
-}
-
-async function encryptAdminPayload(payload: object, secret: string) {
-  const iv = crypto.getRandomValues(new Uint8Array(12))
-  const salt = crypto.getRandomValues(new Uint8Array(16))
-  const key = await deriveAesKey(secret, salt)
-  const plain = new TextEncoder().encode(JSON.stringify(payload))
-  const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, plain)
-  return {
-    data: toBase64Url(new Uint8Array(encrypted)),
-    iv: toBase64Url(iv),
-    salt: toBase64Url(salt)
-  }
-}
-
-async function redirectAdminToExternal() {
-  const token = authStore.token ?? localStorage.getItem('token')
-  if (!authStore.user || !token) return false
-
+function redirectAdminToExternal() {
   const targetUrl = env.adminRedirectUrl.trim()
-  const secret = env.adminRedirectSecret.trim()
-  if (!targetUrl || !secret) return false
+  if (!targetUrl) return false
 
-  const payload = {
-    token,
-    user: authStore.user,
-    issuedAt: Date.now()
+  // Nunca transferir JWT ni datos de sesión por URL. El backoffice restaura su
+  // propia sesión mediante la cookie HttpOnly o solicita un nuevo inicio de sesión.
+  const parsed = new URL(targetUrl)
+  const local = parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1'
+  if (parsed.protocol !== 'https:' && !(import.meta.env.DEV && local)) {
+    throw new Error('La URL del backoffice debe usar HTTPS')
   }
-  const encrypted = await encryptAdminPayload(payload, secret)
-  const url = new URL(targetUrl)
-  url.searchParams.set('data', encrypted.data)
-  url.searchParams.set('iv', encrypted.iv)
-  url.searchParams.set('salt', encrypted.salt)
-  url.searchParams.set('v', '1')
-  window.location.assign(url.toString())
+  window.location.assign(parsed.toString())
   return true
 }
 
@@ -172,12 +117,16 @@ const handleLogin = async () => {
 
     const isAdmin = normalizedRole === 'admin'
     if (isAdmin) {
-      const redirected = await redirectAdminToExternal().catch((err) => {
-        console.error('Admin redirect failed:', err)
-        return false
-      })
+      const redirected = (() => {
+        try {
+          return redirectAdminToExternal()
+        } catch (err) {
+          console.error('Admin redirect failed:', err)
+          return false
+        }
+      })()
       if (!redirected && env.adminRedirectUrl.trim()) {
-        authStore.error = 'No se pudo redirigir al panel admin externo. Revisa URL/secreto y HTTPS.'
+        authStore.error = 'No se pudo redirigir al panel admin externo. Revisa la URL y HTTPS.'
         return
       }
       if (redirected) return

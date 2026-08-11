@@ -73,11 +73,11 @@ function parseTransactionReadDTO(item: unknown): TransactionReadDTO | null {
 
 export class TransferApiAdapter implements TransferRepository {
   private base() {
-    return Domain.http('transactions')
+    return Domain.apiPath('transactions')
   }
 
   async getBanks(): Promise<Bank[]> {
-    const url = `${this.base()}/banks/`
+    const url = `${this.base()}/banks`
     const response = await apiClient.get<unknown>(url).catch(() => ({ data: [] }))
     const data = response.data
     if (!Array.isArray(data)) return []
@@ -97,7 +97,7 @@ export class TransferApiAdapter implements TransferRepository {
   }
 
   async getBankAccounts(): Promise<BankAccount[]> {
-    const url = `${this.base()}/bank-accounts/`
+    const url = `${this.base()}/bank-accounts`
     const response = await apiClient.get<unknown>(url).catch(() => ({ data: [] }))
     const data = response.data
     if (!Array.isArray(data)) return []
@@ -111,7 +111,7 @@ export class TransferApiAdapter implements TransferRepository {
   }
 
   async createTransaction(cmd: TransactionCreateCmd): Promise<TransactionReadDTO> {
-    const url = `${this.base()}/`
+    const url = this.base()
     const response = await apiClient.post<unknown>(url, cmd)
     const parsed = parseTransactionReadDTO(response.data)
     if (!parsed) throw new Error('Respuesta de creación de transacción inválida')

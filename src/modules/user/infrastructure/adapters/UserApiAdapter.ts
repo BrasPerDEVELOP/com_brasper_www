@@ -23,7 +23,7 @@ function parseUserReadDTO(data: unknown): UserReadDTO | null {
 
 export class UserApiAdapter implements UserRepository {
   private base() {
-    return Domain.http('/user')
+    return Domain.apiPath('user')
   }
 
   async register(cmd: UserCreateCmd): Promise<UserReadDTO> {
@@ -39,10 +39,8 @@ export class UserApiAdapter implements UserRepository {
     if (cmd.phone != null) form.append('phone', String(cmd.phone))
     if (cmd.code_phone != null) form.append('code_phone', cmd.code_phone)
 
-    const url = `${this.base()}/`
-    const response = await apiClient.post<unknown>(url, form, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    })
+    const url = this.base()
+    const response = await apiClient.post<unknown>(url, form)
     const dto = parseUserReadDTO(response.data)
     if (!dto) throw new Error('Respuesta de registro inválida')
     return dto

@@ -31,7 +31,7 @@ function parseCommissions(data: unknown): Commission[] {
 
 export class ComisionesApiAdapter implements ComisionesRepository {
   private base(): string {
-    return Domain.http('coin')
+    return Domain.apiPath('coin')
   }
 
   async getCommissions(): Promise<Commission[]> {

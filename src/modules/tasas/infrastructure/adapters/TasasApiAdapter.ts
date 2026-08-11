@@ -25,7 +25,7 @@ function parseTaxRates(data: unknown): TaxRate[] {
 
 export class TasasApiAdapter implements TasasRepository {
   private base(): string {
-    return Domain.http('coin')
+    return Domain.apiPath('coin')
   }
 
   async getTaxRates(): Promise<TaxRate[]> {
@@ -39,9 +39,9 @@ export class TasasApiAdapter implements TasasRepository {
     id: string,
     payload: { coin_a: string; coin_b: string; tax: string }
   ): Promise<TaxRate> {
-    const url = `${this.base()}/tax-rate/${id}`
+    const url = `${this.base()}/tax-rate`
     try {
-      const response = await apiClient.patch<unknown>(url, payload)
+      const response = await apiClient.put<unknown>(url, { id, ...payload })
       return parseTaxRate(
         response.data != null && typeof response.data === 'object'
           ? (response.data as Record<string, unknown>)

@@ -5,8 +5,12 @@ import router from './interface/router'
 import { i18n } from './interface/presentation/i18n'
 import { setAuthCallbacks } from './interface/api/client'
 import { useAuthStore } from './modules/auth/presentation/controllers/useAuthStore'
+import { purgeLegacySession } from './modules/auth/infrastructure/purgeLegacySession'
 import { appLocaleToRouteLocale } from './interface/presentation/i18n/locales'
 import './interface/styles/main.css'
+
+// Antes de montar: retira el token y el perfil que dejaron versiones previas.
+purgeLegacySession()
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -16,9 +20,10 @@ app.use(router)
 app.use(i18n)
 
 setAuthCallbacks(
-  () => useAuthStore().token ?? (typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null),
+  () => useAuthStore().token,
+  (token) => useAuthStore().setAccessToken(token),
   () => {
-    void useAuthStore().logout()
+    useAuthStore().clearSession()
 
     // Solo redirigir al login desde el dashboard; en la landing u otras rutas públicas no.
     if (typeof window === 'undefined' || !window.location.pathname.startsWith('/dashboard')) return

@@ -27,7 +27,7 @@ export class ProjectsApiAdapter implements ProjectsRepository {
   private readonly projectAdapter: Adapter<Project>
 
   constructor() {
-    this.projectAdapter = new Adapter<Project>('/project/', parseProject)
+    this.projectAdapter = new Adapter<Project>('project', parseProject)
   }
 
   async getProjects(): Promise<Project[]> {

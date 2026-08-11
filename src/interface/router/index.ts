@@ -174,8 +174,6 @@ const router = createRouter({
   }
 })
 
-const TOKEN_KEY = 'token'
-
 function isPublicLandingPath(path: string): boolean {
   return path === '/' || /^\/(es|en|br)\/?$/.test(path)
 }
@@ -227,28 +225,23 @@ router.beforeEach(async (to, _from, next) => {
     return
   }
 
-  const token = localStorage.getItem(TOKEN_KEY)
-  if (!token) {
-    next({
-      name: 'auth',
-      params: { locale: appLocaleToRouteLocale(i18n.global.locale.value as 'es' | 'en' | 'pt') },
-      query: { redirect: to.fullPath }
-    })
-    return
-  }
-
   try {
     const { useAuthStore } = await import('@/modules/auth/presentation/controllers/useAuthStore')
     const authStore = useAuthStore()
-    if (!authStore.user) {
-      authStore.restoreUser()
+    const authenticated = await authStore.restoreSession()
+    if (authenticated) {
+      next()
+      return
     }
-    await authStore.restoreSession()
   } catch {
-    // Si Pinia no está listo, seguir
+    // La ruta privada nunca continúa si no se pudo restaurar una sesión válida.
   }
 
-  next()
+  next({
+    name: 'auth',
+    params: { locale: appLocaleToRouteLocale(i18n.global.locale.value as 'es' | 'en' | 'pt') },
+    query: { redirect: to.fullPath }
+  })
 })
 
 export default router

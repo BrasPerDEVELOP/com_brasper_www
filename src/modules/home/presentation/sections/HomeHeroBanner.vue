@@ -117,7 +117,7 @@ import { env } from '@/interface/config/env'
 import { Domain } from '@/interface/infrastructure/services'
 import CalculatorView from '@/modules/calculator/presentation/bodies/CalculatorView.vue'
 
-const HOME_BANNER_LIST_PATH = '/home-banner/home-image/'
+const HOME_BANNER_LIST_PATH = Domain.apiPath('home-banner/home-image')
 const HOME_BANNER_STORAGE_KEY = 'brasper.homeBanner'
 
 type HomeBannerApiRow = {
@@ -214,7 +214,7 @@ function parseHomeBannerRow(item: unknown): HomeBannerApiRow | null {
 }
 
 function homeBannerDetailPath(id: string): string {
-  return `${HOME_BANNER_LIST_PATH}${encodeURIComponent(id.trim())}/`
+  return `${HOME_BANNER_LIST_PATH}/${encodeURIComponent(id.trim())}`
 }
 
 async function fetchHomeBanner(): Promise<void> {

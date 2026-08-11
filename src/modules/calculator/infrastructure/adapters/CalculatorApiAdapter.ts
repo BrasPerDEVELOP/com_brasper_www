@@ -101,11 +101,11 @@ function parseCoupons(data: unknown): Coupon[] {
 
 export class CalculatorApiAdapter implements CalculatorRepository {
   private coinBase() {
-    return Domain.http('coin')
+    return Domain.apiPath('coin')
   }
 
   private transactionsBase() {
-    return Domain.http('transactions')
+    return Domain.apiPath('transactions')
   }
 
   async getCurrencies(): Promise<CurrencyReadDTO[]> {
@@ -127,7 +127,7 @@ export class CalculatorApiAdapter implements CalculatorRepository {
   }
 
   async getAutomaticCoupons(): Promise<Coupon[]> {
-    const url = `${this.transactionsBase()}/coupons/automatic/`
+    const url = `${this.transactionsBase()}/coupons/automatic`
     const response = await apiClient.get<unknown>(url).catch(() => ({ data: [] }))
     return parseCoupons(response.data ?? [])
   }

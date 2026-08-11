@@ -1,8 +1,9 @@
 import { apiClient } from '@/interface/api/client'
+import { Domain } from '@/interface/infrastructure/services'
 import type { BlogListParams, BlogRepository } from './BlogRepository'
 import type { Blog, BlogPage } from '../../domain/models'
 
-const BLOG_API_PATH = '/blog/'
+const BLOG_API_PATH = Domain.apiPath('blog')
 
 function stripHtml(value: string): string {
   return value.replace(/<[^>]*>/g, '').trim()
@@ -86,7 +87,7 @@ export class BlogApiAdapter implements BlogRepository {
   }
 
   async getBlogBySlug(slug: string): Promise<Blog | null> {
-    const response = await apiClient.get<unknown>(`${BLOG_API_PATH}slug/${slug}`)
+    const response = await apiClient.get<unknown>(`${BLOG_API_PATH}/slug/${encodeURIComponent(slug)}`)
     if (response.data == null || typeof response.data !== 'object') return null
     return parseBlog(response.data as Record<string, unknown>)
   }

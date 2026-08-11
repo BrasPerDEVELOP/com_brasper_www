@@ -33,11 +33,11 @@ function parseUser(data: unknown): User | null {
 
 export class AuthApiAdapter implements AuthRepository {
   private base() {
-    return Domain.http('/auth')
+    return Domain.apiPath('auth')
   }
 
   async login(username: string, password: string): Promise<LoginResponse> {
-    const url = `${this.base()}/login/`
+    const url = `${this.base()}/login`
     const response = await apiClient.post<unknown>(url, { username, password }, {
       headers: { 'Content-Type': 'application/json' }
     })
@@ -70,18 +70,21 @@ export class AuthApiAdapter implements AuthRepository {
     if (!user) {
        throw new Error('Respuesta de login inválida')
     }
+    if (!normalizedToken) {
+      throw new Error('No se recibió un access token válido')
+    }
     return { user, token: normalizedToken }
   }
 
   async logout(): Promise<void> {
-    const url = `${this.base()}/logout/`
+    const url = `${this.base()}/logout`
     await apiClient.post(url, {}, { headers: { 'Content-Type': 'application/json' } }).catch((err) => {
       log.warn('Logout request failed', err)
     })
   }
 
   async getCurrentUser(): Promise<User | null> {
-    const url = `${this.base()}/me/`
+    const url = `${this.base()}/me`
     const response = await apiClient.get<unknown>(url).catch(() => ({ data: null }))
     return parseUser(response?.data ?? null)
   }
