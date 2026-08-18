@@ -25,7 +25,6 @@
   "calculator_description": "Monto, moneda origen/destino (PEN, USD, BRL), tasa y comisión.",
   "you_send": "Tú envías",
   "recipient_receives": "Destinatario recibe",
-  "swap_currencies": "Invertir monedas",
   "commission_fee": "Comisión",
   "total_to_send": "Total a Enviar",
   "exchange_rate": "Tasa de Cambio",
