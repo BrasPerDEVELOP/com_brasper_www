@@ -57,6 +57,33 @@
         </div>
       </div>
 
+      <!-- SWAP: invierte el par conservando el monto a enviar -->
+      <div class="relative z-10 -my-2 flex justify-center sm:-my-3">
+        <button
+          type="button"
+          :disabled="!calculatorStore.canSwapCurrencies"
+          :aria-label="t('swap_currencies')"
+          :title="t('swap_currencies')"
+          class="group grid h-10 w-10 place-items-center rounded-full border border-azure-200 bg-white text-azure-600 shadow-md transition hover:text-azure-700 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-azure-600/50 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
+          @click="onSwapCurrencies"
+        >
+          <svg
+            class="h-5 w-5 transition-transform duration-300 group-hover:rotate-180 motion-reduce:transition-none motion-reduce:group-hover:rotate-0"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M7 4v16" />
+            <path d="M4 7l3-3 3 3" />
+            <path d="M17 20V4" />
+            <path d="M20 17l-3 3-3-3" />
+          </svg>
+        </button>
+      </div>
 
       <!-- RECIPIENT RECEIVES Section -->
       <div class="overflow-visible rounded-xl border border-slate-200 px-3 py-2.5 shadow-sm sm:border-slate-300 sm:py-2 sm:shadow-lg">
@@ -618,6 +645,33 @@ function onToChange(e: Event) {
   const value = (e.target as HTMLSelectElement).value as CurrencyCode
   calculatorStore.setCurrencyTo(value)
   recalculateAfterCurrencyChange()
+}
+
+function onSwapCurrencies() {
+  if (!calculatorStore.canSwapCurrencies) return
+
+  // El monto a enviar es el que el usuario escribió y el que se conserva, así
+  // que se fuerza el recálculo desde ese lado sin importar en qué campo estaba.
+  const parsedSend = parseAmountInput(amountSendLocal.value)
+  const amountToKeep = parsedSend !== null && parsedSend > 0
+    ? parsedSend
+    : calculatorStore.amountSend
+
+  calculatorStore.swapCurrencies()
+
+  // Sin foco activo los watchers repintan ambos campos desde el store.
+  activeInput.value = null
+
+  if (amountToKeep > 0) {
+    calculatorStore.setAmountSend(amountToKeep)
+    calculatorStore.recalcFromSend()
+  }
+
+  amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
+  amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
+
+  emit('currencyChange', calculatorStore.currencyFrom, calculatorStore.currencyTo)
+  handleCalculate()
 }
 
 function recalculateAfterCurrencyChange() {

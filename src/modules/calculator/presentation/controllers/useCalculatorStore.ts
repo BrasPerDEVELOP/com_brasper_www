@@ -223,6 +223,19 @@ export const useCalculatorStore = defineStore('calculator', {
       return CURRENCY_OPTIONS[state.currencyFrom] ?? []
     },
 
+    /**
+     * Si el par invertido es ofrecible. Hoy todos los pares son bidireccionales,
+     * pero el botón se apaga solo si mañana se configura un sentido único, en
+     * vez de dejar al usuario en un par sin tasa ni comisiones.
+     */
+    canSwapCurrencies(state): boolean {
+      const reverseOptions = CURRENCY_OPTIONS[state.currencyTo] ?? []
+      if (!reverseOptions.includes(state.currencyFrom)) return false
+
+      const reversePair = getCurrencyPairKey(state.currencyTo, state.currencyFrom)
+      return state.taxRates.some((r) => r.pair === reversePair)
+    },
+
     /** Tasa de cambio del par actual (desde API tax-rate). */
     currentRate(state): number {
       const pair = getCurrencyPairKey(state.currencyFrom, state.currencyTo)
@@ -380,6 +393,27 @@ export const useCalculatorStore = defineStore('calculator', {
 
     setCurrencyTo(code: CurrencyCode) {
       this.currencyTo = code
+      this.skipAutomaticCoupon = false
+      this.updateSelectedIds()
+    },
+
+    /**
+     * Invierte el par de monedas conservando el monto a enviar.
+     *
+     * No invierte la tasa aritméticamente: cada sentido tiene la suya en el API
+     * (BRL→PEN 0.633 frente a PEN→BRL 1.50, que no son recíprocas por el
+     * spread), así que releer el par es lo único correcto. Por eso también se
+     * pasa a `inputMode: 'send'`: el monto enviado es el dato que el usuario
+     * escribió y el que se conserva; lo recibido se recalcula.
+     */
+    swapCurrencies() {
+      if (!this.canSwapCurrencies) return
+
+      const previousFrom = this.currencyFrom
+      this.currencyFrom = this.currencyTo
+      this.currencyTo = previousFrom
+
+      this.inputMode = 'send'
       this.skipAutomaticCoupon = false
       this.updateSelectedIds()
     },
