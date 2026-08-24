@@ -58,29 +58,33 @@
       </div>
 
       <!-- SWAP: invierte el par conservando el monto a enviar -->
-      <div class="relative z-10 -my-2 flex justify-center sm:-my-3">
+      <div class="relative z-10 -my-2 flex -translate-y-2 justify-center sm:-my-3">
         <button
           type="button"
           :disabled="!calculatorStore.canSwapCurrencies"
           :aria-label="t('swap_currencies')"
           :title="t('swap_currencies')"
-          class="group grid h-10 w-10 place-items-center rounded-full border border-azure-200 bg-white text-azure-600 shadow-md transition hover:text-azure-700 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-azure-600/50 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
+          class="group grid h-11 w-11 shrink-0 cursor-pointer touch-manipulation place-items-center rounded-full border-[3px] border-white bg-gradient-to-br from-azure-700 via-azure-600 to-azure-500 text-white shadow-lg shadow-azure-600/30 ring-1 ring-azure-100 transition-[transform,box-shadow,filter] duration-200 ease-out hover:-translate-y-0.5 hover:brightness-105 hover:shadow-xl hover:shadow-azure-600/40 active:translate-y-0 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-azure-600 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-40 disabled:shadow-none disabled:grayscale"
           @click="onSwapCurrencies"
         >
           <svg
-            class="h-5 w-5 transition-transform duration-300 group-hover:rotate-180 motion-reduce:transition-none motion-reduce:group-hover:rotate-0"
+            class="h-[22px] w-[22px]"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
+            stroke-width="2.25"
             stroke-linecap="round"
             stroke-linejoin="round"
             aria-hidden="true"
           >
-            <path d="M7 4v16" />
-            <path d="M4 7l3-3 3 3" />
-            <path d="M17 20V4" />
-            <path d="M20 17l-3 3-3-3" />
+            <g class="origin-center transition-transform duration-200 ease-out group-hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0">
+              <path d="M7.5 19.5V4.5" />
+              <path d="m4.5 7.5 3-3 3 3" />
+            </g>
+            <g class="origin-center transition-transform duration-200 ease-out group-hover:translate-y-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0">
+              <path d="M16.5 4.5v15" />
+              <path d="m13.5 16.5 3 3 3-3" />
+            </g>
           </svg>
         </button>
       </div>
