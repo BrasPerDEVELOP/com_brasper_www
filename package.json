@@ -2,17 +2,18 @@
   "name": "dash-brasperv2",
   "version": "1.0.0",
   "type": "module",
+  "packageManager": "pnpm@10.15.1",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "prebuild": "npm run check:api-paths && npm run sitemap:generate",
-    "postbuild": "npx tsx scripts/prerender.ts",
+    "prebuild": "pnpm run check:api-paths && pnpm run sitemap:generate",
+    "postbuild": "tsx scripts/prerender.ts",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "check:api-paths": "node scripts/check-api-paths.mjs",
-    "i18n:generate": "npx tsx scripts/generate-translations.ts",
-    "sitemap:generate": "npx tsx scripts/generate-sitemap.ts",
-    "banners:generate": "npx tsx scripts/generate-banners.ts"
+    "i18n:generate": "tsx scripts/generate-translations.ts",
+    "sitemap:generate": "tsx scripts/generate-sitemap.ts",
+    "banners:generate": "tsx scripts/generate-banners.ts"
   },
   "dependencies": {
     "@iconify/tools": "^4.2.0",

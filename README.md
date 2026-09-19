@@ -45,22 +45,27 @@ module/
 - **Vite** - Build tool y dev server
 - **Axios** - Cliente HTTP (para futuras integraciones)
 
+## Requisitos
+
+- **Node.js 22+** y **pnpm 10.15+** (`pnpm-lock.yaml`)
+- Si no tienes pnpm: `corepack enable && corepack prepare pnpm@10.15.1 --activate`
+
 ## Instalación
 
 ```bash
-npm install
+pnpm install
 ```
 
 ## Desarrollo
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 ## Build
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 ## Arquitectura
@@ -137,13 +142,13 @@ En cada módulo, el adapter concreto crea un `Adapter<T>(path, tryParse, getToke
    Mismas claves en ambos; valor es el texto en cada idioma.
 
 2. **Generar claves TR**:  
-   ```bash
-   npm run i18n:generate
-   ```  
+```bash
+pnpm run i18n:generate
+```
    Lee `es.json` y genera `src/interface/domain/generated/tr.ts` con una constante `TR` cuyos getters están en camelCase y devuelven la **clave** (no el texto). Ejemplo: `TR.forgotPassword` → `"forgot_password"`.
 
 3. **Uso en la app**:  
    Con vue-i18n: `t(TR.create)` o en plantilla `{{ t(TR.login) }}`. El idioma actual se configura en `src/interface/presentation/i18n/index.ts` (locale, fallbackLocale).
 
 4. **Añadir una traducción**:  
-   Añade la clave y el texto en `es.json` y `en.json`, luego ejecuta `npm run i18n:generate`. No edites `tr.ts` a mano (está autogenerado).
+   Añade la clave y el texto en `es.json` y `en.json`, luego ejecuta `pnpm run i18n:generate`. No edites `tr.ts` a mano (está autogenerado).
