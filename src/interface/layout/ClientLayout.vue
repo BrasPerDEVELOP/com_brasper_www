@@ -62,6 +62,7 @@ const sidebarItems = [
   { to: { name: 'transactions' }, label: 'Historial de transferencia' },
   { to: { name: 'tasas' }, label: 'Tasas' },
   { to: { name: 'comisiones' }, label: 'Comisiones' },
+  { to: { name: 'chat-link' }, label: 'Vincular chat' },
   { to: { name: 'profile' }, label: 'Perfil' }
 ]
 

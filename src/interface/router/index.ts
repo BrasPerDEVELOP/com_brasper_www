@@ -70,6 +70,13 @@ const routes: RouteRecordRaw[] = [
     meta: { public: true, localized: true, robots: 'noindex,follow' }
   },
   {
+    // Entrada desde el asistente: guarda el chat del fragmento (#) y lo retira de la URL.
+    path: '/vincular-chat',
+    name: 'chat-link-start',
+    component: () => import('@/modules/chatlink/presentation/bodies/ChatLinkStartView.vue'),
+    meta: { public: true, robots: 'noindex,nofollow' }
+  },
+  {
     path: '/dashboard',
     component: ClientLayout,
     meta: { requiresAuth: true },
@@ -132,6 +139,11 @@ const routes: RouteRecordRaw[] = [
         path: 'tasas',
         name: 'tasas',
         component: () => import('@/modules/tasas/presentation/bodies/TasasView.vue')
+      },
+      {
+        path: 'vincular-chat',
+        name: 'chat-link',
+        component: () => import('@/modules/chatlink/presentation/bodies/ChatLinkView.vue')
       },
       {
         path: 'comisiones',
