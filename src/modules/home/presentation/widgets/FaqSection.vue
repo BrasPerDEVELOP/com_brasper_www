@@ -205,7 +205,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
 
@@ -233,6 +234,10 @@ const whatsappCopy: Record<SupportedLocale, { label: string; message: string }> 
 
 const { t, locale } = useI18n()
 const activeFaqTab = ref<FaqTab>('faq')
+const route = useRoute()
+watch(() => route.query.tab, (tab) => {
+  activeFaqTab.value = tab === 'terms' ? 'terms' : 'faq'
+}, { immediate: true })
 
 const currentLocale = computed<SupportedLocale>(() => {
   const value = locale.value

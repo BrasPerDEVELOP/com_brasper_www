@@ -21,7 +21,7 @@ const CALCULATOR_ID = 'calculadora'
 const CALCULATOR_HASH = `#${CALCULATOR_ID}`
 const NAVBAR_OFFSET = 88
 /** Vistas con formulario: solo cambian de idioma para no perder lo escrito. */
-const KEEP_IN_PLACE_ROUTES = new Set(['auth', 'register'])
+const KEEP_IN_PLACE_ROUTES = new Set(['auth', 'register', 'contact', 'faq'])
 
 /**
  * Lleva el scroll a la calculadora aunque la navegación se haya abortado

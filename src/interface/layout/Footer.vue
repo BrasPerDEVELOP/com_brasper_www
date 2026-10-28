@@ -62,29 +62,27 @@
         <!-- Columna 4: CONTÁCTANOS -->
         <div>
           <h3 class="text-sm font-bold uppercase mb-4">{{ t('footer_contact_title') }}</h3>
-          <ul class="space-y-2">
+          <ul class="space-y-2 footer-contact">
             <li>
-              <a
-                href="mailto:info@braspertransferencias.com"
-                class="text-sm text-white/80 hover:text-white transition-colors"
-              >
-                info@braspertransferencias.com
-              </a>
+              <router-link :to="{ name: 'contact', params: { locale: routeLocale } }">
+                <Icon icon="mdi:email-outline" aria-hidden="true" />
+                <span class="break-all">info@braspertransferencias.com</span>
+                <Icon icon="mdi:arrow-right" aria-hidden="true" />
+              </router-link>
             </li>
             <li>
-              <a
-                href="https://drive.google.com/file/d/1ACrx6qdwvws_pSuUrlL2w4AgNydPMlW6/view?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-sm text-white/80 hover:text-white transition-colors"
-              >
-                {{ t('footer_contact_terms') }}
-              </a>
+              <router-link :to="{ name: 'faq', params: { locale: routeLocale }, query: { tab: 'terms' } }">
+                <Icon icon="mdi:file-document-outline" aria-hidden="true" />
+                <span>{{ t('footer_contact_terms') }}</span>
+                <Icon icon="mdi:arrow-right" aria-hidden="true" />
+              </router-link>
             </li>
             <li>
-              <a href="#complaints" class="text-sm text-white/80 hover:text-white transition-colors">
-                {{ t('footer_contact_complaints') }}
-              </a>
+              <router-link :to="{ name: 'contact', params: { locale: routeLocale }, query: { type: 'complaint' } }">
+                <Icon icon="mdi:book-open-outline" aria-hidden="true" />
+                <span>{{ t('footer_contact_complaints') }}</span>
+                <Icon icon="mdi:arrow-right" aria-hidden="true" />
+              </router-link>
             </li>
           </ul>
         </div>
@@ -99,6 +97,7 @@
 </template>
 
 <script setup lang="ts">
+import { Icon } from '@iconify/vue'
 import { useI18n } from 'vue-i18n'
 import { useLanguage } from '@/interface/presentation/composables/useLanguage'
 
@@ -107,3 +106,21 @@ const { routeLocale } = useLanguage()
 const logoBlanco = '/assets/images/logo/logo-blanco.png'
 const year = new Date().getFullYear()
 </script>
+
+<style scoped>
+.footer-contact a {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 44px;
+  padding: 0.625rem;
+  border-radius: 0.5rem;
+  color: rgb(255 255 255 / 0.9);
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+.footer-contact a:hover { background: rgb(255 255 255 / 0.1); }
+.footer-contact a:focus-visible { outline: 2px solid white; outline-offset: 2px; }
+.footer-contact svg { flex-shrink: 0; width: 1.125rem; height: 1.125rem; }
+.footer-contact svg:last-child { margin-left: auto; }
+</style>

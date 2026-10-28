@@ -12,6 +12,12 @@ import {
 
 const routes: RouteRecordRaw[] = [
   {
+    path: '/:locale(es|en|br)/contact',
+    name: 'contact',
+    component: () => import('@/modules/home/presentation/bodies/ContactView.vue'),
+    meta: { public: true, localized: true }
+  },
+  {
     path: '/',
     redirect: () => ({ name: 'homepage', params: { locale: getPreferredRouteLocale() } })
   },

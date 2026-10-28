@@ -2,7 +2,7 @@ import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { extname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const projectRoot = new URL('../', import.meta.url).pathname
+const projectRoot = fileURLToPath(new URL('../', import.meta.url))
 // `scripts/` entra en el alcance porque los generadores de build (sitemap,
 // prerender) también llaman al API. Estaban fuera, y por eso pasó inadvertido un
 // `/blog/?page_size=100` que habría dejado el sitemap sin artículos en silencio
