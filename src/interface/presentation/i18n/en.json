@@ -37,6 +37,7 @@
   "coupon_apply": "Apply",
   "coupon_savings": "You save {amount} {currency}",
   "send_money": "Send via WhatsApp",
+  "claim_whatsapp_bonus": "Claim your 1% via WhatsApp!",
   "whatsapp_secure_attention": "Immediate and secure support via WhatsApp",
   "calculator_amount_out_of_range_contact_us": "For amounts above or below, contact us!",
   "transfer_details_intro": "Great! Here are the details of your Brasper transfer today",

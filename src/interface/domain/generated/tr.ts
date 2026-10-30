@@ -115,6 +115,9 @@ export const TR = {
   /** Enviar por WhatsApp | send_money */
   get sendMoney(): string { return "send_money" },
 
+  /** ¡Reclama tu 1% por WhatsApp! | claim_whatsapp_bonus */
+  get claimWhatsappBonus(): string { return "claim_whatsapp_bonus" },
+
   /** Atención inmediata y segura por WhatsApp | whatsapp_secure_attention */
   get whatsappSecureAttention(): string { return "whatsapp_secure_attention" },
 

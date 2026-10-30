@@ -37,6 +37,7 @@
   "coupon_apply": "Aplicar",
   "coupon_savings": "Ahorras {amount} {currency}",
   "send_money": "Enviar por WhatsApp",
+  "claim_whatsapp_bonus": "¡Reclama tu 1% por WhatsApp!",
   "whatsapp_secure_attention": "Atención inmediata y segura por WhatsApp",
   "calculator_amount_out_of_range_contact_us": "¡Para montos mayores o menores, contáctanos!",
   "transfer_details_intro": "Perfecto, los detalles de tu envío Brasper de hoy son los siguientes:",

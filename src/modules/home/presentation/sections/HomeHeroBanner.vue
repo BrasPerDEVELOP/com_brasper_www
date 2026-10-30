@@ -70,7 +70,7 @@
             :show-button="true"
             :show-terms="true"
             :show-reductions="true"
-            :button-text="t('send_money')"
+            :button-text="t('claim_whatsapp_bonus')"
             :title="t('calculatorTitle')"
             :subtitle="t('calculator_description')"
             custom-classes="!max-w-full !rounded-2xl !border !border-white/60 !p-4 !shadow-[0_20px_50px_-12px_rgba(0,0,0,0.35)] sm:!rounded-[28px] sm:!p-6 md:!rounded-[30px] md:!border-0 md:!p-8 md:!shadow-2xl"

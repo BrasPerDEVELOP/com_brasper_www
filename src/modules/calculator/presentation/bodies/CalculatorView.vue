@@ -263,10 +263,17 @@
 
       <!-- Send Money Button -->
       <button v-if="showButton" type="button"
-        class="relative z-1 inline-flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-azure-600 px-[30px] py-[12px] text-base font-bold text-on-surface transition-colors duration-500 hover:text-white after:absolute after:left-1/2 after:top-1/2 after:z-[-1] after:h-[calc(100%+5px)] after:w-[calc(100%+5px)] after:content-[''] after:bg-primary after:-translate-x-1/2 after:-translate-y-1/2 after:scale-100 after:transition-transform after:duration-700 hover:after:scale-0 hover:after:rounded-full max-[575px]:px-[25px] max-[575px]:py-[9px]"
+        :class="shouldSendWhatsappOnClick
+          ? 'whatsapp-claim-cta'
+          : 'relative z-1 inline-flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-azure-600 px-[30px] py-[12px] text-base font-bold text-on-surface transition-colors duration-500 hover:text-white after:absolute after:left-1/2 after:top-1/2 after:z-[-1] after:h-[calc(100%+5px)] after:w-[calc(100%+5px)] after:content-[\'\'] after:bg-primary after:-translate-x-1/2 after:-translate-y-1/2 after:scale-100 after:transition-transform after:duration-700 hover:after:scale-0 hover:after:rounded-full max-[575px]:px-[25px] max-[575px]:py-[9px]'"
         @click="handleButtonClick">
-        <Icon icon="ic:round-whatsapp" class="h-6 w-6 shrink-0" aria-hidden="true" />
-        {{ buttonText || t('send_money') }}
+        <span :class="shouldSendWhatsappOnClick ? 'whatsapp-claim-icon' : 'inline-flex'" aria-hidden="true">
+          <Icon icon="ic:round-whatsapp" :class="shouldSendWhatsappOnClick ? 'h-7 w-7' : 'h-6 w-6 shrink-0'" />
+        </span>
+        <span>{{ buttonText || t('send_money') }}</span>
+        <svg v-if="shouldSendWhatsappOnClick" class="whatsapp-claim-arrow" viewBox="0 0 16 24" fill="none" aria-hidden="true">
+          <path d="m4 4 8 8-8 8" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
       </button>
 
       <!-- Terms and Conditions -->
@@ -810,6 +817,60 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.whatsapp-claim-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  width: 100%;
+  max-width: 100%;
+  min-height: 46px;
+  margin-inline: auto;
+  padding: 3px 10px 3px 3px;
+  border: 2px solid #00e552;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #00d747 0%, #00ad38 45%, #009b32 100%);
+  box-shadow: inset 0 1px 2px rgb(255 255 255 / 25%), 0 7px 16px rgb(0 166 58 / 25%);
+  color: #fff;
+  font-size: clamp(0.75rem, 2.8vw, 0.875rem);
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition: box-shadow 180ms ease, filter 180ms ease;
+}
+
+.whatsapp-claim-cta:hover {
+  filter: brightness(1.05);
+  box-shadow: inset 0 1px 2px rgb(255 255 255 / 25%), 0 9px 20px rgb(0 166 58 / 35%);
+}
+
+.whatsapp-claim-cta:focus-visible {
+  outline: 3px solid #006b27;
+  outline-offset: 3px;
+}
+
+.whatsapp-claim-icon {
+  display: flex;
+  flex: 0 0 36px;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgb(0 245 81 / 30%), rgb(0 133 43 / 20%));
+}
+
+.whatsapp-claim-arrow {
+  flex: 0 0 12px;
+  width: 12px;
+  height: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-claim-cta { transition: none; }
+}
+
 /* Microescena: la pelota describe un arco y entra al arco = ¡GOL! */
 .gol-scene { overflow: visible; }
 
