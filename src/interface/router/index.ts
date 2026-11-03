@@ -12,6 +12,12 @@ import {
 
 const routes: RouteRecordRaw[] = [
   {
+    path: '/edwin-lizarbe',
+    name: 'edwin-lizarbe',
+    component: () => import('@/modules/home/presentation/bodies/EdwinLizarbeView.vue'),
+    meta: { public: true }
+  },
+  {
     path: '/:locale(es|en|br)/contact',
     name: 'contact',
     component: () => import('@/modules/home/presentation/bodies/ContactView.vue'),
@@ -263,3 +269,4 @@ router.beforeEach(async (to, _from, next) => {
 })
 
 export default router
+

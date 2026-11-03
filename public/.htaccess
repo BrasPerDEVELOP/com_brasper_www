@@ -25,6 +25,7 @@ ServerSignature Off
 
   # 3) Rutas SPA válidas con contenido dinámico -> index.html (200):
   #    blog (redirección), detalle de artículo, login/registro y dashboard.
+  RewriteRule ^edwin-lizarbe/?$ index.html [L]
   RewriteRule ^blog(/.*)?$ index.html [L]
   RewriteRule ^(es|en|br)/blog/[^/]+/?$ index.html [L]
   RewriteRule ^(es|en|br)/(auth|register)/?$ index.html [L]
@@ -100,3 +101,4 @@ ErrorDocument 404 /index.html
   ExpiresByType font/woff2 "access plus 1 year"
   ExpiresByType font/woff "access plus 1 year"
 </IfModule>
+
