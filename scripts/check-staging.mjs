@@ -4,6 +4,7 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs'
 const assets = readdirSync('dist/assets').filter((file) => file.endsWith('.js'))
 const js = assets.map((file) => readFileSync(`dist/assets/${file}`, 'utf8')).join('\n')
 assert.ok(!js.includes('MARINA25'), 'A hardcoded coupon remains in the build')
+assert.ok(js.includes('primerenvio'), 'The promotion coupon must be included')
 assert.ok(js.includes('/coupons/automatic'), 'Automatic API coupons must remain enabled')
 assert.ok(js.includes('apibras.finzeler.com'), 'The production API must remain configured')
 for (const locale of ['es', 'en', 'br']) {
@@ -14,4 +15,4 @@ for (const locale of ['es', 'en', 'br']) {
   const file = locale === 'br' ? 'pr' : locale
   assert.ok(existsSync(`dist/assets/images/promocion/${file}.png`), 'Localized promotion image missing')
 }
-console.log('Promotion build verified: base path, three banners, API coupons and no fixed coupon.')
+console.log('Promotion build verified: base path, three banners, production API and primerenvio coupon.')

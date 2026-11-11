@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "build:staging": "pnpm run check:api-paths && vue-tsc && vite build --mode staging && tsx scripts/prerender.ts --staging && node scripts/check-staging.mjs",
+    "build:staging": "pnpm run check:api-paths && tsx --test scripts/promotion-coupons.test.ts && vue-tsc && vite build --mode staging && tsx scripts/prerender.ts --staging && node scripts/check-staging.mjs",
     "prebuild": "pnpm run check:api-paths && pnpm run sitemap:generate",
     "postbuild": "tsx scripts/prerender.ts",
     "preview": "vite preview",

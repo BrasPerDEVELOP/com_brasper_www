@@ -14,10 +14,11 @@ Los originales proporcionados por el usuario se publican sin recorte en
 la imagen correspondiente al idioma en lugar del banner del CMS. No se modifica
 el banner compartido en la API ni la portada principal.
 
-No hay un cupón fijo ni un descuento calculado específicamente para la prueba:
-la calculadora consume `/transactions/coupons/automatic`, con las condiciones
-y porcentajes que devuelve la API. Las imágenes anuncian una promoción, pero
-no crean un cupón ni alteran las condiciones del backend.
+Solo el build `staging` con base `/promocion/` aplica el cupón fijo `primerenvio`:
+25 % de descuento sobre la comisión, usando el cálculo habitual de cupones.
+Reemplaza los cupones automáticos de la API en esta cotización, sin acumularlos.
+El usuario puede quitarlo y volver a aplicarlo. No crea un cupón en el backend
+ni valida elegibilidad de primer envío; la portada principal conserva los cupones de la API.
 
 ## Compilar y desplegar
 
@@ -27,7 +28,7 @@ git push origin staging
 ```
 
 El build verifica TypeScript, rutas API, prefijo `/promocion/`, imágenes por idioma,
-metadatos noindex y ausencia del antiguo cupón fijo en el JavaScript compilado.
+metadatos noindex, aislamiento del cupón promocional y ausencia de MARINA25.
 
 En el servidor:
 
