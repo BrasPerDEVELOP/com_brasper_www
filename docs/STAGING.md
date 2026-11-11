@@ -53,7 +53,12 @@ con permisos 600; `.env.staging` fija el dominio de la API al compilar.
 6. Verificar HTTPS, GET y preflight con origen staging; comprobar que los orígenes
    de producción siguen funcionando y un origen ajeno sigue rechazado.
 
-Hasta completar DNS, HTTPS y CORS, el entorno no está listo para uso público.
+Activado el 2026-11-11: DNS A correcto, certificado HTTPS con renovación automática,
+redirección HTTP a HTTPS y origen de staging autorizado en la API. Se comprobó
+que los orígenes de producción siguen autorizados y que un origen ajeno se rechaza.
+La API conserva su imagen desplegada; solo cambió `CORS_ALLOWED_ORIGINS`.
+Su checkout del servidor quedó limpio y sincronizado con `origin/main`; los cambios
+locales descartados se respaldaron en el stash `before-staging-api-cleanup-20261111`.
 Staging lleva cabecera `X-Robots-Tag` y robots.txt que desaconsejan indexarlo.
 Al compartir API, las operaciones de cuentas y transacciones usan datos reales.
 
