@@ -23,7 +23,7 @@ pnpm run build:staging
 git push origin staging
 ```
 
-En el servidor, con Node y pnpm disponibles en PATH:
+En el servidor (el script selecciona las instalaciones existentes de Node y pnpm):
 
 ```bash
 bash /var/www/com_brasper_www_staging/scripts/deploy-staging.sh
