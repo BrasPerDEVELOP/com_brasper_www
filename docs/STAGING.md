@@ -1,74 +1,69 @@
-# Staging de la web
+# Web de prueba en /promocion/
 
-- Rama: `staging`. Producción continúa en `main`.
-- Host: `staging.brasper.com`.
+- Rama: `staging`. La portada principal continúa desplegada desde `main`.
+- URL: `https://brasper.com/promocion/` (idiomas `/es/`, `/en/`, `/br/`).
 - API: `https://apibras.finzeler.com`, la misma de producción.
-- Checkout separado: `/var/www/com_brasper_www_staging`.
-- Releases: `/var/www/releases/brasper-www-staging`; `current` apunta al `dist` activo.
+- Checkout: `/var/www/com_brasper_www_staging`.
+- Releases: `/var/www/releases/brasper-www-staging`.
+- `current` apunta al `dist` activo; `promocion` es un enlace relativo a `current`.
 
-## Cupón
+## Imágenes y cupones
 
-En un build con modo `staging`, servido exactamente desde `staging.brasper.com`,
-la calculadora aplica por defecto `MARINA25`: 25 % de descuento sobre la comisión,
-con el mismo cálculo de los cupones porcentuales normales. Está disponible para
-todos los pares de monedas y reemplaza los cupones automáticos de producción solo
-en esta calculadora. Se puede quitar y volver a aplicar con el control existente.
-No se crea ni modifica ningún cupón en la base de datos; tasas y comisiones base
-siguen viniendo de la API principal. El mensaje de cotización de WhatsApp incluye
-el código únicamente mientras el cupón está aplicado.
+Los originales proporcionados por el usuario se publican sin recorte en
+`public/assets/images/promocion/{es,en,pr}.png`. En modo `staging` se muestra
+la imagen correspondiente al idioma en lugar del banner del CMS. No se modifica
+el banner compartido en la API ni la portada principal.
+
+No hay un cupón fijo ni un descuento calculado específicamente para la prueba:
+la calculadora consume `/transactions/coupons/automatic`, con las condiciones
+y porcentajes que devuelve la API. Las imágenes anuncian una promoción, pero
+no crean un cupón ni alteran las condiciones del backend.
 
 ## Compilar y desplegar
 
 ```bash
-pnpm run test:staging
 pnpm run build:staging
 git push origin staging
 ```
 
-En el servidor (el script selecciona las instalaciones existentes de Node y pnpm):
+El build verifica TypeScript, rutas API, prefijo `/promocion/`, imágenes por idioma,
+metadatos noindex y ausencia del antiguo cupón fijo en el JavaScript compilado.
+
+En el servidor:
 
 ```bash
+git -C /var/www/com_brasper_www_staging pull --ff-only origin staging
 bash /var/www/com_brasper_www_staging/scripts/deploy-staging.sh
 ```
 
-El script solo acepta el checkout de staging, exige un árbol limpio, actualiza
-por fast-forward, instala dependencias en una release independiente y compila
-antes de cambiar el enlace activo. No reinicia la API ni modifica producción.
-La primera vez se copia el `.env` de la web de producción al checkout de staging
-con permisos 600; `.env.staging` fija el dominio de la API al compilar.
+El script requiere la rama `staging` limpia, compila en una release independiente
+y cambia `current` solo si todo termina correctamente. Reutiliza la configuración
+privada del checkout; `.env.staging` fija la API principal. No despliega ni reinicia
+la API, la base de datos ni la portada de producción.
 
-## DNS, HTTPS y acceso a la API
+## Nginx
 
-1. Crear en Hostinger un registro A `staging` → `167.86.97.146` (TTL 300).
-2. Instalar `deploy/nginx/staging-http.conf` como sitio `brasper_staging` y validar
-   con `nginx -t` antes de una recarga gradual de Nginx.
-3. Con DNS propagado, emitir un certificado independiente:
-   `certbot certonly --webroot -w /var/www/letsencrypt -d staging.brasper.com --non-interactive`.
-4. Reemplazar únicamente el sitio de staging con `staging-https.conf`, ejecutar
-   `nginx -t` y `systemctl reload nginx`.
-5. Agregar `https://staging.brasper.com` a `CORS_ALLOWED_ORIGINS` del servicio API
-   preservando los orígenes existentes. Es necesario también para la validación
-   de origen del refresh de sesión. Revisar la configuración efectiva y la imagen
-   desplegada antes de recrear exclusivamente el contenedor API sin build.
-6. Verificar HTTPS, GET y preflight con origen staging; comprobar que los orígenes
-   de producción siguen funcionando y un origen ajeno sigue rechazado.
+`deploy/nginx/promocion.conf` se instala en
+`/etc/nginx/snippets/brasper-promocion.conf` y se incluye únicamente en el servidor
+HTTPS de `brasper.com` / `www.brasper.com`. Solo añade las rutas `/promocion`
+y `/promocion/`; las demás ubicaciones existentes se conservan.
 
-Activado el 2026-11-11: DNS A correcto, certificado HTTPS con renovación automática,
-redirección HTTP a HTTPS y origen de staging autorizado en la API. Se comprobó
-que los orígenes de producción siguen autorizados y que un origen ajeno se rechaza.
-La API conserva su imagen desplegada; solo cambió `CORS_ALLOWED_ORIGINS`.
-Su checkout del servidor quedó limpio y sincronizado con `origin/main`; los cambios
-locales descartados se respaldaron en el stash `before-staging-api-cleanup-20261111`.
-Staging lleva cabecera `X-Robots-Tag` y robots.txt que desaconsejan indexarlo.
-Al compartir API, las operaciones de cuentas y transacciones usan datos reales.
+`deploy/nginx/staging-https.conf` mantiene redirecciones temporales desde el antiguo
+subdominio hacia la ruta nueva, conservando idioma, ruta y parámetros. El sitio
+principal aporta el certificado HTTPS y su origen ya está permitido por la API.
+No hacen falta nuevos registros DNS ni cambios de CORS para esta ruta.
 
-## Volver a una release anterior
+Validar siempre con `nginx -t` antes de `systemctl reload nginx`. La ruta de prueba
+lleva `X-Robots-Tag: noindex, nofollow, noarchive` y no se añade al sitemap principal.
+Al compartir dominio y API, la sesión y los datos son los mismos de producción.
 
-Elegir un `dist` verificado dentro de `/var/www/releases/brasper-www-staging`:
+## Recuperación
 
-```bash
-ln -s /var/www/releases/brasper-www-staging/RELEASE_ANTERIOR/dist /var/www/com_brasper_www_staging/current.next
-mv -Tf /var/www/com_brasper_www_staging/current.next /var/www/com_brasper_www_staging/current
-```
+Se conservan las releases previas y respaldos de Nginx bajo `/root/backups`.
+Para volver al subdominio anterior, restaurar conjuntamente su configuración,
+la configuración principal y la release compilada para `/`. No usar un build
+con base `/promocion/` como si estuviese publicado en `/`.
 
-La web principal y sus enlaces de releases permanecen separados.
+La API del servidor quedó limpia y sincronizada con `origin/main` el 2026-11-11;
+los cambios locales descartados se guardaron en el stash
+`before-staging-api-cleanup-20261111`. Su imagen desplegada no se cambió.

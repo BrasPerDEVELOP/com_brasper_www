@@ -12,6 +12,7 @@ dist
 dist-ssr
 /current
 /current.next
+/promocion
 *.local
 
 skills/

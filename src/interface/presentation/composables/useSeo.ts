@@ -63,12 +63,12 @@ export function useSeo(options: MaybeRef<SeoOptions>) {
     const title = seo.title.trim()
     const description = seo.description.trim()
     const metaRobots = typeof route.meta.robots === 'string' ? route.meta.robots.trim() : ''
-    const robots = seo.robots?.trim() || metaRobots || 'index,follow'
+    const robots = import.meta.env.MODE === 'staging' ? 'noindex,nofollow' : seo.robots?.trim() || metaRobots || 'index,follow'
     const type = seo.type?.trim() || 'website'
     const imageUrl = new URL(seo.image || DEFAULT_OG_IMAGE, window.location.origin).toString()
     // Canonical sin query ni hash: usa solo el path normalizado para evitar
     // duplicados por UTM, filtros o anclas (#seccion).
-    const canonicalUrl = new URL(route.path, window.location.origin).toString()
+    const canonicalUrl = new URL(router.resolve(route.path).href, window.location.origin).toString()
 
     document.title = title
     document.documentElement.lang = languageTag

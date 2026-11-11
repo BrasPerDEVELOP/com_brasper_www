@@ -50,7 +50,7 @@ export function getPreferredRouteLocale(): RouteLocale {
     return DEFAULT_ROUTE_LOCALE
   }
 
-  const pathLocale = window.location.pathname.split('/')[1]
+  const pathLocale = window.location.pathname.slice(import.meta.env.BASE_URL.length).split('/')[0]
   if (isRouteLocale(pathLocale)) {
     return pathLocale
   }

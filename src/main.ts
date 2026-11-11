@@ -26,7 +26,7 @@ setAuthCallbacks(
     useAuthStore().clearSession()
 
     // Solo redirigir al login desde el dashboard; en la landing u otras rutas públicas no.
-    if (typeof window === 'undefined' || !window.location.pathname.startsWith('/dashboard')) return
+    if (typeof window === 'undefined' || !router.currentRoute.value.path.startsWith('/dashboard')) return
 
     const locale = i18n.global.locale.value as 'es' | 'en' | 'pt'
     router.push({

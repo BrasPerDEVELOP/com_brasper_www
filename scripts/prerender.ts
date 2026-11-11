@@ -20,7 +20,9 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = resolve(ROOT, 'dist')
 // Dominio canónico. Configurable por si el dominio de producción cambia
 // Dominio de producción, configurable para otros entornos.
-const SITE = (process.env.SITE_URL ?? 'https://brasper.online').replace(/\/+$/, '')
+const IS_STAGING = process.argv.includes('--staging')
+const BASE_PATH = IS_STAGING ? '/promocion/' : '/'
+const SITE = (IS_STAGING ? 'https://brasper.com/promocion' : process.env.SITE_URL ?? 'https://brasper.online').replace(/\/+$/, '')
 
 const LOCALES = ['br', 'es', 'en'] as const
 type Loc = (typeof LOCALES)[number]
@@ -119,7 +121,9 @@ const ROUTES: RouteDef[] = [
     titleKey: 'seo_home_title',
     descKey: 'seo_home_description',
     content: homeContent,
-    ogImage: (loc) => `${SITE}/assets/images/banner/${loc === 'br' ? 'pr' : loc}-1152.webp`
+    ogImage: (loc) => IS_STAGING
+      ? `${SITE}/assets/images/promocion/${loc === 'br' ? 'pr' : loc}.png`
+      : `${SITE}/assets/images/banner/${loc === 'br' ? 'pr' : loc}-1152.webp`
   },
   {
     suffix: '/faq',
@@ -188,9 +192,10 @@ function transform(base: string, loc: Loc, route: RouteDef, m: Record<string, st
 }
 
 function inlineCss(base: string): string {
-  const match = base.match(/<link rel="stylesheet"[^>]*href="(\/assets\/[^"]+\.css)"[^>]*>/)
+  const match = base.match(/<link rel="stylesheet"[^>]*href="([^"]+\.css)"[^>]*>/)
   if (!match) return base
-  const cssPath = resolve(DIST, `.${match[1]}`)
+  if (!match[1].startsWith(BASE_PATH)) return base
+  const cssPath = resolve(DIST, match[1].slice(BASE_PATH.length))
   if (!existsSync(cssPath)) return base
   const css = readFileSync(cssPath, 'utf8')
   return base.replace(match[0], `<style>${css}</style>`)
@@ -204,7 +209,8 @@ function main(): void {
   }
 
   // Base con CSS inlineado (elimina el <link> render-blocking).
-  const base = inlineCss(readFileSync(indexPath, 'utf8'))
+  let base = inlineCss(readFileSync(indexPath, 'utf8'))
+  if (IS_STAGING) base = base.replace('<meta name="robots" content="index,follow">', '<meta name="robots" content="noindex,nofollow">')
 
   // El propio index.html (fallback SPA) también sin CSS bloqueante.
   writeFileSync(indexPath, base, 'utf8')

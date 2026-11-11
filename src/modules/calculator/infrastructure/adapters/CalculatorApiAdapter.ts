@@ -3,7 +3,6 @@ import { Domain } from '@/interface/infrastructure/services'
 import type { CalculatorRepository, CurrencyReadDTO } from './CalculatorRepository'
 import type { ExchangeRate, CommissionRange, Coupon } from '../../domain/models'
 import { getCurrencyPairKey } from '../../domain/models'
-import { stagingCoupons } from './stagingCoupons'
 
 function parseCurrencies(data: unknown): CurrencyReadDTO[] {
   if (!Array.isArray(data)) return []
@@ -130,10 +129,6 @@ export class CalculatorApiAdapter implements CalculatorRepository {
   async getAutomaticCoupons(): Promise<Coupon[]> {
     const url = `${this.transactionsBase()}/coupons/automatic`
     const response = await apiClient.get<unknown>(url).catch(() => ({ data: [] }))
-    return stagingCoupons(
-      parseCoupons(response.data ?? []),
-      import.meta.env.MODE,
-      typeof window === 'undefined' ? '' : window.location.hostname
-    )
+    return parseCoupons(response.data ?? [])
   }
 }

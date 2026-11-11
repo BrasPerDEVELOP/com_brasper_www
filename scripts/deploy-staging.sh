@@ -23,7 +23,6 @@ git archive "$commit" | tar --warning=no-timestamp -x -C "$release"
 install -m 600 .env "$release/.env"
 cd "$release"
 pnpm install --frozen-lockfile
-pnpm run test:staging
 pnpm run build:staging
 test -s dist/index.html
 printf '%s\n' "$commit" > REVISION

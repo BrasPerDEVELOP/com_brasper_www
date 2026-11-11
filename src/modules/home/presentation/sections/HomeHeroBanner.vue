@@ -32,16 +32,16 @@
         </ul>
 
         <div class="mt-4 flex flex-wrap items-center justify-center gap-4 lg:justify-center">
-          <div class="aspect-[760/366] w-full overflow-hidden rounded-2xl md:rounded-none">
+          <div class="w-full overflow-hidden rounded-2xl md:rounded-none" :class="isPromotion ? 'aspect-[1717/916]' : 'aspect-[760/366]'">
             <img
               :src="displayedBannerImageSrc"
               :srcset="displayedBannerSrcset"
-              :alt="t('landing_badge')"
+              :alt="isPromotion ? promotionAlt : t('landing_badge')"
               loading="eager"
               fetchpriority="high"
               decoding="async"
-              width="760"
-              height="366"
+              :width="isPromotion ? 1717 : 760"
+              :height="isPromotion ? 916 : 366"
               sizes="(max-width: 768px) 100vw, 380px"
               class="h-full w-full object-cover"
               @error="onDisplayedBannerImageError"
@@ -130,6 +130,12 @@ type HomeBannerApiRow = {
 }
 
 const { t, locale } = useI18n()
+const isPromotion = import.meta.env.MODE === 'staging'
+const promotionAlt = computed(() => locale.value === 'es'
+  ? 'Súper promoción: 25% de descuento en tu primer envío'
+  : locale.value === 'en'
+    ? 'Super promotion: 25% off on your first transfer'
+    : 'Super promoção: 25% no seu primeiro envio')
 
 /** Diferenciadores junto al título: se leen antes que la calculadora. */
 const heroChips = [
@@ -146,7 +152,7 @@ const trustItems = [
 ] as const
 
 const LOCAL_BANNER_WIDTHS = [480, 768, 1152] as const
-const LOCAL_BANNER_PREFIX = '/assets/images/banner/'
+const LOCAL_BANNER_PREFIX = `${import.meta.env.BASE_URL}assets/images/banner/`
 
 const remoteBanner = shallowRef<HomeBannerApiRow | null>(readCachedHomeBanner())
 const displayedBannerImageSrc = shallowRef(localBannerSrc())
@@ -171,6 +177,10 @@ function localBannerBase(): string {
 
 /** Variante base usada como `src` (fallback si el navegador no soporta srcset). */
 function localBannerSrc(): string {
+  if (isPromotion) {
+    const file = locale.value === 'es' ? 'es' : locale.value === 'en' ? 'en' : 'pr'
+    return `${import.meta.env.BASE_URL}assets/images/promocion/${file}.png`
+  }
   return `${localBannerBase()}-768.webp`
 }
 
@@ -218,6 +228,7 @@ function homeBannerDetailPath(id: string): string {
 }
 
 async function fetchHomeBanner(): Promise<void> {
+  if (isPromotion) return
   try {
     const fixedId = env.homeBannerId.trim()
     if (fixedId) {
@@ -244,6 +255,7 @@ async function fetchHomeBanner(): Promise<void> {
 }
 
 const bannerImageSrc = computed(() => {
+  if (isPromotion) return localBannerSrc()
   const row = remoteBanner.value
   if (row?.enable) {
     const path = locale.value === 'es' ? row.banner_es : locale.value === 'en' ? row.banner_en : row.banner_pr

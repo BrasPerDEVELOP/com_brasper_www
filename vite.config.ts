@@ -3,7 +3,8 @@ import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
 import tailwindcss from "@tailwindcss/vite";
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  base: mode === 'staging' ? '/promocion/' : '/',
   plugins: [vue(), tailwindcss(),],
   resolve: {
     alias: {
@@ -36,4 +37,4 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 800
   }
-})
+}))

@@ -6,7 +6,8 @@
     <script>
       (function () {
         try {
-          var seg = location.pathname.split('/')[1]
+          var base = '%BASE_URL%'
+          var seg = location.pathname.slice(base.length).split('/')[0]
           var file
           if (seg === 'es' || seg === 'en' || seg === 'br') {
             file = seg === 'br' ? 'pr' : seg
@@ -17,7 +18,7 @@
           var l = document.createElement('link')
           l.rel = 'preload'
           l.as = 'image'
-          l.href = '/assets/images/banner/' + file + '.webp'
+          l.href = base + ('%MODE%' === 'staging' ? 'assets/images/promocion/' + file + '.png' : 'assets/images/banner/' + file + '.webp')
           l.setAttribute('fetchpriority', 'high')
           document.head.appendChild(l)
         } catch (e) {}
