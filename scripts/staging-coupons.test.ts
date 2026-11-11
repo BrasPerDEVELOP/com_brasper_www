@@ -9,10 +9,14 @@ const coupons: Coupon[] = [{
   startDate: '2026-11-04T16:13:00Z', endDate: '2026-11-15T16:13:00Z', maxUses: 1000
 }]
 
-test('staging preserves API amounts, eligibility and IDs without mutating the response', () => {
+test('staging uses a single 25 percent coupon without mutating production coupons', () => {
   const result = stagingCoupons(coupons, 'staging', 'staging.brasper.com')
-  assert.deepEqual(result, [{ ...coupons[0], code: 'MARINA25' }])
+  assert.deepEqual(result, [{
+    id: 'staging-marina25', code: 'MARINA25', discount: 25,
+    type: 'percent', isAutomatic: true, isActive: true
+  }])
   assert.equal(coupons[0].code, 'CYBERSOL')
+  assert.equal(coupons[0].discount, 20)
   assert.notEqual(result[0], coupons[0])
 })
 
@@ -23,6 +27,9 @@ test('production builds and other hosts retain the original coupons', () => {
   ]) assert.equal(stagingCoupons(coupons, mode, host), coupons)
 })
 
-test('staging never invents discounts when the API returns no coupons', () => {
-  assert.deepEqual(stagingCoupons([], 'staging', 'staging.brasper.com'), [])
+test('the default staging coupon is independent of production coupon availability', () => {
+  assert.deepEqual(
+    stagingCoupons([], 'staging', 'staging.brasper.com'),
+    stagingCoupons(coupons, 'staging', 'staging.brasper.com')
+  )
 })

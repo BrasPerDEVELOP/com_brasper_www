@@ -9,11 +9,13 @@
 ## Cupón
 
 En un build con modo `staging`, servido exactamente desde `staging.brasper.com`,
-la calculadora muestra `MARINA25` en lugar del código del cupón automático recibido.
-Conserva el ID, porcentaje, monedas, fechas y condiciones de la API. El nombre
-no implica un 25 % de descuento. Si no existe un cupón vigente para un par,
-no se inventa uno. No se crea ni modifica ningún cupón en la base de datos.
-El mensaje de cotización de WhatsApp usa el código mostrado.
+la calculadora aplica por defecto `MARINA25`: 25 % de descuento sobre la comisión,
+con el mismo cálculo de los cupones porcentuales normales. Está disponible para
+todos los pares de monedas y reemplaza los cupones automáticos de producción solo
+en esta calculadora. Se puede quitar y volver a aplicar con el control existente.
+No se crea ni modifica ningún cupón en la base de datos; tasas y comisiones base
+siguen viniendo de la API principal. El mensaje de cotización de WhatsApp incluye
+el código únicamente mientras el cupón está aplicado.
 
 ## Compilar y desplegar
 

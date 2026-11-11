@@ -487,7 +487,7 @@ function buildWhatsappMessage() {
 
   const from = calculatorStore.currencyFrom.toUpperCase()
   const to = calculatorStore.currencyTo.toUpperCase()
-  const couponCode = calculatorStore.currentAutomaticCoupon?.code
+  const couponCode = calculatorStore.skipAutomaticCoupon ? null : calculatorStore.currentAutomaticCoupon?.code
   const couponLine = couponCode
     ? (whatsappCopy[currentLocale.value].couponLine ?? '').replace('{couponCode}', couponCode)
     : ''
