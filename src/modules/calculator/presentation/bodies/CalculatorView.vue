@@ -262,8 +262,8 @@
       </div>
 
       <!-- Send Money Button -->
-      <button v-if="showButton" type="button"
-        class="relative z-1 inline-flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-[#128c7e] px-[30px] py-[12px] text-base font-bold text-on-surface transition-colors duration-500 hover:text-white after:absolute after:left-1/2 after:top-1/2 after:z-[-1] after:h-[calc(100%+5px)] after:w-[calc(100%+5px)] after:content-[''] after:bg-[#25d366] after:-translate-x-1/2 after:-translate-y-1/2 after:scale-100 after:transition-transform after:duration-700 hover:after:scale-0 hover:after:rounded-full max-[575px]:px-[25px] max-[575px]:py-[9px]"
+      <button v-if="showButton" type="button" :disabled="amountOutOfRange"
+        class="relative z-1 inline-flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-[#128c7e] px-[30px] py-[12px] text-base font-bold text-on-surface transition-colors duration-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-50 after:absolute after:left-1/2 after:top-1/2 after:z-[-1] after:h-[calc(100%+5px)] after:w-[calc(100%+5px)] after:content-[''] after:bg-[#25d366] after:-translate-x-1/2 after:-translate-y-1/2 after:scale-100 after:transition-transform after:duration-700 hover:after:scale-0 hover:after:rounded-full max-[575px]:px-[25px] max-[575px]:py-[9px]"
         @click="handleButtonClick">
         <Icon icon="ic:round-whatsapp" class="h-6 w-6 shrink-0" aria-hidden="true" />
         {{ buttonText || t('send_money') }}
@@ -667,12 +667,23 @@ function onSwapCurrencies() {
   activeInput.value = null
 
   if (amountToKeep > 0) {
-    calculatorStore.setAmountSend(amountToKeep)
-    calculatorStore.recalcFromSend()
+    const outsideCurrentPair = amountToKeep < calculatorStore.minAmount || amountToKeep > calculatorStore.maxAmount
+    amountOutOfRange.value = outsideCurrentPair
+    if (outsideCurrentPair) {
+      calculatorStore.resetAmounts()
+      activeInput.value = 'send'
+    } else {
+      calculatorStore.setAmountSend(amountToKeep)
+      calculatorStore.recalcFromSend()
+    }
+  } else {
+    amountOutOfRange.value = false
   }
 
-  amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
-  amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
+  amountSendLocal.value = formatInputValue(amountToKeep || calculatorStore.amountSend)
+  amountReceiveLocal.value = calculatorStore.amountReceive > 0
+    ? formatInputValue(calculatorStore.amountReceive)
+    : ''
 
   emit('currencyChange', calculatorStore.currencyFrom, calculatorStore.currencyTo)
   handleCalculate()
@@ -688,12 +699,23 @@ function recalculateAfterCurrencyChange() {
     if (effectiveReceive > 0) {
       calculatorStore.setAmountReceive(effectiveReceive)
       calculatorStore.recalcFromReceive()
-      if (activeInput.value !== 'send') {
-        amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
+      const derivedSend = calculatorStore.amountSend
+      amountOutOfRange.value = derivedSend < calculatorStore.minAmount || derivedSend > calculatorStore.maxAmount
+      if (amountOutOfRange.value) {
+        calculatorStore.resetAmounts()
+        activeInput.value = 'receive'
+        amountSendLocal.value = ''
+        amountReceiveLocal.value = formatInputValue(effectiveReceive)
+      } else {
+        if (activeInput.value !== 'send') {
+          amountSendLocal.value = formatInputValue(derivedSend)
+        }
+        if (activeInput.value !== 'receive') {
+          amountReceiveLocal.value = formatInputValue(effectiveReceive)
+        }
       }
-      if (activeInput.value !== 'receive') {
-        amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
-      }
+    } else {
+      amountOutOfRange.value = false
     }
   } else {
     const parsedAmount = parseAmountInput(amountSendLocal.value)
@@ -702,14 +724,24 @@ function recalculateAfterCurrencyChange() {
       : calculatorStore.amountSend
 
     if (effectiveAmount > 0) {
-      calculatorStore.setAmountSend(effectiveAmount)
-      calculatorStore.recalcFromSend()
-      if (activeInput.value !== 'send') {
-        amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
+      amountOutOfRange.value = effectiveAmount < calculatorStore.minAmount || effectiveAmount > calculatorStore.maxAmount
+      if (amountOutOfRange.value) {
+        calculatorStore.resetAmounts()
+        activeInput.value = 'send'
+        amountSendLocal.value = formatInputValue(effectiveAmount)
+        amountReceiveLocal.value = ''
+      } else {
+        calculatorStore.setAmountSend(effectiveAmount)
+        calculatorStore.recalcFromSend()
+        if (activeInput.value !== 'send') {
+          amountSendLocal.value = formatInputValue(calculatorStore.amountSend)
+        }
+        if (activeInput.value !== 'receive') {
+          amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
+        }
       }
-      if (activeInput.value !== 'receive') {
-        amountReceiveLocal.value = formatInputValue(calculatorStore.amountReceive)
-      }
+    } else {
+      amountOutOfRange.value = false
     }
   }
 
@@ -761,6 +793,7 @@ function handleCalculate() {
 }
 
 function handleButtonClick() {
+  if (amountOutOfRange.value) return
   handleCalculate()
   if (shouldSendWhatsappOnClick.value) {
     openWhatsappQuote()

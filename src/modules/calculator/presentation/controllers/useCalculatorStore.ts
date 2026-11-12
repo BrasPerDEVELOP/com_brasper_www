@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { CurrencyCode, ExchangeRate, CommissionRange, Coupon, CalculatorResult } from '../../domain/models'
+import { findCommissionRangeForAmount } from '../../domain/models/CommissionRange'
 import type { CurrencyReadDTO } from '../../infrastructure/adapters/CalculatorRepository'
 import { getCurrencyPairKey, CURRENCY_OPTIONS } from '../../domain/models'
 import { LoadCalculatorDataUseCase } from '../../application/use_cases'
@@ -269,13 +270,8 @@ export const useCalculatorStore = defineStore('calculator', {
 
       if (amount <= 0) return null
 
-      for (const range of ranges) {
-        if (amount >= range.min_amount && amount <= range.max_amount) {
-          return range
-        }
-      }
-
-      return ranges[ranges.length - 1]
+      // A pair change can make the preserved send amount fall below its minimum.
+      return findCommissionRangeForAmount(ranges, amount)
     },
 
     /** Porcentaje de comisión aplicable al monto (respeta min_amount/max_amount). */
@@ -304,6 +300,9 @@ export const useCalculatorStore = defineStore('calculator', {
 
       if (amountSend <= 0 && state.amountReceive > 0) {
         const inverseCalculation = calculateInverseBreakdown(state.amountReceive, rate, ranges, coupon)
+        if (ranges.length > 0 && !findCommissionRangeForAmount(ranges, inverseCalculation.amountSendWithoutPromotion)) {
+          return null
+        }
         return {
           amountSend: inverseCalculation.amountSend,
           amountSendWithoutPromotion: inverseCalculation.amountSendWithoutPromotion,
@@ -317,6 +316,7 @@ export const useCalculatorStore = defineStore('calculator', {
       }
 
       if (amountSend <= 0) return null
+      if (ranges.length > 0 && !findCommissionRangeForAmount(ranges, amountSend)) return null
 
       const calculation = calculateBreakdown(amountSend, rate, ranges, coupon)
 
