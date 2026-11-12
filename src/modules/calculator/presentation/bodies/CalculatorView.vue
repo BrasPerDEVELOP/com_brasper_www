@@ -131,11 +131,11 @@
         v-if="amountOutOfRange"
         class="text-center text-sm font-medium text-red-600"
       >
-        {{ t('calculator_amount_out_of_range_contact_us') }}
+        {{ t('calculator_amount_out_of_range_contact_us', { min: calculatorStore.minAmount, currency: calculatorStore.currencyFrom.toUpperCase() }) }}
       </p>
 
       <!-- Reductions (Commission Fee and Exchange Rate) -->
-      <div v-if="showReductions" class="space-y-2 border-t border-slate-100 pt-3 sm:border-slate-200 sm:pt-4">
+      <div v-if="showReductions && !amountOutOfRange" class="space-y-2 border-t border-slate-100 pt-3 sm:border-slate-200 sm:pt-4">
         <div class="flex justify-between text-sm">
           <span class="text-slate-600">{{ t('commission_fee') }}</span>
           <span class="font-semibold text-green-600">
@@ -157,7 +157,7 @@
       </div>
 
       <div
-        v-if="calculatorStore.currentAutomaticCoupon"
+        v-if="calculatorStore.currentAutomaticCoupon && !amountOutOfRange"
         class="rounded-2xl border px-4 py-3 shadow-sm transition-colors"
         :class="couponBoxClasses"
       >
