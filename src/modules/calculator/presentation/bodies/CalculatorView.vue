@@ -131,7 +131,7 @@
         v-if="amountOutOfRange"
         class="text-center text-sm font-medium text-red-600"
       >
-        {{ t('calculator_amount_out_of_range_contact_us') }}
+        {{ t('calculator_amount_out_of_range_contact_us', { min: calculatorStore.minAmount, currency: calculatorStore.currencyFrom.toUpperCase() }) }}
       </p>
 
       <!-- Reductions (Commission Fee and Exchange Rate) -->
@@ -262,7 +262,7 @@
       </div>
 
       <!-- Send Money Button -->
-      <button v-if="showButton" type="button"
+      <button v-if="showButton" type="button" :disabled="amountOutOfRange"
         class="relative z-1 inline-flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-[#128c7e] px-[30px] py-[12px] text-base font-bold text-on-surface transition-colors duration-500 hover:text-white after:absolute after:left-1/2 after:top-1/2 after:z-[-1] after:h-[calc(100%+5px)] after:w-[calc(100%+5px)] after:content-[''] after:bg-[#25d366] after:-translate-x-1/2 after:-translate-y-1/2 after:scale-100 after:transition-transform after:duration-700 hover:after:scale-0 hover:after:rounded-full max-[575px]:px-[25px] max-[575px]:py-[9px]"
         @click="handleButtonClick">
         <Icon icon="ic:round-whatsapp" class="h-6 w-6 shrink-0" aria-hidden="true" />
@@ -761,6 +761,7 @@ function handleCalculate() {
 }
 
 function handleButtonClick() {
+  if (amountOutOfRange.value) return
   handleCalculate()
   if (shouldSendWhatsappOnClick.value) {
     openWhatsappQuote()

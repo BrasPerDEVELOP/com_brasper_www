@@ -38,7 +38,7 @@
   "coupon_savings": "Ahorras {amount} {currency}",
   "send_money": "Enviar por WhatsApp",
   "whatsapp_secure_attention": "Atención inmediata y segura por WhatsApp",
-  "calculator_amount_out_of_range_contact_us": "¡Para montos mayores o menores, contáctanos!",
+  "calculator_amount_out_of_range_contact_us": "El monto mínimo es {min} {currency}. Para montos fuera del rango, contáctanos.",
   "transfer_details_intro": "Perfecto, los detalles de tu envío Brasper de hoy son los siguientes:",
   "transfer_amount_to_send": "Valor a Enviar",
   "transfer_exchange_rate": "Tasa de Cambio",
