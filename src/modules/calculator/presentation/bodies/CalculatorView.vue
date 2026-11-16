@@ -131,7 +131,11 @@
         v-if="amountOutOfRange"
         class="text-center text-sm font-medium text-red-600"
       >
-        {{ t('calculator_amount_out_of_range_contact_us', { min: calculatorStore.minAmount, currency: calculatorStore.currencyFrom.toUpperCase() }) }}
+        {{ t('calculator_amount_out_of_range_contact_us', {
+          min: formatNumber(calculatorStore.minAmount),
+          max: formatNumber(calculatorStore.maxAmount),
+          currency: calculatorStore.currencyFrom.toUpperCase()
+        }) }}
       </p>
 
       <!-- Reductions (Commission Fee and Exchange Rate) -->

@@ -82,6 +82,9 @@ export const TR = {
   /** Destinatario recibe | recipient_receives */
   get recipientReceives(): string { return "recipient_receives" },
 
+  /** Invertir monedas | swap_currencies */
+  get swapCurrencies(): string { return "swap_currencies" },
+
   /** Comisión | commission_fee */
   get commissionFee(): string { return "commission_fee" },
 
@@ -118,7 +121,7 @@ export const TR = {
   /** Atención inmediata y segura por WhatsApp | whatsapp_secure_attention */
   get whatsappSecureAttention(): string { return "whatsapp_secure_attention" },
 
-  /** ¡Para montos mayores o menores, contáctanos! | calculator_amount_out_of_range_contact_us */
+  /** El monto debe estar entre {min} y {max} {currency}. Para montos fuera de este rango, contáctanos. | calculator_amount_out_of_range_contact_us */
   get calculatorAmountOutOfRangeContactUs(): string { return "calculator_amount_out_of_range_contact_us" },
 
   /** Perfecto, los detalles de tu envío Brasper de hoy son los siguientes: | transfer_details_intro */
